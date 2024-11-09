@@ -12,7 +12,7 @@ DyahAI is an AI platform that lets users transform ordinary images into unique w
 
 # Frontend DyahAI
 <img src="https://tabella.my.id/static/assets/home.webp" />
-<video src="https://tabella.my.id/static/assets/gif.webm" width="500" controls></video>
+<img src="https://tabella.my.id/static/assets/gif.gif" width="100%" />
 
 ## 📝 Table of Contents
 
@@ -20,6 +20,7 @@ DyahAI is an AI platform that lets users transform ordinary images into unique w
   - [Installation](#installation)
   - [Usage](#usage)
 - [Contributors](#contribution)
+- [License](#license)
 
 <h2 id="get-started"> 🔗 Get Started</h2>
 
@@ -76,6 +77,13 @@ if you want to deploy in production :
 dfx deploy --network ic
 ```
 <h3 id="contribution"> Contributors ❤</h3>
-<a href="https://github.com/WAW1311/DyahAI/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=WAW1311/DyahAI" />
-</a>
+<a href="https://github.com/iAnoeloeby"><img src="https://avatars.githubusercontent.com/u/55847059?v=4" title="hasbi" width="80" height="80"></a>
+<a href="https://github.com/thoriqtau"><img src="https://avatars.githubusercontent.com/u/90580726?v=4" title="thoriq" width="80" height="80"></a>
+<a href="https://github.com/lutfimizaki"><img src="https://avatars.githubusercontent.com/u/140836746?v=4" title="fadhil" width="80" height="80"></a>
+<a href="https://github.com/WAW1311"><img src="https://avatars.githubusercontent.com/u/115858209?v=4" title="wahyu" width="80" height="80"></a>
+<a href="https://github.com/yubayu0"><img src="https://avatars.githubusercontent.com/u/111375965?v=4" title="bayu" width="80" height="80"></a>
+
+<h3 id="license"> License </h3>
+MIT © <a href="https://tabella.my.id/static/assets/LICENSE.txt">DyahAI</a>
+
+
