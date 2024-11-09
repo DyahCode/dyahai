@@ -140,18 +140,6 @@ const GeneratePage = () => {
     });
   };
 
-  const handleDeleteAllImages = async () => {
-    try {
-      const success = await website_backend.deleteAllImages();
-      console.log(
-        success
-          ? "All images deleted successfully."
-          : "Failed to delete all images.",
-      );
-    } catch (error) {
-      console.error("Error deleting all images:", error);
-    }
-  };
 
   const handleDownloadImage = () => {
     if (!state.imageUrl) {
@@ -164,16 +152,6 @@ const GeneratePage = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  const addCredit = async () => {
-    try {
-      await website_backend.addCredit(principalId, 1);
-      const updatedBalance = await website_backend.getBalance(principalId);
-      setState((prev) => ({ ...prev, balance: updatedBalance.toString() }));
-    } catch (error) {
-      console.error("Error adding credit:", error);
-    }
   };
 
   return (
@@ -305,20 +283,6 @@ const GeneratePage = () => {
                     <IoMdDownload size={30} />
                   </button>
                 </div>
-              </div>
-              <div className="flex flex-row gap-4">
-                <button
-                  onClick={handleDeleteAllImages}
-                  className="text-fontPrimaryColor hover:border-accentColor2 hover:bg-accentColor2 hover:text-primaryColor max-w-2xl rounded-full border-2 bg-transparent px-4 py-2"
-                >
-                  Delete
-                </button>
-                <button
-                  onClick={addCredit}
-                  className="text-fontPrimaryColor hover:border-accentColor2 hover:bg-accentColor2 hover:text-primaryColor max-w-2xl rounded-full border-2 bg-transparent px-4 py-2"
-                >
-                  Add Token
-                </button>
               </div>
             </div>
           </div>
