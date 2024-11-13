@@ -78,6 +78,8 @@ dfx deploy --network ic
 ```
 <h3>Video demonstration : https://drive.google.com/drive/folders/1bIwVPZtqTU-rgMDybz0249sJKlzsF6iS</h3>
 
+<h3>Smart Contract : https://fy4ym-5yaaa-aaaan-qzoqa-cai.icp0.io/ </h3>
+
 <h3 id="contribution"> Contributors ❤</h3>
 <a href="https://github.com/iAnoeloeby"><img src="https://avatars.githubusercontent.com/u/55847059?v=4" title="hasbi" width="80" height="80"></a>
 <a href="https://github.com/thoriqtau"><img src="https://avatars.githubusercontent.com/u/90580726?v=4" title="thoriq" width="80" height="80"></a>
