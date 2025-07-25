@@ -14,17 +14,20 @@ const CreditPaymentPage = () => {
     isLoggedIn,
     Login,
     Logout,
+    tier,
   } = useAuth();
-  // const { TopupCredit } = useAuth();
+
+
   const [inputCredit, setInputCredit] = React.useState(0);
   const [icpAmount, setIcpAmount] = React.useState(0);
   const [icpInE8s, setIcpInE8s] = React.useState(0);
 
   const [paymentStatus, setPaymentStatus] = React.useState("idle");
-  const [txStatus, setTxStatus] = React.useState(null); // Untuk menampilkan detail transaksi
+  const [txStatus, setTxStatus] = React.useState(null); 
 
-  // price generate
-  // const ICP_PRICE_USD = 8.75;
+
+
+
   const ICP_PRICE_USD = 6.2;
   const GENERATE_PRICE = 0.1;
   const NEW_GENERATE_PRICE = GENERATE_PRICE / ICP_PRICE_USD;
@@ -35,30 +38,22 @@ const CreditPaymentPage = () => {
   const REQUEST_PRICE = REQUEST_IN_CYCLE / ICP_CYCLE;
 
   const ONE_CREDIT_IS = NEW_GENERATE_PRICE + REQUEST_PRICE;
-  // 0.0187 * 6.2 = ~$0.116 (sekitar 11.6 sen USD)
 
-  // React.useEffect(() => {
-  // }, [third])
-
-  // realtime ICP Price
 
   const presetValues = [1, 3, 5, 10, 20, 50, 100, 200, 500, 1000];
 
 
-  // Validasi hanya angka
   const creditCalculate = (value) => {
     console.log("CREDIT CALCULATE");
 
     setInputCredit(value);
 
-    // Hitung ICP berdasarkan 1 kredit = ONE_CREDIT_IS ICP
     const icp = value * ONE_CREDIT_IS;
     setIcpAmount(icp);
 
     // Konversi ICP ke e8s
     let e8s = Math.round(icp * 1e8);
 
-    // Tambahkan biaya transfer fee 10_000 e8s
 
     const transferFee = 10_000;
     e8s += transferFee;
@@ -74,15 +69,10 @@ const CreditPaymentPage = () => {
 
       const txResult = await TopupCredit(icpInE8s, "credit",inputCredit,"");
 
-      // Setelah transfer berhasil
       if (txResult.success) {
         console.log("✅ Transfer result:", txResult);
 
-        // Tambahkan credit ke backend (pastikan ada endpoint ini)
-        // await backendActor.addCredit(principalId, icpInE8s);
 
-        // Update state credit jika tidak otomatis dari useAuth()
-        // Misal: setCredit(prev => prev + Number(inputCredit));
 
         setTxStatus(txResult);
         setPaymentStatus("success");
@@ -112,6 +102,7 @@ const CreditPaymentPage = () => {
           credit={credit}
           Login={Login}
           Logout={Logout}
+          tier={tier}
         />
 
         <section className="pt-[8dvh] w-full h-full flex flex-col items-center justify-start md:justify-center md:pt-[8dvh] overflow-y-auto">
@@ -399,10 +390,10 @@ const CreditPaymentPage = () => {
                     <path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0zm5.707 9.293-6.364 6.364a1 1 0 0 1-1.414 0l-2.828-2.828a1 1 0 0 1 1.414-1.414l2.121 2.121 5.657-5.657a1 1 0 0 1 1.414 1.414z" />
                   </svg>
                   <h2 className="text-lg font-semibold mt-4 text-green-700">
-                    Pembayaran Berhasil!
+                    Payment Success
                   </h2>
                   <div className="text-sm text-gray-600 mt-2">
-                    <p>TxID: {txStatus?.txId || "Tersedia setelah proses"}</p>
+                    <p>TxID: {txStatus?.txId || "N/A"}</p>
                     <p>Memo: {txStatus?.memo || "N/A"}</p>
                   </div>
                 </div>
@@ -410,7 +401,7 @@ const CreditPaymentPage = () => {
                   onClick={() => setPaymentStatus("idle")}
                   className="mt-4 w-full rounded-full bg-accentColor px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-accentColor2"
                 >
-                  Kembali ke Beranda
+                  Back
                 </button>
               </>
             )}
@@ -425,10 +416,10 @@ const CreditPaymentPage = () => {
                     <path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0zm5 15.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12z" />
                   </svg>
                   <h2 className="text-lg font-semibold text-red-600">
-                    Pembayaran Gagal
+                    Payment Invalid
                   </h2>
                   <p className="text-sm text-gray-600">
-                    Terjadi kesalahan saat validasi transaksi.
+                    Something went wrong. Please try again.
                   </p>
                 </div>
                 <button

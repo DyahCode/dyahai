@@ -14,7 +14,13 @@ use num_bigint::BigUint;
 use serde_json::to_string;
 
 #[ic_cdk::update]
-pub async fn get_tx_summary(block_height: u64, memo: u64, tx_type: String, credit : String, plan: String) -> String {
+pub async fn get_tx_summary(
+    block_height: u64,
+    memo: u64,
+    tx_type: String,
+    credit: String,
+    plan: String,
+) -> String {
     ic_cdk::println!(
         "📦 Fetching block at height: {}, type: {:?}",
         block_height,
@@ -81,7 +87,27 @@ pub async fn get_tx_summary(block_height: u64, memo: u64, tx_type: String, credi
                             new_tier,
                             principal
                         );
+
+                        // 💳 Tambahkan kredit sesuai plan
+                        match new_tier {
+                            UserTier::Premium => {
+                                users_store::add_credit(principal, 50);
+                                ic_cdk::println!(
+                                    "💰 Added 50 credits to Premium user: {}",
+                                    principal
+                                );
+                            }
+                            UserTier::Ultimate => {
+                                users_store::add_credit(principal, 100);
+                                ic_cdk::println!(
+                                    "💰 Added 100 credits to Ultimate user: {}",
+                                    principal
+                                );
+                            }
+                            _ => {} // Basic tidak menambah credit
+                        }
                     }
+
                     _ => {}
                 }
             } else {

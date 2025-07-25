@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   const [actoricp, setActoricp] = useState(null);
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
+  const [tier, setTier] = useState(null);
 
   const whitelist = [website_backend_id];
 
@@ -190,8 +191,13 @@ export const AuthProvider = ({ children }) => {
       if (!customActor) return;
       await customActor.initialize_credit();
       const balance = await customActor.get_balance();
+
       setCredit(Number(balance));
+      const getTier = await customActor.get_tier();
+
+      setTier(getTier);
       console.log("💰 Credit:", balance.toString());
+      console.log("💰 Tier:", getTier);
     } catch (error) {
       console.error("⚠ Error refreshing credit:", error);
     }
@@ -345,6 +351,7 @@ export const AuthProvider = ({ children }) => {
         refreshCredit,
         TopupCredit,
         loading,
+        tier,
       }}
     >
       {children}
@@ -360,6 +367,8 @@ export const useAuth = () => {
   }
   return context;
 };
+
+
 
 // import { useEffect, useState } from 'react';
 // import { website_backend } from '../../../declarations/website_backend';

@@ -64,12 +64,14 @@ const termsData = [
   },
   {
     title: "9. Governing Law",
-    content: ["These terms and conditions are governed by the laws of the Republic of Indonesia."],
+    content: [
+      "These terms and conditions are governed by the laws of the Republic of Indonesia.",
+    ],
   },
 ];
 
 const TermsServicePage = () => {
-  const { credit, principalId, isLoggedIn, Login, Logout } = useAuth();
+  const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
 
   return (
     <div className="bg-primaryColor min-h-screen w-full flex flex-col justify-center">
@@ -80,31 +82,40 @@ const TermsServicePage = () => {
         credit={credit}
         Login={Login}
         Logout={Logout}
+        tier={tier}
       />
       <section className="pt-[8dvh] relative w-full h-full flex flex-col items-center">
-
         {/* <section className="pt-[8dvh] w-full h-full flex flex-col items-center justify-start md:justify-center md:pt-[8dvh] overflow-y-auto md:overflow-hidden"> */}
 
         {/* Box */}
         <div className="container py-20">
-          <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group text-fontPrimaryColor">
-
+          <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group text-fontPrimaryColor mb-[600px]">
             <div className="w-full flex flex-col gap-2 items-center md:w-[70%]">
-              <span className="text-4xl font-bold">Terms of Service – Dyah AI</span>
-              <p className="text-sm text-gray-300 mb-4">Last updated: July 18, 2025</p>
+              <span className="text-4xl font-bold">
+                Terms of Service – Dyah AI
+              </span>
+              <p className="text-sm text-gray-300 mb-4">
+                Last updated: July 18, 2025
+              </p>
               <p className="mb-4 text-base text-center">
-                Welcome to Dyah AI. By accessing and using our services on the Dyah AI platform,
-                you agree to the following terms and conditions. Please read carefully before using our services.
+                Welcome to Dyah AI. By accessing and using our services on the
+                Dyah AI platform, you agree to the following terms and
+                conditions. Please read carefully before using our services.
               </p>
             </div>
 
             {termsData.map((section, idx) => (
               <div key={idx} className="w-full flex flex-col md:w-[70%]">
-                <span className="text-xl font-semibold py-2">{section.title}</span>
+                <span className="text-xl font-semibold py-2">
+                  {section.title}
+                </span>
                 <div className="pl-6">
                   <ul className="text-fontPrimaryColor/70 ml-4">
                     {section.content.map((item, subIdx) => (
-                      <li className="list-outside list-disc pb-1 text-base" key={subIdx}>
+                      <li
+                        className="list-outside list-disc pb-1 text-base"
+                        key={subIdx}
+                      >
                         {item}
                       </li>
                     ))}
@@ -115,7 +126,7 @@ const TermsServicePage = () => {
             ))}
           </div>
         </div>
-      </ section>
+      </section>
       <Footer />
     </div>
   );

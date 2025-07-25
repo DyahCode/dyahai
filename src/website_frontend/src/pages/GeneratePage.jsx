@@ -5,7 +5,6 @@ import { uploadBlobToStoracha } from "../hooks/authStoracha";
 import Swal from "sweetalert2";
 import Button from "../components/ui/Button";
 import Loader from "../components/layout/Loader";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -49,6 +48,7 @@ const GeneratePage = () => {
     Logout,
     refreshCredit,
     actor,
+    tier,
   } = useAuth();
   const [isDragging, setIsDragging] = useState(false);
   
@@ -65,7 +65,7 @@ const GeneratePage = () => {
   const itemStyle = [
     {
       id: "1",
-      label: "Astronout Man",
+      label: "Astronout",
       image: imageAstronout,
       genderCategory: "man", // add new
       getFile: async () => {
@@ -75,7 +75,7 @@ const GeneratePage = () => {
     },
     {
       id: "2",
-      label: "Backpacker Man",
+      label: "Backpacker",
       image: imageBackpacker,
       genderCategory: "man",
       getFile: async () => {
@@ -85,7 +85,7 @@ const GeneratePage = () => {
     },
     {
       id: "3",
-      label: "Cyberpunk Man",
+      label: "Cyberpunk",
       image: imageCyberpunk,
       genderCategory: "man",
       getFile: async () => {
@@ -95,7 +95,7 @@ const GeneratePage = () => {
     },
     {
       id: "4",
-      label: "Detective Man",
+      label: "Detective",
       image: imageDetective,
       genderCategory: "man",
       getFile: async () => {
@@ -105,7 +105,7 @@ const GeneratePage = () => {
     },
     {
       id: "5",
-      label: "Dreamworks Man",
+      label: "Dreamworks",
       image: imageDreamworks,
       genderCategory: "man",
       getFile: async () => {
@@ -115,7 +115,7 @@ const GeneratePage = () => {
     },
     {
       id: "6",
-      label: "Renaissance Man",
+      label: "Renaissance",
       image: imageRenaissance,
       genderCategory: "man",
       getFile: async () => {
@@ -125,7 +125,7 @@ const GeneratePage = () => {
     },
     {
       id: "7",
-      label: "Retro Man",
+      label: "Retro",
       image: imageRetro,
       genderCategory: "man",
       getFile: async () => {
@@ -135,7 +135,7 @@ const GeneratePage = () => {
     },
     {
       id: "8",
-      label: "Steampunk Man",
+      label: "Steampunk",
       image: imageSteampunk,
       genderCategory: "man",
       getFile: async () => {
@@ -145,7 +145,7 @@ const GeneratePage = () => {
     },
     {
       id: "9",
-      label: "Streetwear Man",
+      label: "Streetwear",
       image: imageStreetwear,
       genderCategory: "man",
       getFile: async () => {
@@ -155,7 +155,7 @@ const GeneratePage = () => {
     },
     {
       id: "10",
-      label: "Superhero Man",
+      label: "Superhero",
       image: imageSuperhero,
       genderCategory: "man",
       getFile: async () => {
@@ -165,7 +165,7 @@ const GeneratePage = () => {
     },
     {
       id: "11",
-      label: "Wasteland Man",
+      label: "Wasteland",
       image: imageWasteland,
       genderCategory: "man",
       getFile: async () => {
@@ -175,7 +175,7 @@ const GeneratePage = () => {
     },
     {
       id: "12",
-      label: "Artistic Women",
+      label: "Artistic",
       image: imageArtisticW,
       genderCategory: "woman",
       getFile: async () => {
@@ -185,7 +185,7 @@ const GeneratePage = () => {
     },
     {
       id: "13",
-      label: "Cyberpunk Women",
+      label: "Cyberpunk",
       image: imageCyberpunkW,
       genderCategory: "woman",
       getFile: async () => {
@@ -195,7 +195,7 @@ const GeneratePage = () => {
     },
     {
       id: "14",
-      label: "Dreamy Women",
+      label: "Dreamy",
       image: imageDreamy,
       genderCategory: "woman",
       getFile: async () => {
@@ -205,7 +205,7 @@ const GeneratePage = () => {
     },
     {
       id: "15",
-      label: "Fashion Women",
+      label: "Fashion",
       image: imageFashion,
       genderCategory: "woman",
       getFile: async () => {
@@ -215,7 +215,7 @@ const GeneratePage = () => {
     },
     {
       id: "16",
-      label: "Korean Women",
+      label: "Korean",
       image: imageKorean,
       genderCategory: "woman",
       getFile: async () => {
@@ -225,7 +225,7 @@ const GeneratePage = () => {
     },
     {
       id: "17",
-      label: "Nature Women",
+      label: "Nature",
       image: imageNature,
       genderCategory: "woman",
       getFile: async () => {
@@ -235,7 +235,7 @@ const GeneratePage = () => {
     },
     {
       id: "18",
-      label: "Renaissance Women",
+      label: "Renaissance",
       image: imageRenaissanceW,
       genderCategory: "woman",
       getFile: async () => {
@@ -245,7 +245,7 @@ const GeneratePage = () => {
     },
     {
       id: "19",
-      label: "Retro Women",
+      label: "Retro",
       image: imageRetroW,
       genderCategory: "woman",
       getFile: async () => {
@@ -255,7 +255,7 @@ const GeneratePage = () => {
     },
     {
       id: "20",
-      label: "School Women",
+      label: "School",
       image: imageSchool,
       genderCategory: "woman",
       getFile: async () => {
@@ -265,7 +265,7 @@ const GeneratePage = () => {
     },
     {
       id: "21",
-      label: "Soft Women",
+      label: "Soft",
       image: imageSoft,
       genderCategory: "woman",
       getFile: async () => {
@@ -275,21 +275,11 @@ const GeneratePage = () => {
     },
     {
       id: "22",
-      label: "Sunset Women",
+      label: "Sunset",
       image: imageSunset,
       genderCategory: "woman",
       getFile: async () => {
         const response = await fetch(imageSunset);
-        return await response.blob();
-      },
-    },
-    {
-      id: "22",
-      label: "Backpacker Man",
-      image: imageBackpacker,
-      genderCategory: "woman",
-      getFile: async () => {
-        const response = await fetch(imageBackpacker);
         return await response.blob();
       },
     },
@@ -510,6 +500,7 @@ const GeneratePage = () => {
           credit={credit}
           Login={Login}
           Logout={Logout}
+          tier={tier}
         />
 
         <section className="pt-[8dvh] relative w-full h-full flex flex-col items-center md:flex-row">
@@ -590,6 +581,7 @@ const GeneratePage = () => {
                         setState((prev) => ({
                           ...prev,
                           selectedGenderCategory: "man",
+                          selectedStyle: null,
                         }))
                       }
                       className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
@@ -622,6 +614,7 @@ const GeneratePage = () => {
                         setState((prev) => ({
                           ...prev,
                           selectedGenderCategory: "woman",
+                          selectedStyle: null,
                         }))
                       }
                       className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
