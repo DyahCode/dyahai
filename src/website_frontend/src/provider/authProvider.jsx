@@ -24,12 +24,12 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [credit, setCredit] = useState(0);
   const [actor, setActor] = useState(null);
-  const [actoricp, setActoricp] = useState(null);
+  // const [actoricp, setActoricp] = useState(null);
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
 
-  const whitelist = [website_backend_id];
+  const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -46,45 +46,6 @@ export const AuthProvider = ({ children }) => {
     checkConnection();
   }, []);
 
-  // useEffect(() => {
-  //     const init = async () => {
-  //       const isConnected = await window.ic?.plug?.isConnected();
-  //       const hasAgent = window.ic?.plug?.agent;
-  //       if (isConnected && hasAgent) {
-  //         console.log('🔄 Sudah terkoneksi sebelumnya. Mengambil principal & build actor...');
-  //         const principal = await window.ic.plug.agent.getPrincipal();
-  //         setPrincipalId(principal.toText());
-  //         setIsLoggedIn(true);
-  //         await buildActor();
-  //         return;
-  //       }
-
-  //       console.log('🆕 Belum terkoneksi. Menjalankan initPlug...');
-  //       // await initPlug();
-  //     };
-  //     init();
-  // }, []);
-
-  // Harus ada yang mulai react untuk client
-
-  //   const onIdentityUpdate = async (client) => {
-  //   if (!client) return;
-  //   Actor.agentOf(website_backend)?.replaceIdentity(client.getIdentity());
-  //   const isAuth = await client.isAuthenticated();
-  //   if (isAuth) {
-  //     const principal = await client.getIdentity().getPrincipal().toText();
-  //     setPrincipalId(principal);
-  //     console.log("principal :", principal);
-  //     setIsLoggedIn(isAuth);
-  //     getData();
-  //   } else {
-  //     setIsLoggedIn(false);
-  //     setPrincipalId("");
-  //     setCredit(0);
-  //   }
-  //   setLoading(false);
-  // };
-
   const initPlug = async () => {
     console.log("🔌 initPlug jalan bang");
     if (!window.ic?.plug) {
@@ -98,6 +59,7 @@ export const AuthProvider = ({ children }) => {
       console.log("🔐 Not connected. Requesting connection...");
       await window.ic.plug.requestConnect({
         whitelist,
+        host: "https://icp0.io",
         onConnectionUpdate: async () => {
           console.log("🔄 Account switched, rebuilding actor...");
         },
@@ -121,19 +83,6 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
   };
 
-  // const getAccountId = async () => {
-  //   const principal = await window.ic.plug.agent.getPrincipal();
-  //   const canisterPrincipal = Principal.fromText(principal.toText());
-  //   const accountId = AccountIdentifier.fromPrincipal({
-  //     principal: canisterPrincipal,
-  //   });
-
-  //   const hexAccountId = accountId.toHex();
-  //   setAccountId(hexAccountId);
-
-  //   console.log("🎭 AccountId:", hexAccountId);
-  // };
-
   const getAccountId = async (customActor = actor) => {
     if (!customActor) return;
     const principal = await window.ic.plug.agent.getPrincipal();
@@ -155,19 +104,20 @@ export const AuthProvider = ({ children }) => {
 
   const buildActor = async () => {
     const newActor = await window.ic.plug.createActor({
-      canisterId: website_backend_id,
+      canisterId: process.env.CANISTER_ID_WEBSITE_BACKEND,
       interfaceFactory: website_backend_idl,
     });
-    const newActoricp = await window.ic.plug.createActor({
-      canisterId: website_icp_ledger_id,
-      interfaceFactory: website_icp_ledger_idl,
-    });
+    await new Promise((r) => setTimeout(r, 500));
+    // const newActoricp = await window.ic.plug.createActor({
+    //   canisterId: website_icp_ledger_id,
+    //   interfaceFactory: website_icp_ledger_idl,
+    // });
 
     setActor(newActor);
-    setActoricp(newActoricp);
+    // setActoricp(newActoricp);
     await getAccountId(newActor);
     console.log("🎭 Actor built:", newActor);
-    console.log("🎭 Actor built:", newActoricp);
+    // console.log("🎭 Actor built:", newActoricp);
     await refreshCredit(newActor);
   };
 
@@ -203,96 +153,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // const TopupCredit = async (amount, type = "credit") => {
-  //   if (!actor) return;
-  //   try {
-  //     const memo = 1311;
-  //     console.log('💳 Topping up credit...');
-
-  //     // 1. Ambil principal string dari canister
-  //     const canisterPrincipalStr = await actor.get_account_id_for_canister();
-  //     console.log('Canister Principal String:', canisterPrincipalStr);
-
-  //     // 2. Konversi ke Principal
-  //     const canisterPrincipal = Principal.fromText(canisterPrincipalStr);
-
-  //     // 3. Buat AccountIdentifier dari Principal
-  //     const accountIdentifier = AccountIdentifier.fromPrincipal({
-  //       principal: canisterPrincipal
-  //     });
-
-  //     const toAccount = Array.from(accountIdentifier.toUint8Array());
-
-  //     // 4. Timestamp nanos
-  //     const now = BigInt(Date.now()) * 1_000_000n;
-
-  //     // 5. Kirim ICP
-  //     const result = await actoricp.transfer({
-  //       to: toAccount,
-  //       fee: { e8s: 10_000n },
-  //       memo: BigInt(memo),
-  //       from_subaccount: [],
-  //       created_at_time: [{ timestamp_nanos: now }],
-  //       amount: { e8s: BigInt(amount) },
-  //     });
-
-  //     // const data = await actoricp.query_blocks({
-  //     //   start : result.Ok,
-  //     //   length: 1,
-  //     // })
-
-  //     // console.log("📦 Transaction data:", data);
-
-  //     console.log("✅ Transfer result:", result.Ok);
-
-  //     //Validasi transaksi
-  //     const validate_transaction = await actor.get_tx_summary(result.Ok , memo);
-  //     console.log('Transaction Summary:', JSON.parse(validate_transaction));
-
-  //     await refreshCredit();
-  //     console.log('✅ Credit topped up successfully!');
-  //   } catch (error) {
-  //     console.error('⚠ Error topping up credit:', error);
-  //   }
-  // };
-
   const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
     if (!actor) return { success: false, error: "No actor available" };
 
     try {
       console.log("💳 Processing payment...");
 
-      const memo = Math.floor(Date.now() / 1000); // unique-enough for basic use
-      const canisterPrincipalStr = await actor.get_account_id_for_canister();
-      const canisterPrincipal = Principal.fromText(canisterPrincipalStr);
-      const accountIdentifier = AccountIdentifier.fromPrincipal({
-        principal: canisterPrincipal,
-      });
-      const toAccount = Array.from(accountIdentifier.toUint8Array());
-      const now = BigInt(Date.now()) * 1_000_000n;
+      const memo = Math.floor(Date.now() / 1000);
+      // const canisterPrincipalStr = await actor.get_account_id_for_canister();
+      // const canisterPrincipal = Principal.fromText(canisterPrincipalStr);
+      // const accountIdentifier = AccountIdentifier.fromPrincipal({
+      //   principal: canisterPrincipal,
+      // });
+      // const toAccount = Array.from(accountIdentifier.toUint8Array());
+      // const now = BigInt(Date.now()) * 1_000_000n;
 
-      const result = await actoricp.transfer({
-        to: toAccount,
-        fee: { e8s: 10_000n },
-        memo: BigInt(memo),
-        from_subaccount: [],
-        created_at_time: [{ timestamp_nanos: now }],
-        amount: { e8s: BigInt(amount) },
-      });
+      // const result = await actoricp.transfer({
+      //   to: toAccount,
+      //   fee: { e8s: 10_000n },
+      //   memo: BigInt(memo),
+      //   from_subaccount: [],
+      //   created_at_time: [{ timestamp_nanos: now }],
+      //   amount: { e8s: BigInt(amount) },
+      // });
 
-      if (result.Err) {
-        console.error("❌ Transfer failed:", result.Err);
-        return {
-          success: false,
-          status: "transfer_failed",
-          error: result.Err,
-        };
-      }
+      // if (result.Err) {
+      //   console.error("❌ Transfer failed:", result.Err);
+      //   return {
+      //     success: false,
+      //     status: "transfer_failed",
+      //     error: result.Err,
+      //   };
+      // }
 
-      console.log("✅ Transfer result:", result.Ok);
+      // console.log("✅ Transfer result:", result.Ok);
 
       const validate_transaction = await actor.get_tx_summary(
-        result.Ok,
+        26094431,
         memo,
         type,
         String(credit),

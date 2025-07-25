@@ -1,26 +1,26 @@
 import React from "react";
 
-import imageSquare1 from "../../../assets/images/gallery/square-image/1.jpeg";
-import imageSquare2 from "../../../assets/images/gallery/square-image/2.jpeg";
-import imageSquare3 from "../../../assets/images/gallery/square-image/3.jpeg";
-import imageSquare4 from "../../../assets/images/gallery/square-image/4.jpeg";
-import imageSquare5 from "../../../assets/images/gallery/square-image/5.jpeg";
-import imageSquare6 from "../../../assets/images/gallery/square-image/6.jpeg";
-import imageSquare7 from "../../../assets/images/gallery/square-image/7.jpeg";
-import imageSquare8 from "../../../assets/images/gallery/square-image/8.jpeg";
-import imageSquare9 from "../../../assets/images/gallery/square-image/9.jpeg";
-import imageSquare10 from "../../../assets/images/gallery/square-image/10.jpeg";
+import imageSquare1 from "../../../assets/images/gallery/square-image/1.jpg";
+import imageSquare2 from "../../../assets/images/gallery/square-image/2.jpg";
+import imageSquare3 from "../../../assets/images/gallery/square-image/3.jpg";
+import imageSquare4 from "../../../assets/images/gallery/square-image/4.jpg";
+import imageSquare5 from "../../../assets/images/gallery/square-image/5.jpg";
+import imageSquare6 from "../../../assets/images/gallery/square-image/6.jpg";
+import imageSquare7 from "../../../assets/images/gallery/square-image/7.jpg";
+import imageSquare8 from "../../../assets/images/gallery/square-image/8.jpg";
+import imageSquare9 from "../../../assets/images/gallery/square-image/9.jpg";
+import imageSquare10 from "../../../assets/images/gallery/square-image/10.jpg";
 
-import imagePortrait1 from "../../../assets/images/gallery/portrait-image/1.jpeg";
-import imagePortrait2 from "../../../assets/images/gallery/portrait-image/2.jpeg";
-import imagePortrait3 from "../../../assets/images/gallery/portrait-image/3.jpeg";
-import imagePortrait4 from "../../../assets/images/gallery/portrait-image/4.jpeg";
-import imagePortrait5 from "../../../assets/images/gallery/portrait-image/5.jpeg";
-import imagePortrait6 from "../../../assets/images/gallery/portrait-image/6.jpeg";
-import imagePortrait7 from "../../../assets/images/gallery/portrait-image/7.jpeg";
-import imagePortrait8 from "../../../assets/images/gallery/portrait-image/8.jpeg";
-import imagePortrait9 from "../../../assets/images/gallery/portrait-image/9.jpeg";
-import imagePortrait10 from "../../../assets/images/gallery/portrait-image/10.jpeg";
+import imagePortrait1 from "../../../assets/images/gallery/portrait-image/1.jpg";
+import imagePortrait2 from "../../../assets/images/gallery/portrait-image/2.jpg";
+import imagePortrait3 from "../../../assets/images/gallery/portrait-image/3.jpg";
+import imagePortrait4 from "../../../assets/images/gallery/portrait-image/4.jpg";
+import imagePortrait5 from "../../../assets/images/gallery/portrait-image/5.jpg";
+import imagePortrait6 from "../../../assets/images/gallery/portrait-image/6.jpg";
+import imagePortrait7 from "../../../assets/images/gallery/portrait-image/7.jpg";
+import imagePortrait8 from "../../../assets/images/gallery/portrait-image/8.jpg";
+import imagePortrait9 from "../../../assets/images/gallery/portrait-image/9.jpg";
+import imagePortrait10 from "../../../assets/images/gallery/portrait-image/10.jpg";
 
 const Gallery = () => {
   return (

@@ -5,9 +5,9 @@ import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform, an
 import Button from "../../ui/Button";
 import Swal from "sweetalert2";
 
-import avatar1 from "../../../assets/images/about/image-gallery-1.jpeg";
-import avatar2 from "../../../assets/images/about/image-gallery-2.jpeg";
-import avatar3 from "../../../assets/images/about/image-gallery-3.jpeg";
+import avatar1 from "../../../assets/images/about/image-gallery-1.jpg";
+import avatar2 from "../../../assets/images/about/image-gallery-2.jpg";
+import avatar3 from "../../../assets/images/about/image-gallery-3.jpg";
 
 const About = ({ Login, isLoggedIn }) => {
   // const { Login, isLoggedIn } = useAuth();

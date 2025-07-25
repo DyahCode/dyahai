@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/authHook";
+import { useAuth } from "../provider/authProvider";
 import { uploadBlobToStoracha } from "../hooks/authStoracha";
 
 import Swal from "sweetalert2";

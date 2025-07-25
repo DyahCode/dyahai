@@ -4,7 +4,7 @@ import Navbar from "../components/layout/Navbar";
 import AccountDetails from "../components/layout/sectionProfilePage/AccountDetails";
 import PaymentGateway from "../components/layout/sectionProfilePage/PaymentGateway";
 import GenerateHistory from "../components/layout/sectionProfilePage/GenerateHistory";
-import { useAuth } from "../hooks/authHook";
+import { useAuth } from "../provider/authProvider";
 import { FaRegUser } from "react-icons/fa";
 
 import Tombol from "../components/ui/Button";

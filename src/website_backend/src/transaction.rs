@@ -5,7 +5,7 @@ use candid::Principal;
 
 use candid::{CandidType, Deserialize};
 use ic_ledger_types::{
-    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,
+    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,MAINNET_LEDGER_CANISTER_ID
 };
 use serde::Serialize;
 use serde_json::to_string;
@@ -33,8 +33,8 @@ pub async fn get_parsed_transaction(block_height: u64,message : String) -> Resul
     };
 
     let (response,): (QueryBlocksResponse,) = ic_cdk::call(
-        Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai")
-            .expect("Could not decode the principal."),
+        // Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai")
+             MAINNET_LEDGER_CANISTER_ID,
         "query_blocks",
         (args,),
     )

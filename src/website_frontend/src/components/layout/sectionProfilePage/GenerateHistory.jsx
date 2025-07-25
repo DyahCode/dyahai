@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../../hooks/authHook";
+import { useAuth } from "../../../provider/authProvider";
 import { removeContentFromStoracha } from "../../../hooks/authStoracha";
 // import { website_backend } from '../../../../../declarations/website_backend';
 

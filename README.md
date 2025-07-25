@@ -1,11 +1,20 @@
-<h1 align="center"">
-  🤖DyahAI: Decentralized Platform for Generative Images
-</h1>
+#  🤖DyahAI: Decentralized Platform for Generative Images
 
-<p align="center">
-  <img src="https://pbs.twimg.com/media/GwjBQ-lb0AAbVkL?format=jpg&name=medium" width="50%">
-</p>
+<div align="center">
+<img src="https://pbs.twimg.com/media/GwjBQ-lb0AAbVkL?format=jpg&name=medium" width="50%">
+<p></p>
 
+![ICP](https://img.shields.io/badge/Internet_Computer-Protocol-blue.svg?style=for-the-badge&logo=internetcomputer)
+![React](https://img.shields.io/badge/react-grey.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
+![Ledger](https://img.shields.io/badge/Ledger-orange?style=for-the-badge&logo=ledger&logoColor=white)
+![IPFS](https://img.shields.io/badge/Storage-IPFS-blue?style=for-the-badge&logo=ipfs&logoColor=white)
+
+[🚀 Live Demo Mainnet](https://hvfji-caaaa-aaaau-abx7q-cai.icp0.io/)
+
+</div>
+
+---
 # WCHL 2025 Hackathon Project
 
 ## 🌟 Introduction
@@ -35,7 +44,7 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
   </tr>
   <tr>
     <td align="center">
-      <h3>🧮 Motoko Language</h3>
+      <h3>🧮 Motoko</h3>
       <p>Native language of ICP, used for rapid prototyping of canisters.</p>
     </td>
     <td align="center">
@@ -43,7 +52,7 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
       <p>Default identity system on ICP, easy to implement but limited wallet compatibility.</p>
     </td>
     <td align="center">
-      <h3>🚫 No Top-up</h3>
+      <h3>🚫 Top-up</h3>
       <p>Users couldn't add tokens or credits directly into the app.</p>
     </td>
     <td align="center">
@@ -57,7 +66,7 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
   </tr>
   <tr>
     <td align="center">
-      <h3>🦀 Rust Language</h3>
+      <h3>🦀 Rust</h3>
       <p>Faster, safer, and more powerful for advanced system and AI integration.</p>
     </td>
     <td align="center">
@@ -65,11 +74,11 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
       <p>More flexible user authentication with wallet support for transactions and identity.</p>
     </td>
     <td align="center">
-      <h3>💳 Token Top-up</h3>
+      <h3>💳 Top-up</h3>
       <p>Users can top-up credits using ICP tokens to unlock features.</p>
     </td>
     <td align="center">
-      <h3>📦 IPFS Storage</h3>
+      <h3>📦 IPFS</h3>
       <p>More scalable and decentralized file storage using IPFS integration.</p>
     </td>
   </tr>
@@ -112,6 +121,9 @@ dfx deploy
 
 # if you want to deploy in production
 dfx deploy --network ic
+
+# Install Extension Plug Wallet
+https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_source=item-share-cb
 ```
 
 ## 🎥 Video Demonstration :  </br>
