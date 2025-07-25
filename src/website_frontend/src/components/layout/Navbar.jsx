@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useScroll } from "framer-motion";
-// import { useAuth } from "../../Hooks/authHook";
 import { useDropdown } from "../../hooks/useDropdown";
 import { useToggleMenu } from "../../hooks/useTogglemenu";
 
@@ -21,8 +20,8 @@ const Navbar = ({
   credit,
   Login,
   Logout,
+  tier,
 }) => {
-  // const { principalId, isLoggedIn, credit, Login, Logout } = useAuth();
   const navigate = useNavigate();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
@@ -42,8 +41,8 @@ const Navbar = ({
 
   const menuItems = [
     { name: "HOME", href: "#" },
-    { name: "FEATURES", href: "#feature" },
-    { name: "GALLERY", href: "#gallery" },
+    { name: "PRICING", href: "/pricing" },
+    { name: "TERMS", href: "/terms" },
     { name: "ABOUT", href: "#about" },
   ];
 
@@ -64,9 +63,7 @@ const Navbar = ({
 
   const getNavbarBackground = () => {
     if (navbarStyle === "primary") {
-      return isScrolled
-        ? "rgba(22, 27, 36, 1)"
-        : "rgba(22, 27, 36, 0)";
+      return isScrolled ? "rgba(22, 27, 36, 1)" : "rgba(22, 27, 36, 0)";
     }
     // secondary atau yang lainnya
     return "rgba(22, 27, 36, 1)";
@@ -114,13 +111,16 @@ const Navbar = ({
             {!loading && isLoggedIn ? (
               <div className="text-fontPrimaryColor relative">
                 <div className="flex items-center justify-center gap-3">
-
                   {/* Button Credit */}
                   {/* Button Credit */}
                   <div className="relative space-y-3" ref={creditRef}>
-                    <Button onClick={toggleCredit} variant="outline" size="icon"
+                    <Button
+                      onClick={toggleCredit}
+                      variant="outline"
+                      size="icon"
                       className="hover:bg-accentColor hover:border-accentColor"
-                      isMotion>
+                      isMotion
+                    >
                       <LuWallet size={24} />
                       <span>{credit}</span>
                     </Button>
@@ -133,9 +133,7 @@ const Navbar = ({
                             onClick={() => navigate("/topup")}
                             className="w-max px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                           >
-                            <p className="text-sm">
-                              Top up Now
-                            </p>
+                            <p className="text-sm">Top up Now</p>
                           </Button>
                         </div>
                       </div>
@@ -159,7 +157,6 @@ const Navbar = ({
                     {isUserOpen && (
                       <div className="absolute right-0">
                         <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-[25rem] h-full rounded-lg border z-20 px-4 py-2">
-
                           {/* section atas */}
                           <div className="">
                             <div className="flex items-center justify-between py-3 text-sm">
@@ -172,13 +169,16 @@ const Navbar = ({
                             <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
 
                             <ul className="py-2 flex flex-col gap-y-2">
-
                               <li
                                 onClick={() => navigate("/profile")}
                                 className="flex justify-center rounded-md border border-opacity-50 p-2 md:items-center md:justify-start border-borderShade text-sm cursor-pointer gap-x-2 bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
                               >
-                                <div className={`text-2xl items-center justify-center flex aspect-square p-1 text-fontPrimaryColor/70
-                                  `}><FaRegUser size={22} className="" /></div>
+                                <div
+                                  className={`text-2xl items-center justify-center flex aspect-square p-1 text-fontPrimaryColor/70
+                                  `}
+                                >
+                                  <FaRegUser size={22} className="" />
+                                </div>
                                 <span className="hidden items-center rounded-md md:block select-none">
                                   Your Profile
                                 </span>
@@ -186,25 +186,36 @@ const Navbar = ({
                             </ul>
                           </div>
 
-
                           {/* section bawah */}
                           <div className="">
-                            <span className="text-sm text-fontPrimaryColor/75">Wanna try?</span>
+                            <span className="text-sm text-fontPrimaryColor/75">
+                              Wanna try?
+                            </span>
                             <div className=" mt-4 h-auto w-full gap-x-2 ">
                               <div className="bg-accentColor text-fontPrimaryColor relative mb-4 flex w-full flex-col justify-between rounded-xl px-4 py-5 text-sm overflow-hidden">
                                 <span className="text-fontPrimaryColor text-sm font-semibold uppercase">
-                                  Pro
+                                  {tier === "Basic"
+                                    ? "Premium"
+                                    : tier === "Premium"
+                                      ? "Ultimate"
+                                      : "-"}
                                 </span>
                                 <span className="text-primaryColor font-semibold absolute right-0 top-0 py-1 px-4 text-sm bg-red-400 rounded-es-xl">
-                                  $18.00/Mo
+                                  {tier === "Basic"
+                                    ? "2.02  ICP / Mo"
+                                    : tier === "Premium"
+                                      ? "5.04 ICP / Mo"
+                                      : "Free"}
                                 </span>
                                 <div className="mt-2 text-sm flex flex-col items-start">
                                   <ol className="ml-1 list-disc list-inside text-sm font-medium">
-                                    <li>Akses Penuh ke Model AI</li>
-                                    <li>100+ request/hari</li>
+                                    <li>Full access to basic and advanced AI models</li>
+                                    <li>100+ requests per day</li>
                                   </ol>
                                 </div>
-                                <button className="mt-4 bg-fontPrimaryColor flex items-center justify-center gap-x-4 rounded-full px-4 py-2 text-xs font-medium text-black">
+                                <button className="mt-4 bg-fontPrimaryColor flex items-center justify-center gap-x-4 rounded-full px-4 py-2 text-xs font-medium text-black "onClick={() => {
+                                  navigate("/pricing");
+                                }}>
                                   <span>Next step</span>
                                   <FiArrowRightCircle size={16} />
                                 </button>
@@ -217,12 +228,12 @@ const Navbar = ({
                               <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => { navigate("/terms") }}
+                                onClick={() => {
+                                  navigate("/terms");
+                                }}
                                 className="px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                               >
-                                <p className="text-sm">
-                                  Terms of Services
-                                </p>
+                                <p className="text-sm">Terms of Services</p>
                               </Button>
 
                               <Button
@@ -242,7 +253,6 @@ const Navbar = ({
                   </div>
                   {/* Button Profile Menu */}
                   {/* Button Profile Menu */}
-
                 </div>
               </div>
             ) : (
@@ -264,7 +274,7 @@ const Navbar = ({
         animate={isOpen ? "visible" : "hidden"}
         variants={menuContainerVariants}
         className={`border-borderShade absolute w-full overflow-hidden ${isOpen ? "block" : "hidden"} md:hidden`}
-      // className={`border-borderShade absolute w-full overflow-hidden rounded-lg border border-opacity-40 ${isOpen ? "block" : "hidden"} md:hidden`}
+        // className={`border-borderShade absolute w-full overflow-hidden rounded-lg border border-opacity-40 ${isOpen ? "block" : "hidden"} md:hidden`}
       >
         <ul className="bg-secondaryColor text-fontPrimaryColor flex w-full flex-col items-center justify-center gap-y-5 p-4 text-lg font-semibold">
           {menuItems.map((item, index) => (

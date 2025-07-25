@@ -92,7 +92,7 @@ pub async fn send_http_post(source_image: Vec<u8>, target_image: Vec<u8>) -> Str
         
         HttpHeader {
             name: "Authorization".to_string(),
-            value: "{YOUR_API_KEY}".to_string(),
+            value: "Bearer {YOUR_API_KEY}".to_string(),
         },
 
         HttpHeader {

@@ -10,7 +10,7 @@ import { FaRegUser } from "react-icons/fa";
 import Tombol from "../components/ui/Button";
 
 const ProfilePage = () => {
-  const { credit, principalId, isLoggedIn, Login, Logout } = useAuth();
+  const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
   const [selectedMenu, setSelectedMenu] = useState("Account Detail");
   const asideItems = [
     {
@@ -42,6 +42,7 @@ const ProfilePage = () => {
           credit={credit}
           Login={Login}
           Logout={Logout}
+          tier={tier}
         />
         <div className="fixed flex h-full w-full">
           <aside className="order-3 mt-20 border-l-2 border-slate-400 md:w-1/5">
