@@ -105,21 +105,17 @@ const PricingPage = () => {
   const {
     TopupCredit,
     credit,
-    loading,
     principalId,
     clientId,
     accountId,
     Login,
     isLoggedIn,
     Logout,
-    actor,
     tier,
   } = useAuth();
 
   const [showInvoice, setShowInvoice] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [inputCredit, setInputCredit] = useState(0);
-  const [icpAmount, setIcpAmount] = useState(0);
   const [icpInE8s, setIcpInE8s] = useState(0);
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [txStatus, setTxStatus] = useState(null);
@@ -243,9 +239,9 @@ const PricingPage = () => {
       <div className="pt-[8dvh] flex flex-col items-center justify-start md:pt-[70px] mb-[600px] mt-20">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-6 text-center text-fontPrimaryColor">
-            Pilih Paket Anda
+            Choose Your Plan
           </h1>
-          <p className="text-gray-400">Dapatkan fitur sesuai kebutuhan Anda</p>
+          <p className="text-gray-400">Get features that suit your needs</p>
         </div>
 
         <div className="w-[90%] lg:w-[60%] min-w-40 min-h-[250px] ">
@@ -333,12 +329,10 @@ const PricingPage = () => {
                         idx % 2 === 0 ? "bg-primaryColor" : "bg-neutral-600/80"
                       } flex flex-row rounded-xl w-full`}
                     >
-                      {/* Kolom nama fitur */}
                       <div className="p-4 text-left font-medium text-fontPrimaryColor w-[25%]">
                         {feature}
                       </div>
 
-                      {/* Kolom status fitur per plan */}
                       {plans.map((plan, pi) => {
                         const isAvailable = plan.features.includes(feature);
                         return (

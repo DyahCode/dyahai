@@ -18,41 +18,15 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
   async function loadImages() {
     try {
       const fetchedImages = await actor.get_images_by_principal();
-      console.log("fetched:", fetchedImages);
-
       const ResultCid = fetchedImages.map((cid) => ({
         id: cid,
         url: `https://${cid}.ipfs.w3s.link/`,
       }));
 
       setImages(ResultCid);
-      console.log("setImages :>>", ResultCid);
     } catch (error) {
-      console.error("Error loading images:", error);
     }
   }
-  // function blobToBase64(blob) {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => resolve(reader.result.split(",")[1]);
-  //     reader.onerror = reject;
-  //     reader.readAsDataURL(new Blob([new Uint8Array(blob)]));
-  //   });
-  // }
-
-  // function base64ToBlob(base64) {
-  //   try {
-  //     const byteCharacters = atob(base64.split(",")[1]);
-  //     const byteNumbers = new Uint8Array(byteCharacters.length);
-  //     for (let i = 0; i < byteCharacters.length; i++) {
-  //       byteNumbers[i] = byteCharacters.charCodeAt(i);
-  //     }
-  //     return new Blob([byteNumbers], { type: "image/png" });
-  //   } catch (error) {
-  //     console.error("Error converting base64 to Blob:", error);
-  //     return null;
-  //   }
-  // }
 
   async function handleDeleteImage(id, imageIndex) {
     try {
@@ -67,21 +41,12 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
       });
 
       if (result.isConfirmed) {
-        console.log("Image Index: ", imageIndex);
-
-        // Mengirim permintaan ke backend untuk menghapus gambar berdasarkan index
         await actor.delete_image_by_index(imageIndex);
         await removeContentFromStoracha(id);
-
-
-        // Memperbarui tampilan dengan menghapus gambar dari array berdasarkan index
         setImages(images.filter((_, index) => index !== imageIndex));
-
-        // Menampilkan notifikasi sukses
         Swal.fire("Deleted!", "Your image has been deleted.", "success");
       }
     } catch (error) {
-      console.error("Error deleting image:", error);
       Swal.fire("Error!", "There was an error deleting your image.", "error");
     }
   }
