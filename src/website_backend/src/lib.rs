@@ -51,7 +51,7 @@ pub async fn get_tx_summary(
             ic_cdk::println!("📥 Memo from frontend: {:?}", memo_obj);
             ic_cdk::println!("📤 Memo from transaction: {:?}", tx.memo);
 
-            // if tx.memo == Some(memo_obj) {
+            if tx.memo == Some(memo_obj) {
                 match tx_type.as_str() {
                     "credit" => {
                         if let Some(amount) = tx.amount.clone() {
@@ -110,13 +110,13 @@ pub async fn get_tx_summary(
 
                     _ => {}
                 }
-            // } else {
-            //     ic_cdk::println!(
-            //         "❌ Memo mismatch: expected '{}', got {:?}",
-            //         memo_obj.0,
-            //         tx.memo
-            //     );
-            // }
+            } else {
+                ic_cdk::println!(
+                    "❌ Memo mismatch: expected '{}', got {:?}",
+                    memo_obj.0,
+                    tx.memo
+                );
+            }
 
             // Simpan transaksi
             let trx_str = to_string(&tx).unwrap_or_else(|_| "{}".to_string());

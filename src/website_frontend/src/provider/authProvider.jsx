@@ -153,70 +153,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
-    if (!actor) return { success: false, error: "No actor available" };
+const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
+  if (!actor || !window.ic?.plug) {
+    return { success: false, error: "No actor or Plug wallet available" };
+  }
 
-    try {
-      console.log("💳 Processing payment...");
+  try {
+    console.log("💳 Processing payment with Plug...");
 
-      const memo = Math.floor(Date.now() / 1000);
-      // const canisterPrincipalStr = await actor.get_account_id_for_canister();
-      // const canisterPrincipal = Principal.fromText(canisterPrincipalStr);
-      // const accountIdentifier = AccountIdentifier.fromPrincipal({
-      //   principal: canisterPrincipal,
-      // });
-      // const toAccount = Array.from(accountIdentifier.toUint8Array());
-      // const now = BigInt(Date.now()) * 1_000_000n;
 
-      // const result = await actoricp.transfer({
-      //   to: toAccount,
-      //   fee: { e8s: 10_000n },
-      //   memo: BigInt(memo),
-      //   from_subaccount: [],
-      //   created_at_time: [{ timestamp_nanos: now }],
-      //   amount: { e8s: BigInt(amount) },
-      // });
+    // Dapatkan account ID dari canister untuk dikirimkan ICP
+    const canisterPrincipalStr = await actor.get_account_id_for_canister();
+    console.log("🔑 Canister principal:", canisterPrincipalStr);
 
-      // if (result.Err) {
-      //   console.error("❌ Transfer failed:", result.Err);
-      //   return {
-      //     success: false,
-      //     status: "transfer_failed",
-      //     error: result.Err,
-      //   };
-      // }
+    // Gunakan Plug untuk request transfer
+    const result = await window.ic.plug.requestTransfer({
+      to: canisterPrincipalStr,
+      amount, // dalam e8s, contoh: 2_000_000 = 0.02 ICP
+    });
 
-      // console.log("✅ Transfer result:", result.Ok);
+    console.log("✅ Plug transfer result:", result);
 
-      const validate_transaction = await actor.get_tx_summary(
-        26094431,
-        memo,
-        type,
-        String(credit),
-        plan
-      );
+    // Validasi transaksi ke canister backend (pastikan metode ini ada di backend)
+    const validate_transaction = await actor.get_tx_summary(
+      result.height,
+      0,
+      type,
+      String(credit),
+      plan
+    );
 
-      const summary = JSON.parse(validate_transaction);
-      console.log("🧾 Transaction Summary:", summary);
+    const summary = JSON.parse(validate_transaction);
+    console.log("🧾 Transaction Summary:", summary);
 
-      await refreshCredit();
+    await refreshCredit();
 
-      return {
-        success: true,
-        data: {
-          blockHeight: result.Ok,
-          summary,
-        },
-      };
-    } catch (error) {
-      console.error("⚠ Error during transaction:", error);
-      return {
-        success: false,
-        status: "exception",
-        error,
-      };
-    }
-  };
+    return {
+      success: true,
+      data: {
+        blockHeight: result.height,
+        summary,
+      },
+    };
+  } catch (error) {
+    console.error("⚠ Error during Plug transaction:", error);
+    return {
+      success: false,
+      status: "exception",
+      error,
+    };
+  }
+};
+
 
 
   // useEffect(() => {
