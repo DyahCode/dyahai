@@ -9,9 +9,42 @@ use candid::{Nat, Principal};
 use ic_cdk::api;
 use ic_cdk::api::management_canister::http_request::{HttpResponse, TransformArgs};
 use ic_cdk::{post_upgrade, pre_upgrade, query, update};
-use ic_ledger_types::Memo;
+use ic_ledger_types::{Memo};
 use num_bigint::BigUint;
 use serde_json::to_string;
+
+#[ic_cdk::update]
+pub async fn check_balance() -> String {
+    let principal = ic_cdk::api::id();
+    let result = transaction::check_canisters_balance(principal).await;
+
+    match result {
+        Ok(balance) => {
+            let trx_str = to_string(&balance).unwrap_or_else(|_| "{}".to_string());
+            trx_str
+        },
+        Err(err) => {
+            format!("Call to ledger failed: {:?}", err)
+        },
+    }
+}
+#[ic_cdk::update]
+pub async fn tf_balance() -> String {
+    let principal = ic_cdk::caller();
+    let result = transaction::transfer_to_client(principal).await;
+
+    match result {
+        Ok(tf) => {
+            let trx_str = to_string(&tf).unwrap_or_else(|_| "{}".to_string());
+            trx_str
+        },
+        Err(err) => {
+            format!("Call to ledger failed: {:?}", err)
+        },
+    }
+}
+
+
 
 #[ic_cdk::update]
 pub async fn get_tx_summary(

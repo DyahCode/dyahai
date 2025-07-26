@@ -1,5 +1,5 @@
 import React from "react";
-import HeroProfile from "../../../assets/images/about/image-gallery-1.jpg"
+const HeroProfile = "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg"
 
 const AccountDetails = ({ principalId }) => {
   const currentDate = new Date();

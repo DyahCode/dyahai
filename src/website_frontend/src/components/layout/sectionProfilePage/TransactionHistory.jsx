@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import { useAuth } from "../../../provider/authProvider";
-// import { AccountIdentifier } from "@dfinity/ledger-icp";
 
 const TransactionHistory = () => {
   const { isLoggedIn, principalId, actor, loading } = useAuth();

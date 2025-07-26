@@ -2,14 +2,15 @@ use ic_cdk::{  query, storage, update};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 use candid::Principal;
-
 use candid::{CandidType, Deserialize};
 use ic_ledger_types::{
-    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,
+    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,AccountBalanceArgs,
 };
 use serde::Serialize;
 use serde_json::to_string;
 use std::any::Any;
+
+use ic_ledger_types::{TransferArgs, TransferResult,DEFAULT_FEE};
 
 #[derive(CandidType, Deserialize, Serialize, Debug, Clone)]
 pub struct ParsedTransaction {
@@ -19,6 +20,44 @@ pub struct ParsedTransaction {
     pub memo: Option<Memo>,
     pub message : Option<String>,
     pub timestamp: Timestamp,
+}
+
+pub async fn check_canisters_balance(principal : Principal) -> Result<Tokens, String> {
+    let account = AccountIdentifier::new(&principal, &ic_ledger_types::DEFAULT_SUBACCOUNT);
+
+    let args = AccountBalanceArgs { account };
+
+    let (response,): (Tokens,) = ic_cdk::call(
+        Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").expect("Invalid canister ID"),
+        "account_balance",
+        (args,),
+    )
+    .await
+    .map_err(|e| format!("❌ Gagal panggil ledger: {:?}", e))?;
+
+    Ok(response)
+}
+pub async fn transfer_to_client(principal : Principal) -> Result<TransferResult, String> {
+    let account = AccountIdentifier::new(&principal, &ic_ledger_types::DEFAULT_SUBACCOUNT);
+
+    let args = &TransferArgs {
+       memo: Memo(0),
+       amount: Tokens::from_e8s(2_110_000),
+       fee: DEFAULT_FEE,
+       from_subaccount: None,
+       to:account,
+       created_at_time: None,
+     };
+
+    let (response,): (TransferResult,) = ic_cdk::call(
+        Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").expect("Invalid canister ID"),
+        "transfer",
+        (args,),
+    )
+    .await
+    .map_err(|e| format!("❌ Gagal panggil ledger: {:?}", e))?;
+
+    Ok(response)
 }
 
 pub async fn get_parsed_transaction(block_height: u64,message : String) -> Result<ParsedTransaction, String> {

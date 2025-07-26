@@ -7,12 +7,7 @@ import {
 } from "react";
 import {
   idlFactory as website_backend_idl,
-  canisterId as website_backend_id,
 } from "../../../declarations/website_backend";
-import {
-  idlFactory as website_icp_ledger_idl,
-  canisterId as website_icp_ledger_id,
-} from "../../../declarations/icp_ledger";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
 
@@ -28,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
 
-  const whitelist = [website_backend_id];
+  const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -45,15 +40,16 @@ export const AuthProvider = ({ children }) => {
     checkConnection();
   }, []);
 
-
   const initPlug = async () => {
     if (!window.ic?.plug) {
       return;
     }
     const connected = await window.ic.plug.isConnected();
+
     if (!connected) {
       await window.ic.plug.requestConnect({
         whitelist,
+        host: "https://icp0.io",
         onConnectionUpdate: async () => {
         },
       });
@@ -74,7 +70,6 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
   };
 
-
   const getAccountId = async (customActor = actor) => {
     if (!customActor) return;
     const principal = await window.ic.plug.agent.getPrincipal();
@@ -94,12 +89,14 @@ export const AuthProvider = ({ children }) => {
 
   const buildActor = async () => {
     const newActor = await window.ic.plug.createActor({
-      canisterId: website_backend_id,
+      canisterId: process.env.CANISTER_ID_WEBSITE_BACKEND,
       interfaceFactory: website_backend_idl,
     });
     await new Promise((r) => setTimeout(r, 500));
+
     setActor(newActor);
     await getAccountId(newActor);
+
     await refreshCredit(newActor);
   };
 
@@ -129,50 +126,52 @@ export const AuthProvider = ({ children }) => {
 
       setTier(getTier);
     } catch (error) {
-      console.error("Refresh Your Credit Failure")
     }
   };
 
-  const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
-    if (!actor || !window.ic?.plug) {
-      return { success: false, error: "No actor or Plug wallet available" };
-    }
+const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
+  if (!actor || !window.ic?.plug) {
+    return { success: false, error: "No actor or Plug wallet available" };
+  }
 
-    try {
+  try {
 
-      const canisterPrincipalStr = await actor.get_account_id_for_canister();
 
-      const result = await window.ic.plug.requestTransfer({
-        to: canisterPrincipalStr,
-        amount,
-      });
+    const canisterPrincipalStr = await actor.get_account_id_for_canister();
 
-      const validate_transaction = await actor.get_tx_summary(
-        result.height,
-        0,
-        type,
-        String(credit),
-        plan
-      );
+    const result = await window.ic.plug.requestTransfer({
+      to: canisterPrincipalStr,
+      amount,
+    });
 
-      const summary = JSON.parse(validate_transaction);
-      await refreshCredit();
+    console.log("✅ Plug transfer result:", result);
+    const validate_transaction = await actor.get_tx_summary(
+      result.height,
+      0,
+      type,
+      String(credit),
+      plan
+    );
 
-      return {
-        success: true,
-        data: {
-          blockHeight: result.height,
-          summary,
-        },
-      };
-    } catch (error) {
-      return {
-        success: false,
-        status: "exception",
-        error,
-      };
-    }
-  };
+    const summary = JSON.parse(validate_transaction);
+
+    await refreshCredit();
+
+    return {
+      success: true,
+      data: {
+        blockHeight: result.height,
+        summary,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: "exception",
+      error,
+    };
+  }
+};
 
   return (
     <AuthContext.Provider
@@ -195,7 +194,6 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

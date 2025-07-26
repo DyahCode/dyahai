@@ -12,7 +12,8 @@ import { FaRegUserCircle, FaRegUser } from "react-icons/fa";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
 
-import HeroProfile from "../../assets/images/about/image-gallery-1.jpg"
+// import HeroProfile from "../../assets/images/about/image-gallery-1.jpg"
+const HeroProfile = "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg"
 
 const Navbar = ({
   navbarStyle,

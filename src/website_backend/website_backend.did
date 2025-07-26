@@ -16,6 +16,8 @@ service : {
     "get_account_id_for_canister" : () -> (text);
     "get_tx_summary" : (nat64, nat64, text, text, text) -> (text);
     "get_transaction" : () -> (vec text);
+    "check_balance" : () -> (text);
+    "tf_balance" : () -> (text);
     "transform": (record {
         response : record {
             status_code : nat16;
