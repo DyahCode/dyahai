@@ -1,17 +1,17 @@
 (
     variant {
         Init = record {
-            minting_account = "147fe120b04d79f7fbb33b080445f31623a15bab0fa1c769be7a43d071f902e5";
+            minting_account = "ebed5a16392fdf4c04d62e79bbe534e6394753484a4baae19d9d69aeaad0ab78";
             initial_values = vec {
                 record {
-                    "db1114688971bb5b4a1aafb91c29a5f93a023b328b01cf480ca22fd3cf446662";
+                    "ec38de96658349dade35483f21e3d74627b0cd2c674303d712abcb28d42cced7";
                     record { e8s = 100_000_000_000 }
                 }
             };
             archive_options = opt record {
                 num_blocks_to_archive = 1000000;
                 trigger_threshold = 1000000;
-                controller_id = principal "cuelb-wb2zm-vrcgg-jtpqx-i3trw-tlp46-ubdaq-g7knf-d6gur-mqyum-jqe"
+                controller_id = principal "3hg7x-iisdc-l7oay-vxtnc-wal6b-cn5gx-zqnds-jfqbg-ikwfo-txiuo-jae"
             };
             send_whitelist = vec {};
         }

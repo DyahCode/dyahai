@@ -1,9 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-import Web3Image from "../../../assets/images/advantages/web-3.0.png";
-import dAppImage from "../../../assets/images/advantages/d-app.png";
-import SmartContractImage from "../../../assets/images/advantages/smart-contract.png";
+// import Web3Image from "../../../assets/images/advantages/web-3.0.png";
+// import dAppImage from "../../../assets/images/advantages/d-app.png";
+// import SmartContractImage from "../../../assets/images/advantages/smart-contract.png";
+const Web3iImage = "https://bafybeidis4yoohxc7qbc7l7tbqmkoqnbaukrdv7uknxguqrx6b6y4yppti.ipfs.w3s.link/web-3.0.png"
+const dAppImage = "https://bafybeigjedzgypcqbfoc5kfhh3k6dktvhuex5ssotqtvpzponyyygjhjye.ipfs.w3s.link/d-app.png"
+const SmartContractImage = "https://bafybeih75nevush7jfjmri6hh76x4m6cdx5xtcvlanr2qqfj2j6iuzqq5u.ipfs.w3s.link/smart-contract.png"
+
 
 const Advantages = () => {
   return (
@@ -37,7 +41,7 @@ const Advantages = () => {
                         "linear-gradient(to top, #08baa5 -50%, transparent 75%)",
                     }}
                   />
-                  <img src={Web3Image} alt="" className="z-10" />
+                  <img src={Web3iImage} alt="" className="z-10" />
                 </div>
                 <div className="container mx-auto">
                   <div className="container mx-auto space-y-10 px-10">

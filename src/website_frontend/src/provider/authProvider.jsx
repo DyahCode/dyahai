@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
 
-  const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
+  const whitelist = [website_backend_id];
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }) => {
     checkConnection();
   }, []);
 
+
   const initPlug = async () => {
     if (!window.ic?.plug) {
       return;
@@ -53,7 +54,6 @@ export const AuthProvider = ({ children }) => {
     if (!connected) {
       await window.ic.plug.requestConnect({
         whitelist,
-        host: "https://icp0.io",
         onConnectionUpdate: async () => {
         },
       });
@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
   };
 
+
   const getAccountId = async (customActor = actor) => {
     if (!customActor) return;
     const principal = await window.ic.plug.agent.getPrincipal();
@@ -93,7 +94,7 @@ export const AuthProvider = ({ children }) => {
 
   const buildActor = async () => {
     const newActor = await window.ic.plug.createActor({
-      canisterId: process.env.CANISTER_ID_WEBSITE_BACKEND,
+      canisterId: website_backend_id,
       interfaceFactory: website_backend_idl,
     });
     await new Promise((r) => setTimeout(r, 500));

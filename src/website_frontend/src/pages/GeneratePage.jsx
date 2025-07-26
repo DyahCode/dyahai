@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../provider/authProvider";
-import { uploadBlobToStoracha } from "../hooks/authStoracha";
+import { uploadBlobToStoracha, removeContentFromStoracha } from "../hooks/authStoracha";
+import { filesFromPaths } from 'files-from-path'
 
 import Swal from "sweetalert2";
 import Button from "../components/ui/Button";
@@ -14,30 +15,56 @@ import { IoArrowForwardCircleOutline } from "react-icons/io5";
 // Man
 import Navbar from "../components/layout/Navbar";
 
-import imageAstronout from "../assets/images/art-styles-models/man/Astronout.jpg";
-import imageBackpacker from "../assets/images/art-styles-models/man/Backpacker.jpg";
-import imageCyberpunk from "../assets/images/art-styles-models/man/Cyberpunk.jpg";
-import imageDetective from "../assets/images/art-styles-models/man/Detective.jpg";
-import imageDreamworks from "../assets/images/art-styles-models/man/Dreamworks.jpg";
-import imageRenaissance from "../assets/images/art-styles-models/man/Renaissance.jpg";
-import imageRetro from "../assets/images/art-styles-models/man/Retro.jpg";
-import imageSteampunk from "../assets/images/art-styles-models/man/Steampunk.jpg";
-import imageStreetwear from "../assets/images/art-styles-models/man/Streetwear.jpg";
-import imageSuperhero from "../assets/images/art-styles-models/man/Superhero.jpg";
-import imageWasteland from "../assets/images/art-styles-models/man/Wasteland.jpg";
+// import imageAstronout from "../assets/images/art-styles-models/man/Astronout.jpg";
+// import imageBackpacker from "../assets/images/art-styles-models/man/Backpacker.jpg";
+// import imageCyberpunk from "../assets/images/art-styles-models/man/Cyberpunk.jpg";
+// import imageDetective from "../assets/images/art-styles-models/man/Detective.jpg";
+// import imageDreamworks from "../assets/images/art-styles-models/man/Dreamworks.jpg";
+// import imageRenaissance from "../assets/images/art-styles-models/man/Renaissance.jpg";
+// import imageRetro from "../assets/images/art-styles-models/man/Retro.jpg";
+// import imageSteampunk from "../assets/images/art-styles-models/man/Steampunk.jpg";
+// import imageStreetwear from "../assets/images/art-styles-models/man/Streetwear.jpg";
+// import imageSuperhero from "../assets/images/art-styles-models/man/Superhero.jpg";
+// import imageWasteland from "../assets/images/art-styles-models/man/Wasteland.jpg";
 
 // Woman
-import imageArtisticW from "../assets/images/art-styles-models/women/Artistic.jpg";
-import imageCyberpunkW from "../assets/images/art-styles-models/women/Cyberpunk.jpg";
-import imageDreamy from "../assets/images/art-styles-models/women/Dreamy.jpg";
-import imageFashion from "../assets/images/art-styles-models/women/Fashion.jpg";
-import imageKorean from "../assets/images/art-styles-models/women/Korean.jpg";
-import imageNature from "../assets/images/art-styles-models/women/Nature.jpg";
-import imageRenaissanceW from "../assets/images/art-styles-models/women/Renaissance.jpg";
-import imageRetroW from "../assets/images/art-styles-models/women/Retro.jpg";
-import imageSchool from "../assets/images/art-styles-models/women/School.jpg";
-import imageSoft from "../assets/images/art-styles-models/women/Soft.jpg";
-import imageSunset from "../assets/images/art-styles-models/women/Sunset.jpg";
+// import imageArtisticW from "../assets/images/art-styles-models/women/Artistic.jpg";
+// import imageCyberpunkW from "../assets/images/art-styles-models/women/Cyberpunk.jpg";
+// import imageDreamy from "../assets/images/art-styles-models/women/Dreamy.jpg";
+// import imageFashion from "../assets/images/art-styles-models/women/Fashion.jpg";
+// import imageKorean from "../assets/images/art-styles-models/women/Korean.jpg";
+// import imageNature from "../assets/images/art-styles-models/women/Nature.jpg";
+// import imageRenaissanceW from "../assets/images/art-styles-models/women/Renaissance.jpg";
+// import imageRetroW from "../assets/images/art-styles-models/women/Retro.jpg";
+// import imageSchool from "../assets/images/art-styles-models/women/School.jpg";
+// import imageSoft from "../assets/images/art-styles-models/women/Soft.jpg";
+// import imageSunset from "../assets/images/art-styles-models/women/Sunset.jpg";
+
+// Man 
+const imageAstronout = "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg"
+const imageBackpacker = "https://bafybeicbpqiiibishqfergji5w2rpinbrwxg3lidshak4kpylwivdymuku.ipfs.w3s.link/Backpacker.jpg"
+const imageCyberpunk = "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg"
+const imageDetective = "https://bafybeidbim4pl7hd23xojeq725nuld5kercevmkrv3ujdqoe35q7z64k3y.ipfs.w3s.link/Detective.jpg"
+const imageDreamworks = "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg"
+const imageRenaissance = "https://bafybeihpeu2aznlixb4dmuuyakyd6zfkywvicja3gzzfuzztwpo4uo64bu.ipfs.w3s.link/Renaissance.jpg"
+const imageRetro = "https://bafybeid5xc6pzdkdul44uloo2n3s4fy67qx3q3uqh4civ4ay7rwrihwti4.ipfs.w3s.link/Retro.jpg"
+const imageSteampunk = "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg"
+const imageStreetwear = "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg"
+const imageSuperhero = "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg"
+const imageWasteland = "https://bafybeihterx5pdlv4yecxpfouyabl3sdswmgocycnqkii4aevshvlg74iu.ipfs.w3s.link/Wasteland.jpg"
+
+//Women
+const imageArtisticW = "https://bafybeighc4i47mpv43e7grqb25a32tfbmodvujml6ab3nieklkamjejxyq.ipfs.w3s.link/Artistic.jpg"
+const imageCyberpunkW = "https://bafybeigszelbvuyn5cc7dacxxgq2e4eoql2cdn37ixy3cz73lcq34zvaum.ipfs.w3s.link/Cyberpunk.jpg"
+const imageDreamy = "https://bafybeia2i7aok5tdtrojxdwlsykkzbg7fj7a5lkj3uafelbtb5jptlfmmq.ipfs.w3s.link/Dreamy.jpg"
+const imageFashion = "https://bafybeiewlwtaavsx2wr6gmvixmfdrpuh2w7hako2sj3a5kj442z6gee4z4.ipfs.w3s.link/Fashion.jpg"
+const imageKorean = "https://bafybeihzldu2nmz6vktsdus36dkior2smf5jti5jrfpdrdjk3qdkkxvqwa.ipfs.w3s.link/Korean.jpg"
+const imageNature = "https://bafybeiby3zppnjdfuuyo2wcghv7g2dvgwsqgsbzlbwadpedvak6sqaux4m.ipfs.w3s.link/Nature.jpg"
+const imageRenaissanceW = "https://bafybeiesv7d6veak3wcfxfz4zrdxarvkkljcyzrdxlzw6f3rpvkwkpelui.ipfs.w3s.link/Renaissance.jpg"
+const imageRetroW = "https://bafybeie2yzo3rwvgsmognxbt5x3g6c4qmz5t5vx2qinfywhbkiuil3q6pa.ipfs.w3s.link/Retro.jpg"
+const imageSchool = "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg"
+const imageSoft = "https://bafybeigsa4lcv3mvemlnocgerre34w7lcfblcdmy5rh6oswbpbhnli4umm.ipfs.w3s.link/Soft.jpg"
+const imageSunset = "https://bafybeifw4mg2mx5y4zxoc5oeauidsknuzpo3327aqma5n5yqj2zwwumzz4.ipfs.w3s.link/Sunset.jpg"
 
 const GeneratePage = () => {
   const {
@@ -290,6 +317,15 @@ const GeneratePage = () => {
   };
 
   const handleFileChange = async (event) => {
+    const base64Astronout = await convertImageToBase64(imageAstronout);
+    const base64Backpacker = await convertImageToBase64(imageBackpacker);
+    const { selectedStyle } = state;
+    console.log("style ",selectedStyle.image)
+
+    // console.log("Astronout Base64:", base64Astronout);
+    console.log("Astronout Base64:", base64Astronout.length);
+    // console.log("Backpacker Base64:", base64Backpacker);
+    console.log("Backpacker Base64:", base64Backpacker.length);
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -321,6 +357,42 @@ const GeneratePage = () => {
     }
   };
 
+  const convertImageToPngBlob = async (fileOrBase64) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      
+      // Jika input berupa File atau Blob, ubah jadi base64 URL
+      const url = typeof fileOrBase64 === "string" && fileOrBase64.startsWith("data:")
+        ? fileOrBase64
+        : URL.createObjectURL(fileOrBase64);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        // Konversi ke blob dengan format PNG
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error("Gagal konversi gambar ke PNG"));
+          }
+        }, "image/png");
+      };
+
+      img.onerror = () => {
+        reject(new Error("Gagal memuat gambar"));
+      };
+
+      img.src = url;
+    });
+  };
+
+
   const handleGenerate = async () => {
     if (credit <= 0) {
       showAlert(
@@ -344,8 +416,14 @@ const GeneratePage = () => {
 
     setState((prev) => ({ ...prev, isLoading: true }));
     try {
-      const blob = base64ToBlob(selectedFile);
-      await uploadImageToBackend(blob);
+      const blob = await convertImageToPngBlob(selectedFile);
+      
+
+      const storachaCid = await uploadBlobToStoracha(blob);
+      const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
+
+
+      await uploadImageToBackend(userImageUrl);
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -357,7 +435,7 @@ const GeneratePage = () => {
     }
   };
 
-  const base64ToBlob = (base64, type = "image/jpeg") => {
+  const base64ToBlob = (base64, type = "image/png") => {
     const byteCharacters = atob(base64.split(",")[1]);
     const byteNumbers = new Uint8Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -366,22 +444,42 @@ const GeneratePage = () => {
     return new Blob([byteNumbers], { type });
   };
 
-  const uploadImageToBackend = async (imageBlob) => {
+  const uploadImageToBackend = async (imageUrl) => {
     try {
       const { selectedStyle } = state;
-      const nat8Array = new Uint8Array(await imageBlob.arrayBuffer());
-      const styleBlob = await selectedStyle.getFile();
-      const styleNat8Array = new Uint8Array(await styleBlob.arrayBuffer());
 
+      console.log("imageUrl:", imageUrl);
+      console.log("styleUrl:", selectedStyle.image);
+
+      // // Fetch image utama
+      // const imageRes = await fetch(imageUrl);
+      // if (!imageRes.ok) throw new Error("Gagal fetch image utama");
+
+      // const imageBuffer = await imageRes.arrayBuffer();
+      // const imageUint8Array = new Uint8Array(imageBuffer);
+      // console.log("imageuint : ", imageUint8Array)
+
+      // // Fetch style image
+      // const styleRes = await fetch(selectedStyle.image);
+      // if (!styleRes.ok) throw new Error("Gagal fetch image style");
+
+      // const styleBuffer = await styleRes.arrayBuffer();
+      // const styleUint8Array = new Uint8Array(styleBuffer);
+      // console.log("styleuint : ", styleUint8Array)
+
+
+      // Kirim ke canister
       const response = await actor.send_http_post_request(
-        nat8Array,
-        styleNat8Array
+        imageUrl,
+        selectedStyle.image
       );
       const jobIdText = new TextDecoder().decode(response);
       await pollUntilReady(jobIdText);
     } catch (error) {
     }
   };
+
+
 
   const pollUntilReady = async (jobId) => {
     const maxRetries = 30;
@@ -418,6 +516,40 @@ const GeneratePage = () => {
     showAlert("error", "Timeout", "Image generation took too long.");
   };
 
+  const convertImageToBase64 = async (imageUrl) => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result); // returns base64 string
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+
+  // const blobToBase64 = (blob) => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => resolve(reader.result.split(",")[1]);
+  //     reader.onerror = reject;
+  //     reader.readAsDataURL(new Blob([new Uint8Array(blob)]));
+  //   });
+  // };
+
+  const handleDeleteAllImages = async () => {
+    try {
+      const success = await actor.deleteAllImages();
+      console.log(
+        success
+          ? "All images deleted successfully."
+          : "Failed to delete all images."
+      );
+    } catch (error) {
+      console.error("Error deleting all images:", error);
+    }
+  };
 
   const handleDownloadImage = () => {
     if (!state.imageUrl) {

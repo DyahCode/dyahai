@@ -53,24 +53,24 @@ fn transform(raw: TransformArgs) -> HttpResponse {
 }
 
 #[update]
-pub async fn send_http_post(source_image: Vec<u8>, target_image: Vec<u8>) -> String {
+pub async fn send_http_post(source_image: String, target_image: String) -> String {
 
     ic_cdk::println!("[DEBUG] Source image size: {}", source_image.len());
     ic_cdk::println!("[DEBUG] Target image size: {}", target_image.len());
 
-    let source_b64 = general_purpose::STANDARD.encode(&source_image);
-    let target_b64 = general_purpose::STANDARD.encode(&target_image);
+    // let source_b64 = general_purpose::STANDARD.encode(&source_image);
+    // let target_b64 = general_purpose::STANDARD.encode(&target_image);
 
-    ic_cdk::println!("[DEBUG] Source image (base64, truncated): {}", &source_b64[..100.min(source_b64.len())]);
-    ic_cdk::println!("[DEBUG] Target image (base64, truncated): {}", &target_b64[..100.min(target_b64.len())]);
+    // ic_cdk::println!("[DEBUG] Source image (base64, truncated): {}", &source_b64[..100.min(source_b64.len())]);
+    // ic_cdk::println!("[DEBUG] Target image (base64, truncated): {}", &target_b64[..100.min(target_b64.len())]);
 
-    let url = "https://api.runpod.ai/v2/{YOUR_ID_PROJECT}/run";
+    let url = "https://api.runpod.ai/v2/5mda0g6op5ezbx/run";
 
 
     let payload = InputPayload {
         input: InputImages {
-            source_image: source_b64,
-            target_image: target_b64,
+            source_image: source_image,
+            target_image: target_image,
             source_indexes: "-1".to_string(),
             target_indexes: "-1".to_string(),
             background_enhance: true,
@@ -145,11 +145,11 @@ pub async fn send_http_post(source_image: Vec<u8>, target_image: Vec<u8>) -> Str
 pub async fn check_style_status(job_id: String) -> StyleStatusResult {
     ic_cdk::println!("[DEBUG] Job ID: {}", job_id); 
 
-    let url = format!("https://api.runpod.ai/v2/{YOUR_ID_PROJECT}/status/{}", job_id);
+    let url = format!("https://api.runpod.ai/v2/5mda0g6op5ezbx/status/{}", job_id);
 
     let headers = vec![HttpHeader {
         name: "Authorization".to_string(),
-        value: "{YOUR_API_KEY}".to_string(),
+        value: "Bearer rpa_RMCSD2B6VUZU6I4102T3B7YB2V7AUIIWVORZNQ4Tthds79".to_string(),
     }];
 
     let request = CanisterHttpRequestArgument {
