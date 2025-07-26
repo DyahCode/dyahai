@@ -12,6 +12,8 @@ import { FaRegUserCircle, FaRegUser } from "react-icons/fa";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
 
+import HeroProfile from "../../assets/images/about/image-gallery-1.jpg"
+
 const Navbar = ({
   navbarStyle,
   principalId,
@@ -158,33 +160,64 @@ const Navbar = ({
                       <div className="absolute right-0">
                         <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-[25rem] h-full rounded-lg border z-20 px-4 py-2">
                           {/* section atas */}
-                          <div className="">
-                            <div className="flex items-center justify-between py-3 text-sm">
-                              <div className="w-full line-clamp-1 font-medium min-h-2">
-                                {principalId}
-                              </div>
-                              <div>free</div>
+                          <div className="border-borderShade flex flex-col rounded-md border border-opacity-20 md:flex-row p-2 bg-transparent hover:bg-accentColor/[0.025] duration-200 transition group relative overflow-hidden">
+
+                            <div className="absolute top-0 right-0 bg-white/[0.075] p-1 px-2 rounded-es-lg">
+                              <span className={`text-sm font-semibold ${tier === "Ultimate" ? "text-yellow-600" : tier === "Pro" ? "text-lime-500" : "text-fontPrimaryColor/70"}`}>
+                                {tier}
+                              </span>
                             </div>
+                            <div className="w-full flex flex-col items-center justify-start space-y-2">
+                              {/* profile */}
+                              <div class="flex justify-center items-center">
+                                <svg viewBox="0 0 24 24" class="w-12 h-12 md:w-20 md:h-20">
+                                  {/* <!-- Border luar heksagon --> */}
+                                  <path className="fill-none stroke-white stroke-[1.5px]"
+                                    d="M12 1.75a2.63 2.63 0 0 0-1.32.355l-6.61 3.8l-.002.002A2.65 2.65 0 0 0 2.75 8.198v7.603a2.64 2.64 0 0 0 1.318 2.292l.003.002l6.608 3.799h.002a2.63 2.63 0 0 0 2.639 0h.001l6.608-3.8h.003A2.65 2.65 0 0 0 21.25 15.8V8.2a2.65 2.65 0 0 0-1.318-2.292l-6.61-3.8l-.002-.002A2.63 2.63 0 0 0 12 1.75"
+                                  />
+                                  {/* <!-- Clip path untuk gambar --> */}
+                                  <defs>
+                                    <clipPath id="hexClip">
+                                      <path
+                                        d="M12 1.75a2.63 2.63 0 0 0-1.32.355l-6.61 3.8l-.002.002A2.65 2.65 0 0 0 2.75 8.198v7.603a2.64 2.64 0 0 0 1.318 2.292l.003.002l6.608 3.799h.002a2.63 2.63 0 0 0 2.639 0h.001l6.608-3.8h.003A2.65 2.65 0 0 0 21.25 15.8V8.2a2.65 2.65 0 0 0-1.318-2.292l-6.61-3.8l-.002-.002A2.63 2.63 0 0 0 12 1.75"
+                                      />
+                                    </clipPath>
+                                  </defs>
+                                  {/* <!-- Gambar profil di dalam hexagon --> */}
+                                  <image
+                                    className="size-full object-cover"
+                                    href={HeroProfile}
+                                    clip-path="url(#hexClip)"
+                                    preserveAspectRatio="xMidYMid slice"
+                                  />
+                                </svg>
+                              </div>
+                              {/* profile */}
 
-                            <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
-
-                            <ul className="py-2 flex flex-col gap-y-2">
-                              <li
-                                onClick={() => navigate("/profile")}
-                                className="flex justify-center rounded-md border border-opacity-50 p-2 md:items-center md:justify-start border-borderShade text-sm cursor-pointer gap-x-2 bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                              >
-                                <div
-                                  className={`text-2xl items-center justify-center flex aspect-square p-1 text-fontPrimaryColor/70
-                                  `}
-                                >
-                                  <FaRegUser size={22} className="" />
-                                </div>
-                                <span className="hidden items-center rounded-md md:block select-none">
-                                  Your Profile
-                                </span>
-                              </li>
-                            </ul>
+                              <div className="bg-accentColor/[0.075] py-1 px-2 border border-borderShade border-opacity-20 rounded-md overflow-hidden break-all">
+                                <p className="text-base/4 font-medium font-mono text-accentColor w-full lining-nums line-clamp-1">{principalId}</p>
+                              </div>
+                            </div>
                           </div>
+
+                          <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
+
+                          <ul className="py-2 flex flex-col gap-y-2">
+                            <li
+                              onClick={() => navigate("/profile")}
+                              className="flex justify-center rounded-md border border-opacity-50 p-2 md:items-center md:justify-start border-borderShade text-sm cursor-pointer gap-x-2 bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                            >
+                              <div
+                                className={`text-2xl items-center justify-center flex aspect-square p-1 text-fontPrimaryColor/70
+                                  `}
+                              >
+                                <FaRegUser size={22} className="" />
+                              </div>
+                              <span className="hidden items-center rounded-md md:block select-none">
+                                Your Profile
+                              </span>
+                            </li>
+                          </ul>
 
                           {/* section bawah */}
                           <div className="">
@@ -213,7 +246,7 @@ const Navbar = ({
                                     <li>100+ requests per day</li>
                                   </ol>
                                 </div>
-                                <button className="mt-4 bg-fontPrimaryColor flex items-center justify-center gap-x-4 rounded-full px-4 py-2 text-xs font-medium text-black "onClick={() => {
+                                <button className="mt-4 bg-fontPrimaryColor flex items-center justify-center gap-x-4 rounded-full px-4 py-2 text-xs font-medium text-black " onClick={() => {
                                   navigate("/pricing");
                                 }}>
                                   <span>Next step</span>
@@ -274,7 +307,7 @@ const Navbar = ({
         animate={isOpen ? "visible" : "hidden"}
         variants={menuContainerVariants}
         className={`border-borderShade absolute w-full overflow-hidden ${isOpen ? "block" : "hidden"} md:hidden`}
-        // className={`border-borderShade absolute w-full overflow-hidden rounded-lg border border-opacity-40 ${isOpen ? "block" : "hidden"} md:hidden`}
+      // className={`border-borderShade absolute w-full overflow-hidden rounded-lg border border-opacity-40 ${isOpen ? "block" : "hidden"} md:hidden`}
       >
         <ul className="bg-secondaryColor text-fontPrimaryColor flex w-full flex-col items-center justify-center gap-y-5 p-4 text-lg font-semibold">
           {menuItems.map((item, index) => (

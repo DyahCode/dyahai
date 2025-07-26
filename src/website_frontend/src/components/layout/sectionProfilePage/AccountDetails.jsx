@@ -1,8 +1,7 @@
 import React from "react";
-// import { useAuth } from "../../../Hooks/authHook";
+import HeroProfile from "../../../assets/images/about/image-gallery-1.jpg"
 
 const AccountDetails = ({ principalId }) => {
-  // const { principalId } = useAuth();
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString("en-GB", {
     day: "numeric",
@@ -11,11 +10,62 @@ const AccountDetails = ({ principalId }) => {
   });
 
   return (
-    <div className="m-4 min-w-fit rounded-lg bg-slate-100 p-5">
-      <p className="pb-2 pl-1 md:text-lg">
-        <strong>Account Details</strong>
+    <div className="flex flex-col border border-borderShade border-opacity-40 rounded-xl bg-secondaryColor min-w-fit px-6 py-8">
+
+      <p className="pb-2 pl-1 md:text-lg md:font-semibold text-neutral-300">
+        Account Details
       </p>
-      <div className="flex border-separate flex-col gap-1 rounded-lg border p-1">
+      <div className="flex border-separate flex-col gap-1 rounded-lg p-1 mt-4">
+
+        {/* section header */}
+        <div className="border-borderShade flex flex-col rounded-md border border-opacity-20 md:flex-row p-2 xl:px-20">
+          <div className="w-full flex flex-col md:flex-row items-center justify-start">
+
+            {/* profile */}
+            <div class="flex justify-center items-center">
+              <svg viewBox="0 0 24 24" class="w-20 h-20 md:w-32 md:h-32">
+                {/* <!-- Border luar heksagon --> */}
+                <path className="fill-none stroke-white stroke-[1.5px]"
+                  d="M12 1.75a2.63 2.63 0 0 0-1.32.355l-6.61 3.8l-.002.002A2.65 2.65 0 0 0 2.75 8.198v7.603a2.64 2.64 0 0 0 1.318 2.292l.003.002l6.608 3.799h.002a2.63 2.63 0 0 0 2.639 0h.001l6.608-3.8h.003A2.65 2.65 0 0 0 21.25 15.8V8.2a2.65 2.65 0 0 0-1.318-2.292l-6.61-3.8l-.002-.002A2.63 2.63 0 0 0 12 1.75"
+                />
+                {/* <!-- Clip path untuk gambar --> */}
+                <defs>
+                  <clipPath id="hexClip">
+                    <path
+                      d="M12 1.75a2.63 2.63 0 0 0-1.32.355l-6.61 3.8l-.002.002A2.65 2.65 0 0 0 2.75 8.198v7.603a2.64 2.64 0 0 0 1.318 2.292l.003.002l6.608 3.799h.002a2.63 2.63 0 0 0 2.639 0h.001l6.608-3.8h.003A2.65 2.65 0 0 0 21.25 15.8V8.2a2.65 2.65 0 0 0-1.318-2.292l-6.61-3.8l-.002-.002A2.63 2.63 0 0 0 12 1.75"
+                    />
+                  </clipPath>
+                </defs>
+                {/* <!-- Gambar profil di dalam hexagon --> */}
+                <image
+                  className="size-full object-cover"
+                  href={HeroProfile}
+                  clip-path="url(#hexClip)"
+                  preserveAspectRatio="xMidYMid slice"
+                />
+              </svg>
+            </div>
+            {/* profile */}
+
+            <div className="flex-1 flex flex-col items-center md:items-start">
+              <p className="text-fontPrimaryColor/75 text-sm py-0.5 px-2 border border-borderShade border-opacity-20 rounded-md bg-accentColor/[0.075] mb-1">
+                ID Principal
+              </p>
+              <div className="bg-accentColor/[0.075] py-1 px-2 border border-borderShade border-opacity-20 rounded-md overflow-hidden break-all">
+
+                <p className="text-base/4 font-medium font-mono text-accentColor w-full lining-nums line-clamp-2">{principalId}</p>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+
+
+
+
         <div className="border-borderShade flex flex-col gap-y-2 rounded-md border border-opacity-20 p-2 text-sm md:flex-row md:text-base">
           <p className="md:w-1/3">
             <strong className="">Username</strong>

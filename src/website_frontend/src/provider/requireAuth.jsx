@@ -27,7 +27,7 @@ const RequireAuth = ({ children }) => {
     return (
       <div className="h-screen w-screen flex items-center justify-center">
         <p className="text-gray-500 text-lg animate-pulse">
-          Memverifikasi autentikasi...
+          Checking your authentication status
         </p>
       </div>
     );
