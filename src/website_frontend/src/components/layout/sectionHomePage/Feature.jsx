@@ -1,6 +1,5 @@
 import React from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-// import { useAuth } from "../../../Hooks/authHook";
 
 import Swal from "sweetalert2";
 import Button from "../../ui/Button"

@@ -39,6 +39,7 @@ const Hero = () => {
             className="z-0 size-full justify-items-center text-center"
           >
             <img src={HeroImage} alt="Hero Image" className="z-0 select-none" />
+            <div className="absolute z-1 bottom-0 bg-gradient-to-t from-primaryColor via-primaryColor/90 to-transparent h-[35%] w-full"></div>
           </motion.div>
         </div>
 

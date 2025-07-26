@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "../components/layout/Navbar";
 import { useAuth } from "../provider/authProvider";
-// import { useAuth } from "../hooks/authHook";
 
 const CreditPaymentPage = () => {
   const {
@@ -23,7 +22,7 @@ const CreditPaymentPage = () => {
   const [icpInE8s, setIcpInE8s] = React.useState(0);
 
   const [paymentStatus, setPaymentStatus] = React.useState("idle");
-  const [txStatus, setTxStatus] = React.useState(null); 
+  const [txStatus, setTxStatus] = React.useState(null);
 
 
 
@@ -67,7 +66,7 @@ const CreditPaymentPage = () => {
     try {
       setPaymentStatus("processing");
 
-      const txResult = await TopupCredit(icpInE8s, "credit",inputCredit,"");
+      const txResult = await TopupCredit(icpInE8s, "credit", inputCredit, "");
 
       if (txResult.success) {
         console.log("✅ Transfer result:", txResult);
@@ -151,11 +150,10 @@ const CreditPaymentPage = () => {
                           <button
                             key={value}
                             onClick={() => creditCalculate(value)}
-                            className={`w-full px-2 py-1 flex items-center gap-x-2 rounded-md border ${
-                              inputCredit === String(value)
-                                ? "bg-blue-100 text-accentColor border-blue-600"
-                                : "bg-white text-gray-700 border-gray-300"
-                            } hover:bg-blue-100`}
+                            className={`w-full px-2 py-1 flex items-center gap-x-2 rounded-md border ${inputCredit === String(value)
+                              ? "bg-blue-100 text-accentColor border-blue-600"
+                              : "bg-white text-gray-700 border-gray-300"
+                              } hover:bg-blue-100`}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -202,7 +200,7 @@ const CreditPaymentPage = () => {
                         </div>
                         <div
                           className="justify-center truncate bg-accentColor/[0.075] py-1 px-2 border border-borderShade border-opacity-20 rounded-md"
-                          
+
                         >
                           {clientId}
                         </div>
@@ -211,7 +209,7 @@ const CreditPaymentPage = () => {
                         </div>
                         <div
                           className="justify-center truncate bg-accentColor/[0.075] py-1 px-2 border border-borderShade border-opacity-20 rounded-md"
-                          
+
                         >
                           {accountId}
                         </div>

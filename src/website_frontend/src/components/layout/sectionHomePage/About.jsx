@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform, animate } from "framer-motion";
-// import { useAuth } from "../../../Hooks/authHook";
 
 import Button from "../../ui/Button";
 import Swal from "sweetalert2";
