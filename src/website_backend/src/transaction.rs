@@ -5,7 +5,7 @@ use candid::Principal;
 
 use candid::{CandidType, Deserialize};
 use ic_ledger_types::{
-    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,MAINNET_LEDGER_CANISTER_ID
+    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,
 };
 use serde::Serialize;
 use serde_json::to_string;
@@ -29,12 +29,11 @@ pub async fn get_parsed_transaction(block_height: u64,message : String) -> Resul
     );
     let args = GetBlocksArgs {
         start: block_height,
-        length: 1,
+        length: 10,
     };
 
     let (response,): (QueryBlocksResponse,) = ic_cdk::call(
-        // Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai")
-             MAINNET_LEDGER_CANISTER_ID,
+        Principal::from_text("ryjl3-tyaaa-aaaaa-aaaba-cai").expect("Invalid canister ID"),
         "query_blocks",
         (args,),
     )

@@ -402,7 +402,7 @@ const GeneratePage = () => {
 
   const pollUntilReady = async (jobId) => {
     const maxRetries = 30;
-    const delay = 4000;
+    const delay = 10000;
     let attempt = 0;
 
     while (attempt < maxRetries) {
