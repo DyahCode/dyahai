@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../provider/authProvider";
 import { uploadBlobToStoracha, removeContentFromStoracha } from "../hooks/authStoracha";
-import { filesFromPaths } from 'files-from-path'
 
 import Swal from "sweetalert2";
 import Button from "../components/ui/Button";
@@ -12,35 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { IoMdDownload } from "react-icons/io";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 
-// Man
 import Navbar from "../components/layout/Navbar";
 
-// import imageAstronout from "../assets/images/art-styles-models/man/Astronout.jpg";
-// import imageBackpacker from "../assets/images/art-styles-models/man/Backpacker.jpg";
-// import imageCyberpunk from "../assets/images/art-styles-models/man/Cyberpunk.jpg";
-// import imageDetective from "../assets/images/art-styles-models/man/Detective.jpg";
-// import imageDreamworks from "../assets/images/art-styles-models/man/Dreamworks.jpg";
-// import imageRenaissance from "../assets/images/art-styles-models/man/Renaissance.jpg";
-// import imageRetro from "../assets/images/art-styles-models/man/Retro.jpg";
-// import imageSteampunk from "../assets/images/art-styles-models/man/Steampunk.jpg";
-// import imageStreetwear from "../assets/images/art-styles-models/man/Streetwear.jpg";
-// import imageSuperhero from "../assets/images/art-styles-models/man/Superhero.jpg";
-// import imageWasteland from "../assets/images/art-styles-models/man/Wasteland.jpg";
-
-// Woman
-// import imageArtisticW from "../assets/images/art-styles-models/women/Artistic.jpg";
-// import imageCyberpunkW from "../assets/images/art-styles-models/women/Cyberpunk.jpg";
-// import imageDreamy from "../assets/images/art-styles-models/women/Dreamy.jpg";
-// import imageFashion from "../assets/images/art-styles-models/women/Fashion.jpg";
-// import imageKorean from "../assets/images/art-styles-models/women/Korean.jpg";
-// import imageNature from "../assets/images/art-styles-models/women/Nature.jpg";
-// import imageRenaissanceW from "../assets/images/art-styles-models/women/Renaissance.jpg";
-// import imageRetroW from "../assets/images/art-styles-models/women/Retro.jpg";
-// import imageSchool from "../assets/images/art-styles-models/women/School.jpg";
-// import imageSoft from "../assets/images/art-styles-models/women/Soft.jpg";
-// import imageSunset from "../assets/images/art-styles-models/women/Sunset.jpg";
-
-// Man 
 const imageAstronout = "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg"
 const imageBackpacker = "https://bafybeicbpqiiibishqfergji5w2rpinbrwxg3lidshak4kpylwivdymuku.ipfs.w3s.link/Backpacker.jpg"
 const imageCyberpunk = "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg"
@@ -53,7 +25,6 @@ const imageStreetwear = "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6k
 const imageSuperhero = "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg"
 const imageWasteland = "https://bafybeihterx5pdlv4yecxpfouyabl3sdswmgocycnqkii4aevshvlg74iu.ipfs.w3s.link/Wasteland.jpg"
 
-//Women
 const imageArtisticW = "https://bafybeighc4i47mpv43e7grqb25a32tfbmodvujml6ab3nieklkamjejxyq.ipfs.w3s.link/Artistic.jpg"
 const imageCyberpunkW = "https://bafybeigszelbvuyn5cc7dacxxgq2e4eoql2cdn37ixy3cz73lcq34zvaum.ipfs.w3s.link/Cyberpunk.jpg"
 const imageDreamy = "https://bafybeia2i7aok5tdtrojxdwlsykkzbg7fj7a5lkj3uafelbtb5jptlfmmq.ipfs.w3s.link/Dreamy.jpg"
@@ -421,7 +392,7 @@ const GeneratePage = () => {
 
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
-
+      console.log("userImageUrl:", userImageUrl);
 
       await uploadImageToBackend(userImageUrl);
     } catch (error) {
@@ -473,7 +444,9 @@ const GeneratePage = () => {
         imageUrl,
         selectedStyle.image
       );
+      console.log("dari response backend",response);
       const jobIdText = new TextDecoder().decode(response);
+      console.log("bawah jobtext",jobIdText);
       await pollUntilReady(jobIdText);
     } catch (error) {
     }
@@ -489,6 +462,7 @@ const GeneratePage = () => {
     while (attempt < maxRetries) {
       try {
         const result = await actor.check_style_status(jobId);
+        console.log("result: ", result.status);
         if (result.status === "COMPLETED" && result.image) {
 
           const byteArray = result.image[0];
@@ -522,21 +496,11 @@ const GeneratePage = () => {
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result); // returns base64 string
+      reader.onloadend = () => resolve(reader.result);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
   };
-
-
-  // const blobToBase64 = (blob) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => resolve(reader.result.split(",")[1]);
-  //     reader.onerror = reject;
-  //     reader.readAsDataURL(new Blob([new Uint8Array(blob)]));
-  //   });
-  // };
 
   const handleDeleteAllImages = async () => {
     try {
