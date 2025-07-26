@@ -4,9 +4,13 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import Button from "../../ui/Button";
 import Swal from "sweetalert2";
 
-import avatar1 from "../../../assets/images/about/image-gallery-1.jpg";
-import avatar2 from "../../../assets/images/about/image-gallery-2.jpg";
-import avatar3 from "../../../assets/images/about/image-gallery-3.jpg";
+// import avatar1 from "../../../assets/images/about/image-gallery-1.jpg";
+// import avatar2 from "../../../assets/images/about/image-gallery-2.jpg";
+// import avatar3 from "../../../assets/images/about/image-gallery-3.jpg";
+
+const avatar1 = "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg"
+const avatar2 = "https://bafybeibopoqhuobckaaquqk6n4aikktqepiyht4pwhbapevkzreshyt7pq.ipfs.w3s.link/image-gallery-2.jpg"
+const avatar3 = "https://bafybeigjfhem4jjxlqu5vtzxw2kb27u2otgkdp2h27hk7gnv6sgcx4miz4.ipfs.w3s.link/image-gallery-3.jpg"
 
 const About = ({ Login, isLoggedIn }) => {
   const containerRef = useRef(null);

@@ -4,8 +4,8 @@ type StyleStatusResult = record {
 };
 
 service : {
-    "send_http_post_request" : (blob, blob) -> (blob);
-    "send_http_post" : (blob, blob) -> (text);
+    "send_http_post_request" : (text, text) -> (blob);
+    "send_http_post" : (text, text) -> (text);
     "check_style_status" : (text) -> (StyleStatusResult);
     "initialize_credit" : () -> (text);
     "get_balance" : () -> (nat8);

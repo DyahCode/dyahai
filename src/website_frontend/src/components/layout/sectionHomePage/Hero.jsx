@@ -5,7 +5,9 @@ import { fadeIn } from "../../../../variants";
 
 import Swal from "sweetalert2";
 import Button from "../../ui/Button";
-import HeroImage from "../../../assets/images/hero/hero-image.png";
+// import HeroImage from "../../../assets/images/hero/hero-image.png";
+
+const HeroImage = "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png"
 
 const Hero = () => {
   const { Login, isLoggedIn } = useAuth();

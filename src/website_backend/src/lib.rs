@@ -177,17 +177,17 @@ pub async fn get_account_id_for_canister() -> String {
 }
 
 #[update]
-pub async fn send_http_post_request(image: Vec<u8>, style: Vec<u8>) -> Vec<u8> {
+pub async fn send_http_post_request(image_url: String, style_url: String) -> Vec<u8> {
     let principal = ic_cdk::caller();
-    ic_cdk::println!("principal kamu: {}", principal);
+    ic_cdk::println!("Principal: {}", principal);
 
     if !users_store::is_registered(principal) {
-        ic_cdk::trap(&format!("User not registered: {}", principal.to_string()));
+        ic_cdk::trap("User not registered");
     }
 
     let user_data = users_store::get_user_data(principal.clone());
 
-    // Validasi kredit berdasarkan tier
+    // Validasi kredit
     match user_data.tier {
         users_store::UserTier::Basic | users_store::UserTier::Premium => {
             if user_data.credits == 0 {
@@ -196,18 +196,15 @@ pub async fn send_http_post_request(image: Vec<u8>, style: Vec<u8>) -> Vec<u8> {
             }
         }
         users_store::UserTier::Ultimate => {
-            // Misal ultimate bebas akses, tidak perlu cek kredit
+            // Akses bebas
         }
     }
 
-    let mut combined = Vec::new();
-    combined.extend_from_slice(&style);
-    combined.extend_from_slice(&image);
+    // Kirim langsung URL ke fungsi HTTP POST
+    let response = http::send_http_post(image_url.clone(), style_url.clone()).await;
 
-    let response = http::send_http_post(image, style).await;
-    ic_cdk::println!("jumlah data gambar: {:?}", response.len());
+    ic_cdk::println!("Jumlah data respons: {:?}", response.len());
 
-    // Kurangi kredit jika bukan Ultimate
     if user_data.tier != users_store::UserTier::Ultimate {
         users_store::reduction_credit(principal.clone());
     }
@@ -216,6 +213,7 @@ pub async fn send_http_post_request(image: Vec<u8>, style: Vec<u8>) -> Vec<u8> {
 
     response.into()
 }
+
 
 #[update]
 pub async fn save_image_to_store(cid: String) {
