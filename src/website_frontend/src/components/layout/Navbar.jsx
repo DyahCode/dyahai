@@ -27,14 +27,12 @@ const Navbar = ({
   const navigate = useNavigate();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
-  // Dropdown untuk Credit
   const {
     isDropdownOpen: isCreditOpen,
     toggleDropdown: toggleCredit,
     dropdownRef: creditRef,
   } = useDropdown();
 
-  // Dropdown untuk User/Profile
   const {
     isDropdownOpen: isUserOpen,
     toggleDropdown: toggleUser,
@@ -113,8 +111,6 @@ const Navbar = ({
             {!loading && isLoggedIn ? (
               <div className="text-fontPrimaryColor relative">
                 <div className="flex items-center justify-center gap-3">
-                  {/* Button Credit */}
-                  {/* Button Credit */}
                   <div className="relative space-y-3" ref={creditRef}>
                     <Button
                       onClick={toggleCredit}
@@ -141,11 +137,7 @@ const Navbar = ({
                       </div>
                     )}
                   </div>
-                  {/* Button Credit */}
-                  {/* Button Credit */}
 
-                  {/* Button Profile Menu */}
-                  {/* Button Profile Menu */}
                   <div className="relative space-y-3" ref={userRef}>
                     <Button
                       variant="outline"
@@ -159,7 +151,6 @@ const Navbar = ({
                     {isUserOpen && (
                       <div className="absolute right-0">
                         <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-[25rem] h-full rounded-lg border z-20 px-4 py-2">
-                          {/* section atas */}
                           <div className="border-borderShade flex flex-col rounded-md border border-opacity-20 md:flex-row p-2 bg-transparent hover:bg-accentColor/[0.025] duration-200 transition group relative overflow-hidden">
 
                             <div className="absolute top-0 right-0 bg-white/[0.075] p-1 px-2 rounded-es-lg">
@@ -171,11 +162,9 @@ const Navbar = ({
                               {/* profile */}
                               <div class="flex justify-center items-center">
                                 <svg viewBox="0 0 24 24" class="w-12 h-12 md:w-20 md:h-20">
-                                  {/* <!-- Border luar heksagon --> */}
                                   <path className="fill-none stroke-white stroke-[1.5px]"
                                     d="M12 1.75a2.63 2.63 0 0 0-1.32.355l-6.61 3.8l-.002.002A2.65 2.65 0 0 0 2.75 8.198v7.603a2.64 2.64 0 0 0 1.318 2.292l.003.002l6.608 3.799h.002a2.63 2.63 0 0 0 2.639 0h.001l6.608-3.8h.003A2.65 2.65 0 0 0 21.25 15.8V8.2a2.65 2.65 0 0 0-1.318-2.292l-6.61-3.8l-.002-.002A2.63 2.63 0 0 0 12 1.75"
                                   />
-                                  {/* <!-- Clip path untuk gambar --> */}
                                   <defs>
                                     <clipPath id="hexClip">
                                       <path
@@ -183,7 +172,6 @@ const Navbar = ({
                                       />
                                     </clipPath>
                                   </defs>
-                                  {/* <!-- Gambar profil di dalam hexagon --> */}
                                   <image
                                     className="size-full object-cover"
                                     href={HeroProfile}
@@ -219,7 +207,6 @@ const Navbar = ({
                             </li>
                           </ul>
 
-                          {/* section bawah */}
                           <div className="">
                             <span className="text-sm text-fontPrimaryColor/75">
                               Wanna try?
@@ -284,8 +271,6 @@ const Navbar = ({
                       </div>
                     )}
                   </div>
-                  {/* Button Profile Menu */}
-                  {/* Button Profile Menu */}
                 </div>
               </div>
             ) : (
@@ -307,7 +292,6 @@ const Navbar = ({
         animate={isOpen ? "visible" : "hidden"}
         variants={menuContainerVariants}
         className={`border-borderShade absolute w-full overflow-hidden ${isOpen ? "block" : "hidden"} md:hidden`}
-      // className={`border-borderShade absolute w-full overflow-hidden rounded-lg border border-opacity-40 ${isOpen ? "block" : "hidden"} md:hidden`}
       >
         <ul className="bg-secondaryColor text-fontPrimaryColor flex w-full flex-col items-center justify-center gap-y-5 p-4 text-lg font-semibold">
           {menuItems.map((item, index) => (

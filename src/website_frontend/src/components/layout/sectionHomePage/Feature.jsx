@@ -23,7 +23,6 @@ import ImageZombie from "../../../assets/images/art-styles/zombie.png";
 
 const Feature = ({ Login, isLoggedIn }) => {
   const { scrollY } = useScroll();
-  // const { Login, isLoggedIn } = useAuth();
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
@@ -151,9 +150,7 @@ const Feature = ({ Login, isLoggedIn }) => {
                 <div className="flex w-full rounded-lg p-2 md:w-3/5">
                   <FTUImages />
                 </div>
-                {/* <Button onClick={handleNavigationGenerate} variant="thirdFull">
-                  Try it now !
-                </Button> */}
+
                 <Button variant="primary" size="md" onClick={handleNavigationGenerate} className="w-2/3" isMotion>
                   Try it now !
                 </Button>

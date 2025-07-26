@@ -59,19 +59,12 @@ const Hero = () => {
               into a realm of boundless imagination.
             </p>
             <div className="flex justify-center gap-x-6 md:justify-start md:gap-x-4">
-              {/* <Button onClick={handleGenerateNavigation} variant="primary">
-                Generate
-              </Button> */}
+
               <Button variant="primary" size="md" onClick={handleNavigationGenerate} isMotion>
                 Generate
               </Button>
 
-              {/* <Button
-                onClick={() => (window.location.href = "#feature")}
-                variant="secondary"
-              >
-                Learn More
-              </Button> */}
+
               <Button variant="secondary" size="md" onClick={() => (window.location.href = "#feature")} isMotion>
                 Learn More
               </Button>
@@ -92,9 +85,7 @@ const Hero = () => {
               generate extraordinary visuals together!
             </p>
             <div className="flex justify-end items-center">
-              {/* <Button onClick={handleGenerateNavigation} variant="primary">
-                Try Now
-              </Button> */}
+    
               <Button variant="primary" size="md" onClick={handleNavigationGenerate} isMotion>
                 Try Now
               </Button>

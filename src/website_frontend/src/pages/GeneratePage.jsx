@@ -51,7 +51,7 @@ const GeneratePage = () => {
     tier,
   } = useAuth();
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const [state, setState] = useState({
     isLoading: false,
     selectedFile: null,
@@ -67,7 +67,7 @@ const GeneratePage = () => {
       id: "1",
       label: "Astronout",
       image: imageAstronout,
-      genderCategory: "man", // add new
+      genderCategory: "man",
       getFile: async () => {
         const response = await fetch(imageAstronout);
         return await response.blob();
@@ -285,22 +285,12 @@ const GeneratePage = () => {
     },
   ];
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-  };
-
   const showAlert = (icon, title, text) => {
     Swal.fire({ icon, title, text, confirmButtonText: "OK" });
   };
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    console.log("Selected file:", file);
-    console.log("File type:", file.type);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () =>
@@ -355,11 +345,8 @@ const GeneratePage = () => {
     setState((prev) => ({ ...prev, isLoading: true }));
     try {
       const blob = base64ToBlob(selectedFile);
-      console.log("Converting base64 to blob:", blob);
-      console.log("Principal", principalId);
       await uploadImageToBackend(blob);
     } catch (error) {
-      console.error("Error uploading image:", error);
       setState((prev) => ({
         ...prev,
         output: "An error occurred while uploading the image.",
@@ -390,13 +377,9 @@ const GeneratePage = () => {
         nat8Array,
         styleNat8Array
       );
-      console.log("Job ID:", response);
-      console.log("Response dari backend Jalan mas:>>", response.type);
       const jobIdText = new TextDecoder().decode(response);
-      console.log("Job ID baru:", jobIdText);
       await pollUntilReady(jobIdText);
     } catch (error) {
-      console.error("Error uploading image:", error);
     }
   };
 
@@ -406,19 +389,12 @@ const GeneratePage = () => {
     let attempt = 0;
 
     while (attempt < maxRetries) {
-      console.log("attempt : ", attempt);
       try {
-        console.log("status belum terpanggil");
         const result = await actor.check_style_status(jobId);
-        console.log("status sudah terpanggil : ", result.status);
         if (result.status === "COMPLETED" && result.image) {
-          console.log("status sudah completed");
 
           const byteArray = result.image[0];
-          console.log("result.image:", result.image[0]);
-          console.log("Length of result.image:", byteArray.length);
           const blob = new Blob([byteArray], { type: "image/png" });
-          console.log("data gambar ", blob);
           const dataUrl = await new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -427,7 +403,6 @@ const GeneratePage = () => {
           });
           setState((prev) => ({ ...prev, imageUrl: dataUrl }));
           const storachaResult = await uploadBlobToStoracha(blob);
-          console.log("storachaResult:", storachaResult);
 
           await actor.save_image_to_store(storachaResult.toString());
           return;
@@ -436,7 +411,6 @@ const GeneratePage = () => {
           return;
         }
       } catch (error) {
-        console.error("Polling error:", error);
       }
       await new Promise((resolve) => setTimeout(resolve, delay));
       attempt++;
@@ -444,27 +418,6 @@ const GeneratePage = () => {
     showAlert("error", "Timeout", "Image generation took too long.");
   };
 
-  // const blobToBase64 = (blob) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => resolve(reader.result.split(",")[1]);
-  //     reader.onerror = reject;
-  //     reader.readAsDataURL(new Blob([new Uint8Array(blob)]));
-  //   });
-  // };
-
-  const handleDeleteAllImages = async () => {
-    try {
-      const success = await actor.deleteAllImages();
-      console.log(
-        success
-          ? "All images deleted successfully."
-          : "Failed to delete all images."
-      );
-    } catch (error) {
-      console.error("Error deleting all images:", error);
-    }
-  };
 
   const handleDownloadImage = () => {
     if (!state.imageUrl) {
@@ -479,15 +432,7 @@ const GeneratePage = () => {
     document.body.removeChild(link);
   };
 
-  const addCredit = async () => {
-    try {
-      await actor.addCredit(principalId, 1);
-      const updatedBalance = await actor.get_balance();
-      setState((prev) => ({ ...prev, balance: updatedBalance.toString() }));
-    } catch (error) {
-      console.error("Error adding credit:", error);
-    }
-  };
+
 
   return (
     <>
@@ -504,10 +449,7 @@ const GeneratePage = () => {
         />
 
         <section className="pt-[8dvh] relative w-full h-full flex flex-col items-center md:flex-row">
-          {/* mt-[16dvh] md:mt-[8dvh] */}
-          {/* Left Side */}
           <div className="border-borderShade flex h-full w-full flex-col border-r-2 border-opacity-40 md:w-1/3 bg-secondaryColor">
-            {/* Menu Atas */}
             <div className="w-full h-full md:overflow-y-auto px-4 pt-10 py-6">
               <div className="flex flex-col items-center gap-y-6 text-center">
                 <div className="text-white">
@@ -568,14 +510,11 @@ const GeneratePage = () => {
                   </label>
                 </div>
 
-                {/* Choose Style Start*/}
 
                 <div className="flex w-full max-w-max flex-col gap-4 text-white">
                   <p>Choose Style:</p>
 
-                  {/* Toggle Button */}
                   <div className="relative flex w-fit mx-auto rounded-full bg-gray-800 p-1">
-                    {/* Tombol Man */}
                     <button
                       onClick={() =>
                         setState((prev) => ({
@@ -584,11 +523,10 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
-                        state.selectedGenderCategory === "man"
-                          ? "text-fontPrimaryColor"
-                          : "text-gray-400"
-                      }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "man"
+                        ? "text-fontPrimaryColor"
+                        : "text-gray-400"
+                        }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -608,7 +546,6 @@ const GeneratePage = () => {
                       <span>Man</span>
                     </button>
 
-                    {/* Tombol Woman */}
                     <button
                       onClick={() =>
                         setState((prev) => ({
@@ -617,11 +554,10 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
-                        state.selectedGenderCategory === "woman"
-                          ? "text-fontPrimaryColor"
-                          : "text-gray-400"
-                      }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "woman"
+                        ? "text-fontPrimaryColor"
+                        : "text-gray-400"
+                        }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -641,7 +577,6 @@ const GeneratePage = () => {
                       <span>Woman</span>
                     </button>
 
-                    {/* Indikator Geser */}
                     <div
                       className="absolute top-0 left-0 h-full w-1/2 rounded-full bg-accentColor transition-all duration-300"
                       style={{
@@ -675,7 +610,7 @@ const GeneratePage = () => {
                               onChange={() =>
                                 setState((prev) => ({
                                   ...prev,
-                                  selectedStyle: style, // Menyimpan seluruh objek style
+                                  selectedStyle: style,
                                 }))
                               }
                             />
@@ -692,36 +627,7 @@ const GeneratePage = () => {
                           </label>
                         ))}
 
-                      {/* {itemStyle.map((style) => (
-                        <label
-                          key={style.id}
-                          className="flex flex-col items-center justify-center hover:scale-105 hover:transform duration-200 ease-in-out"
-                        >
-                          <input
-                            type="radio"
-                            name="style"
-                            className="peer hidden"
-                            value={style.id}
-                            checked={state.selectedStyle === style.id}
-                            onChange={() =>
-                              setState((prev) => ({
-                                ...prev,
-                                selectedStyle: style.id,
-                              }))
-                            }
-                          />
-                          <div className="max-w-36 aspect-square cursor-pointer rounded-lg border-transparent border-4 peer-checked:border-accentColor2 peer-checked:shadow-xl overflow-hidden">
-                            <img
-                              src={style.image}
-                              alt={style.label}
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <p className="mt-1 text-sm text-center">
-                            {style.label}
-                          </p>
-                        </label>
-                      ))} */}
+
                     </div>
                   </div>
                 </div>
@@ -744,14 +650,11 @@ const GeneratePage = () => {
             </div>
           </div>
 
-          {/* Right side */}
-          {/* Right side */}
           <div className="h-full w-full md:w-2/3 block">
             <div className="flex flex-col h-full items-center mt-10 m-4 md:mx-0">
               <p className="text-white font-semibold mb-10">Image</p>
 
               <div className="w-full md:max-w-[30rem] aspect-square flex flex-col items-center justify-center rounded-lg transition duration-100 border border-neutral-500/30 hover:border-neutral-500/25 bg-gradient-to-b from-neutral-800/40 via-neutral-800/20 shadow-xl shadow-accentColor2/5 p-2 group">
-                {/* w-[80%] md:w-full max-w-[95vw] sm:max-w-[80vw] md:max-w-[70vw] lg:max-w-[60vw] md:aspect-[6/3] aspect-square */}
                 <div className="text-primaryColor flex h-full w-full items-center justify-center rounded-lg relative">
                   {state.imageUrl ? (
                     <img

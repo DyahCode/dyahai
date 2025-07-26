@@ -85,7 +85,6 @@ const TermsServicePage = () => {
         tier={tier}
       />
       <section className="pt-[8dvh] relative w-full h-full flex flex-col items-center">
-        {/* <section className="pt-[8dvh] w-full h-full flex flex-col items-center justify-start md:justify-center md:pt-[8dvh] overflow-y-auto md:overflow-hidden"> */}
 
         {/* Box */}
         <div className="container py-20">

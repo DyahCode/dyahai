@@ -10,16 +10,11 @@ const TransactionHistory = () => {
   async function loadTrx() {
     try {
       const fetchedTrx = await actor.get_transaction();
-      console.log("fetched:", fetchedTrx);
-
       const ResultTrx = fetchedTrx.map((trx) => {
         return JSON.parse(trx)
       });
-
       setTrx(ResultTrx);
-      console.log("setTrx :>>", ResultTrx);
     } catch (error) {
-      console.error("Error loading Trx:", error);
     }
   }
 

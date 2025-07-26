@@ -70,12 +70,7 @@ const ProfilePage = () => {
           <section className="bg-secondaryColor border-borderShade text-fontPrimaryColor right-0 w-fit lg:min-w-[25rem] lg:w-[25rem] border-l-2 border-opacity-50 order-last flex flex-col justify-between p-2 lg:py-8 lg:px-10">
             {/* section atas */}
             <div className="">
-              {/* <div className="flex items-center justify-between py-3 text-sm">
-                <div className="w-full line-clamp-1 font-medium min-h-2">
-                  {principalId}
-                </div>
-                <div>free</div>
-              </div> */}
+
 
               <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
 

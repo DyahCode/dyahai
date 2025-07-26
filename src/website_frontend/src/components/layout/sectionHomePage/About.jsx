@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 import Button from "../../ui/Button";
 import Swal from "sweetalert2";
@@ -9,7 +9,6 @@ import avatar2 from "../../../assets/images/about/image-gallery-2.jpg";
 import avatar3 from "../../../assets/images/about/image-gallery-3.jpg";
 
 const About = ({ Login, isLoggedIn }) => {
-  // const { Login, isLoggedIn } = useAuth();
   const containerRef = useRef(null);
 
   const itemTestimony = [
@@ -33,12 +32,10 @@ const About = ({ Login, isLoggedIn }) => {
     },
   ];
 
-  // Ambil ukuran container untuk menentukan lebar tiap item
   useEffect(() => {
     if (containerRef.current) {
       const width = containerRef.current.offsetWidth / 3;
       setItemWidth(width);
-      console.log('width :>> ', width);
     }
 
     const handleResize = () => {
@@ -52,11 +49,9 @@ const About = ({ Login, isLoggedIn }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // const controls = useAnimation();
   const x = useMotionValue(0);
-  const [itemWidth, setItemWidth] = useState(0); // w-[24rem]
+  const [itemWidth, setItemWidth] = useState(0);
   const [position, setPosition] = useState(1);
-  const totalItems = itemTestimony.length;
   const duplicatedItems = [...itemTestimony, ...itemTestimony];
   const halfLength = duplicatedItems.length / 2;
 
@@ -81,7 +76,7 @@ const About = ({ Login, isLoggedIn }) => {
     const interval = setInterval(() => {
 
       updatePosition(position + 1);
-    }, 3000); // Setiap 3 detik
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [position, itemWidth]);
@@ -122,12 +117,9 @@ const About = ({ Login, isLoggedIn }) => {
             </p>
           </div>
 
-          {/* carousel */}
           <div className="container relative p-0 overflow-hidden w-full h-fit py-10 items-center" ref={containerRef}>
-            {/* LEFT GRADIENT */}
             <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
 
-            {/* RIGHT GRADIENT */}
             <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" />
 
             <motion.div
@@ -137,9 +129,8 @@ const About = ({ Login, isLoggedIn }) => {
               {duplicatedItems.map((item, idx) => {
                 const offset = idx * itemWidth;
 
-                // Gunakan transformasi berbasis jarak dari titik x
                 const distance = useTransform(x, (val) => {
-                  const center = -val + itemWidth; // posisi tengah di layar (item ke-2)
+                  const center = -val + itemWidth; 
                   return Math.abs(center - offset);
                 });
 
@@ -179,9 +170,7 @@ const About = ({ Login, isLoggedIn }) => {
             Bring Your Imagination to Life with DyahAI Realistic Image
             Generator.
           </p>
-          {/* <Button onClick={handleGenerateNavigation} variant="primary">
-            Try Now
-          </Button> */}
+
           <Button
             variant="primary"
             size="md"
