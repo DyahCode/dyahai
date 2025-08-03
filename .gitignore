@@ -24,9 +24,4 @@ dist/
 # environment variables
 .env
 .env.local
-
-delegation123.txt
-
-init-args.did
-ledger.wasm
-ledger.did
+canister_ids.json

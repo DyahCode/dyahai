@@ -1,10 +1,10 @@
-use ic_cdk::{ init, storage,  query, update};
+use ic_cdk::{ init,  query, update};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 use candid::Principal;
 
 
-type UserStore = BTreeMap<Principal, UserData>;
+pub type UserStore = BTreeMap<Principal, UserData>;
 
 use candid::{CandidType, Deserialize};
 
@@ -19,7 +19,7 @@ pub struct UserData {
 
 thread_local! {
     // Penyimpanan untuk Principal dan daftar gambar mereka
-    static USERS_STORE: RefCell<UserStore> = RefCell::default();
+    pub static USERS_STORE: RefCell<UserStore> = RefCell::default();
 }
 
 #[init]
@@ -119,20 +119,4 @@ pub fn get_user_data(principal: Principal) -> UserData {
 #[query]
 pub fn is_registered(principal: Principal) -> bool {
     USERS_STORE.with(|user| user.borrow().contains_key(&principal))
-}
-
-pub fn user_pre_upgrade() {
-    USERS_STORE.with(|user| {
-        storage::stable_save((user.borrow().clone(),)).unwrap();
-    });
-    ic_cdk::println!("Pre-upgrade: Data saved to stable memory.");
-}
-
-pub fn user_post_upgrade() {
-    // Memulihkan USER_STORE dari stable memory setelah upgrade
-    let (restored_user,): (UserStore,) = storage::stable_restore().unwrap();
-    USERS_STORE.with(|user| {
-        *user.borrow_mut() = restored_user;
-    });
-    ic_cdk::println!("Post-upgrade: Data users restored from stable memory.");
 }

@@ -1,11 +1,12 @@
+
+use base64::{engine::general_purpose, Engine as _};
+use candid::{CandidType, Deserialize};
 use ic_cdk::api::management_canister::http_request::{
-    http_request, CanisterHttpRequestArgument, HttpHeader, HttpMethod,
-    TransformArgs, TransformContext, TransformFunc, HttpResponse,
+    http_request, CanisterHttpRequestArgument, HttpHeader, HttpMethod, HttpResponse, TransformArgs,
+    TransformContext, TransformFunc,
 };
 use ic_cdk::{query, update};
-use candid::{CandidType, Deserialize, Func};
 use serde::Serialize;
-use base64::{engine::general_purpose, Engine as _};
 
 #[derive(Serialize)]
 struct InputPayload {
@@ -26,16 +27,16 @@ struct InputImages {
     output_format: String,
 }
 
-#[derive(CandidType, Deserialize)]
-struct FileResponse {
-    filename: String,
-    file_data: Vec<u8>,
-}
+// #[derive(CandidType, Deserialize)]
+// struct FileResponse {
+//     filename: String,
+//     file_data: Vec<u8>,
+// }
 
-#[derive(Deserialize)]
-struct RunResponse {
-    id: String,
-}
+// #[derive(Deserialize)]
+// struct RunResponse {
+//     id: String,
+// }
 
 #[derive(CandidType, Deserialize)]
 pub struct StyleStatusResult {
@@ -43,7 +44,7 @@ pub struct StyleStatusResult {
     pub image: Option<Vec<u8>>,
 }
 
-#[query]
+#[query(name = "transform")]
 fn transform(raw: TransformArgs) -> HttpResponse {
     HttpResponse {
         status: raw.response.status,
@@ -52,115 +53,51 @@ fn transform(raw: TransformArgs) -> HttpResponse {
     }
 }
 
+const FLASK_BASE: &str = "https://pure-readily-squid.ngrok-free.app/style";
+
 #[update]
 pub async fn send_http_post(source_image: String, target_image: String) -> String {
+    ic_cdk::println!("[DEBUG] Source URL: {}", source_image);
+    ic_cdk::println!("[DEBUG] Target URL: {}", target_image);
 
-    ic_cdk::println!("[DEBUG] Source image size: {}", source_image.len());
-    ic_cdk::println!("[DEBUG] Target image size: {}", target_image.len());
-
-    // let source_b64 = general_purpose::STANDARD.encode(&source_image);
-    // let target_b64 = general_purpose::STANDARD.encode(&target_image);
-
-    // ic_cdk::println!("[DEBUG] Source image (base64, truncated): {}", &source_b64[..100.min(source_b64.len())]);
-    // ic_cdk::println!("[DEBUG] Target image (base64, truncated): {}", &target_b64[..100.min(target_b64.len())]);
-
-    let url = "https://api.runpod.ai/v2/5mda0g6op5ezbx/run";
-
+    let url = format!("{}/run", FLASK_BASE); // POST ke Flask
 
     let payload = InputPayload {
-        input: InputImages {
-            source_image: source_image,
-            target_image: target_image,
-            source_indexes: "-1".to_string(),
-            target_indexes: "-1".to_string(),
-            background_enhance: true,
-            face_restore: true,
-            face_upsample: true,
-            upscale: 1,
-            codeformer_fidelity: 0.2,
-            output_format: "JPEG".to_string(),
-        },
-    };
+        input : InputImages {
+        source_image,
+        target_image,
+        source_indexes: "-1".to_string(),
+        target_indexes: "-1".to_string(),
+        background_enhance: true,
+        face_restore: true,
+        face_upsample: true,
+        upscale: 1,
+        codeformer_fidelity: 0.2,
+        output_format: "JPEG".to_string(),
+    }};
 
     let json_payload = serde_json::to_vec(&payload).expect("Failed to serialize payload");
 
     let request_headers = vec![
         HttpHeader {
-            name: "Host".to_string(),
-            value: "api.runpod.ai".to_string(),
-        },
-        
-        HttpHeader {
-            name: "Authorization".to_string(),
-            value: "{YOUR_API_KEY}".to_string(),
-        },
-
-        HttpHeader {
-            name: "User-Agent".to_string(),
-            value: "demo_HTTP_POST_canister".to_string(),
-        },
-        HttpHeader {
-            name: "Idempotency-Key".to_string(),
-            value: "UUID-123456789".to_string(),
-        },
-        HttpHeader {
             name: "Content-Type".to_string(),
-            value: "application/json".to_string(), // <--- penting!
+            value: "application/json".to_string(),
+        },
+        HttpHeader {
+            name: "X-Idempotency-Key".to_string(),
+            value: ic_cdk::api::time().to_string(),
         },
     ];
 
     let request = CanisterHttpRequestArgument {
-        url: url.to_string(),
-        max_response_bytes: None,
+        url,
+        max_response_bytes: Some(2_000_000),
         method: HttpMethod::POST,
         headers: request_headers,
         body: Some(json_payload),
         transform: Some(TransformContext {
-            function: TransformFunc(Func {
-                principal: ic_cdk::id(),
-                method: "transform".to_string(),
-            }),
-            context: vec![],
-        }),
-    };
-
-    match http_request(request, 10_000_000_000).await {
-            Ok((response,)) => {
-                let body = String::from_utf8_lossy(&response.body);
-                ic_cdk::println!("[DEBUG] POST STYLE JSON: {}", body);
-                match serde_json::from_str::<RunResponse>(&body) {
-                    Ok(run_response) => run_response.id,
-                    Err(_) => "".to_string(),
-                }
-            }
-            Err((_r, m)) => {
-                m.to_string()
-            }
-
-        }
-
-}
-
-#[update]
-pub async fn check_style_status(job_id: String) -> StyleStatusResult {
-    ic_cdk::println!("[DEBUG] Job ID: {}", job_id); 
-
-    let url = format!("https://api.runpod.ai/v2/5mda0g6op5ezbx/status/{}", job_id);
-
-    let headers = vec![HttpHeader {
-        name: "Authorization".to_string(),
-        value: "Bearer rpa_RMCSD2B6VUZU6I4102T3B7YB2V7AUIIWVORZNQ4Tthds79".to_string(),
-    }];
-
-    let request = CanisterHttpRequestArgument {
-        url,    
-        max_response_bytes: Some(2_000_000),
-        method: HttpMethod::GET,
-        headers,
-        body: None,
-        transform: Some(TransformContext {
-            function: TransformFunc(Func {
-                principal: ic_cdk::id(),
+            function: TransformFunc(candid::Func {
+                principal: ic_cdk::api::id(),
                 method: "transform".to_string(),
             }),
             context: vec![],
@@ -170,76 +107,108 @@ pub async fn check_style_status(job_id: String) -> StyleStatusResult {
     match http_request(request, 10_000_000_000).await {
         Ok((response,)) => {
             let body_str = String::from_utf8_lossy(&response.body);
-            ic_cdk::println!("[DEBUG] HTTP Response Body Length: {}", body_str.len());
+            ic_cdk::println!("[DEBUG] Raw response: {}", body_str);
 
-            // Usahakan parse JSON
             if let Ok(value) = serde_json::from_str::<serde_json::Value>(&body_str) {
-                let status = value.get("status").and_then(|s| s.as_str()).unwrap_or("INVALID");
+                let status = value
+                    .get("status")
+                    .and_then(|s| s.as_str())
+                    .unwrap_or("INVALID");
+                ic_cdk::println!("[DEBUG] Status: {}", status);
 
-                ic_cdk::println!("[DEBUG] Parsed Status Field: {}", status);
-
-                let image_b64 = value.get("output")
-                .and_then(|o| {
-                    ic_cdk::println!("[DEBUG] Output field found");
-
-                    // Cetak seluruh isi output jika ingin lihat semua isinya
-                    ic_cdk::println!("[DEBUG] Output content: {:?}", o);
-
-                    o.get("image")
-                })
-                .and_then(|i| {
-                    ic_cdk::println!("[DEBUG] Image field found");
-
-                    let img_url = i.as_str();
-                    ic_cdk::println!("[DEBUG] Raw image (base64 or URL): {:?}", img_url);
-
-                    img_url
-                });
-
+                let image_b64 = value
+                    .get("output")
+                    .and_then(|o| o.get("image"))
+                    .and_then(|i| i.as_str());
 
                 if let Some(b64_str) = &image_b64 {
-                    ic_cdk::println!("[DEBUG] Base64 image string length: {}", b64_str.len());
-                } else {
-                    ic_cdk::println!("[DEBUG] No base64 image found");
+                    ic_cdk::println!("[DEBUG] Base64 length: {}", b64_str.len());
                 }
 
-                let decoded_image = image_b64
-                    .and_then(|s| {
-                        let decoded = general_purpose::STANDARD.decode(s);
-                        match &decoded {
-                            Ok(data) => ic_cdk::println!("[DEBUG] Decoded image length: {}", data.len()),
-                            Err(e) => ic_cdk::println!("[DEBUG] Failed to decode base64 image: {}", e),
-                        }
-                        decoded.ok()
-                    });
-
-                let final_status = if decoded_image.is_some() {
-                    "COMPLETED".to_string()
-                } else {
-                    status.to_string()
-                };
-
-                ic_cdk::println!("[DEBUG] Final status: {}", final_status);
-
-                return StyleStatusResult {
-                    status: final_status,
-                    image: decoded_image,
-                };
-            }
-
-
-            // Fallback jika parsing JSON gagal
-            ic_cdk::println!("[DEBUG] Failed to parse response JSON.");
-            StyleStatusResult {
-                status: "INVALID".to_string(),
-                image: None,
+                let decoded_image =
+                    image_b64.and_then(|s| general_purpose::STANDARD.decode(s).ok());
+                format!("{:?}",decoded_image)
+            } else {
+                ic_cdk::println!("[DEBUG] Failed to parse JSON.");
+                format!("")
             }
         }
-        Err((_r, m)) => StyleStatusResult {
-            status: format!("ERROR: {}", m),
-            image: None,
-        },
+        Err((_r, m)) => {
+            m.to_string()
+        }
     }
-
 }
 
+// #[update]
+// pub async fn check_style_status(job_id: String) -> StyleStatusResult {
+//     ic_cdk::println!("[DEBUG] Checking job_id: {}", job_id);
+
+//     let url = format!("{}/status/{}", FLASK_BASE, job_id);
+
+//     let request = CanisterHttpRequestArgument {
+//         url,
+//         max_response_bytes: Some(2_000_000),
+//         method: HttpMethod::GET,
+//         headers: vec![
+//             HttpHeader {
+//             name: "X-Idempotency-Key".to_string(),
+//             value: ic_cdk::api::time().to_string(),
+//         }],
+//         body: None,
+//         transform: Some(TransformContext {
+//             function: TransformFunc(candid::Func {
+//                 principal: ic_cdk::api::id(),
+//                 method: "transform".to_string(),
+//             }),
+//             context: vec![],
+//         }),
+//     };
+
+//     match http_request(request, 21_000_000_000).await {
+//         Ok((response,)) => {
+//             let body_str = String::from_utf8_lossy(&response.body);
+//             ic_cdk::println!("[DEBUG] Raw response: {}", body_str);
+
+//             if let Ok(value) = serde_json::from_str::<serde_json::Value>(&body_str) {
+//                 let status = value
+//                     .get("status")
+//                     .and_then(|s| s.as_str())
+//                     .unwrap_or("INVALID");
+//                 ic_cdk::println!("[DEBUG] Status: {}", status);
+
+//                 let image_b64 = value
+//                     .get("output")
+//                     .and_then(|o| o.get("image"))
+//                     .and_then(|i| i.as_str());
+
+//                 if let Some(b64_str) = &image_b64 {
+//                     ic_cdk::println!("[DEBUG] Base64 length: {}", b64_str.len());
+//                 }
+
+//                 let decoded_image =
+//                     image_b64.and_then(|s| general_purpose::STANDARD.decode(s).ok());
+
+//                 let final_status = if decoded_image.is_some() {
+//                     "COMPLETED".to_string()
+//                 } else {
+//                     status.to_string()
+//                 };
+
+//                 StyleStatusResult {
+//                     status: final_status,
+//                     image: decoded_image,
+//                 }
+//             } else {
+//                 ic_cdk::println!("[DEBUG] Failed to parse JSON.");
+//                 StyleStatusResult {
+//                     status: "INVALID".to_string(),
+//                     image: None,
+//                 }
+//             }
+//         }
+//         Err((_r, m)) => StyleStatusResult {
+//             status: format!("ERROR: {}", m),
+//             image: None,
+//         },
+//     }
+// }

@@ -444,9 +444,9 @@ const GeneratePage = () => {
         imageUrl,
         selectedStyle.image
       );
-      console.log("dari response backend",response);
+      console.log("dari response backend >>>>>",response);
       const jobIdText = new TextDecoder().decode(response);
-      console.log("bawah jobtext",jobIdText);
+      console.log("bawah jobtext >>>>>>>>",jobIdText);
       await pollUntilReady(jobIdText);
     } catch (error) {
     }
@@ -462,7 +462,7 @@ const GeneratePage = () => {
     while (attempt < maxRetries) {
       try {
         const result = await actor.check_style_status(jobId);
-        console.log("result: ", result.status);
+        console.log("result>>>>>>>>: ", result.status);
         if (result.status === "COMPLETED" && result.image) {
 
           const byteArray = result.image[0];

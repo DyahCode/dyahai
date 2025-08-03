@@ -1,32 +1,34 @@
 type StyleStatusResult = record {
     status : text;
-    image : opt vec nat8
+    image : opt vec nat8;
+};
+
+type HttpHeader = record { name: text; value: text };            // boleh juga pakai { name: text; value: text }
+type HttpResponse = record {
+    status  : nat16;                                // <- gunakan "status", bukan "status_code"
+    headers : vec HttpHeader;
+    body    : blob;
+};
+type TransformArgs = record {
+    response : HttpResponse;
+    context  : blob;                                // <- WAJIB ada
 };
 
 service : {
     "send_http_post_request" : (text, text) -> (blob);
-    "send_http_post" : (text, text) -> (text);
-    "check_style_status" : (text) -> (StyleStatusResult);
-    "initialize_credit" : () -> (text);
-    "get_balance" : () -> (nat8);
-    "get_images_by_principal" : () -> (vec text);
-    "delete_image_by_index" : (nat64) -> ();
-    "save_image_to_store" : (text) -> ();
-    "get_tier" : () -> (text);
+    "send_http_post"         : (text, text) -> (text);
+    "check_style_status"     : (text) -> (StyleStatusResult);
+    // "check_balance" : () -> (text);
+    // "tf_balance" : () -> (text);
+    "initialize_credit"      : () -> (text);
+    "get_balance"            : () -> (nat8);
+    "get_images_by_principal": () -> (vec text);
+    "delete_image_by_index"  : (nat64) -> ();
+    "save_image_to_store"    : (text) -> ();
+    "get_tier"               : () -> (text);
     "get_account_id_for_canister" : () -> (text);
-    "get_tx_summary" : (nat64, nat64, text, text, text) -> (text);
-    "get_transaction" : () -> (vec text);
-    "check_balance" : () -> (text);
-    "tf_balance" : () -> (text);
-    "transform": (record {
-        response : record {
-            status_code : nat16;
-            headers : vec record { text; text };
-            body : blob;
-        };
-    }) -> (record {
-        status_code : nat16;
-        headers : vec record { text; text };
-        body : blob;
-    }) query;
+    "get_tx_summary"         : (nat64, nat64, text, text, text) -> (text);
+    "get_transaction"        : () -> (vec text);
+
+    "transform" : (TransformArgs) -> (HttpResponse) query;
 }

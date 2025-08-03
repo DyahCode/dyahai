@@ -2,16 +2,26 @@ pub mod http;
 mod storages;
 mod transaction;
 mod users_store;
-use crate::http::StyleStatusResult;
+
+// use crate::http::StyleStatusResult;
 use crate::transaction::ParsedTransaction;
 use crate::users_store::{UserData, UserTier};
-use candid::{Nat, Principal};
-use ic_cdk::api;
-use ic_cdk::api::management_canister::http_request::{HttpResponse, TransformArgs};
-use ic_cdk::{post_upgrade, pre_upgrade, query, update};
+use candid::{Nat, Principal,CandidType, Deserialize};
+use ic_cdk::{api,post_upgrade, pre_upgrade, query, update, api::management_canister::http_request::{HttpResponse, TransformArgs}};
 use ic_ledger_types::{Memo};
 use num_bigint::BigUint;
 use serde_json::to_string;
+use crate::transaction::{TRXStore, TRX_STORE};
+use crate::users_store::{UserStore, USERS_STORE};
+use crate::storages::{ImageStore, IMAGE_STORE};
+use ic_cdk::storage;
+
+#[derive(CandidType, Deserialize)]
+pub struct AppState {
+    pub trx_store: TRXStore,
+    pub users_store: UserStore,
+    pub image_store: ImageStore,
+}
 
 #[ic_cdk::update]
 pub async fn check_balance() -> String {
@@ -262,6 +272,9 @@ pub async fn save_image_to_store(cid: String) {
 #[update]
 pub async fn initialize_credit() -> String {
     let principal = ic_cdk::caller();
+    if principal == Principal::anonymous() {
+        ic_cdk::trap("Anonymous principal not allowed");
+    }
     if !users_store::is_registered(principal) {
         users_store::save_user(principal.clone());
     }
@@ -321,16 +334,32 @@ pub async fn delete_image_by_index(index: usize) {
 
 #[pre_upgrade]
 fn pre_upgrade() {
-    storages::storage_pre_upgrade();
-    transaction::trx_pre_upgrade();
-    users_store::user_pre_upgrade();
+    let trx = TRX_STORE.with(|s| s.borrow().clone());
+    let users = USERS_STORE.with(|s| s.borrow().clone());
+    let images = IMAGE_STORE.with(|s| s.borrow().clone());
+
+    let state = AppState {
+        trx_store: trx,
+        users_store: users,
+        image_store: images,
+    };
+
+    storage::stable_save((state,)).unwrap();
+    ic_cdk::println!("✅ Pre-upgrade: All state saved.");
 }
 
 #[post_upgrade]
 fn post_upgrade() {
-    storages::storage_post_upgrade();
-    transaction::trx_post_upgrade();
-    users_store::user_post_upgrade();
+    let Ok((state,)) = storage::stable_restore::<(AppState,)>() else {
+        ic_cdk::trap("❌ Failed to restore state");
+    };
+
+    TRX_STORE.with(|s| *s.borrow_mut() = state.trx_store);
+    USERS_STORE.with(|s| *s.borrow_mut() = state.users_store);
+    IMAGE_STORE.with(|s| *s.borrow_mut() = state.image_store);
+
+    ic_cdk::println!("✅ Post-upgrade: All state restored.");
 }
+
 
 ic_cdk::export_candid!();
