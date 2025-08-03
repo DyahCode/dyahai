@@ -1,4 +1,4 @@
-use ic_cdk::{  query, storage, update};
+use ic_cdk::{  query, update};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 use candid::Principal;
@@ -105,10 +105,10 @@ pub async fn get_parsed_transaction(block_height: u64,message : String) -> Resul
     Ok(parsed)
 }
 
-type TRXStore = BTreeMap<Principal, Vec<ParsedTransaction>>;
+pub type TRXStore = BTreeMap<Principal, Vec<ParsedTransaction>>;
 
 thread_local! {
-    static TRX_STORE: RefCell<TRXStore> = RefCell::default();
+    pub static TRX_STORE: RefCell<TRXStore> = RefCell::default();
 }
 
 #[update]
@@ -151,29 +151,3 @@ pub fn retrieve_trx(principal: Principal) -> Vec<String> {
 }
 
 
-
-
-
-
-pub fn trx_pre_upgrade() {
-    TRX_STORE.with(|store| {
-        storage::stable_save((store.borrow().clone(),)).unwrap();
-    });
-    ic_cdk::println!("Pre-upgrade: Data saved to stable memory.");
-}
-
-pub fn trx_post_upgrade() {
-    let restored_store: Result<(TRXStore,), String> = storage::stable_restore();
-    
-    match restored_store {
-        Ok((store,)) => {
-            TRX_STORE.with(|blockresult| {
-                *blockresult.borrow_mut() = store;
-            });
-            ic_cdk::println!("Post-upgrade: Data restored from stable memory.");
-        }
-        Err(e) => {
-            ic_cdk::println!("Error restoring data from stable memory: {}", e);
-        }
-    }
-}

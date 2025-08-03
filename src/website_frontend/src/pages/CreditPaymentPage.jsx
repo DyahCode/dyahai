@@ -354,7 +354,7 @@ const CreditPaymentPage = () => {
                 </div>
 
                 <p className="text-sm text-gray-500">
-                  Jangan tutup jendela ini.
+                  Don't close this window.
                 </p>
               </>
             )}

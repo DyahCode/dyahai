@@ -8,18 +8,18 @@ let clientInstance = null;
 
 export const getStorachaClient = async () => {
     if (clientInstance) return clientInstance;
-    const principal = Signer.parse(process.env.CANISTER_KEY);
+    const principal = Signer.parse(process.env.STORACHA_API_KEY);
     const store = new StoreMemory();
     const client = await Client.create({
         principal,
         store,
         space: {
             name: "my-space",
-            enableIndex: true, // PENTING!
+            enableIndex: true,
         },
         });
 
-    const proof = await Proof.parse(process.env.CANISTER_PROOF);
+    const proof = await Proof.parse(process.env.STORACHA_PROOF);
     const space = await client.addSpace(proof);
     await client.setCurrentSpace(space.did());
     clientInstance = client;

@@ -159,7 +159,7 @@ const PricingPage = () => {
     return icp.toFixed(2);
   };
 
-  const handleTuku = (plan) => {
+  const handleBuyying = (plan) => {
     if (!isLoggedIn) {
       return Swal.fire({
         title: "Please log in",
@@ -181,8 +181,6 @@ const PricingPage = () => {
     const { icp, e8s } = creditCalculate(plan.credit);
 
     setSelectedPlan(plan);
-    setInputCredit(plan.credit);
-    setIcpAmount(icp);
     setIcpInE8s(e8s);
     setShowInvoice(true);
   };
@@ -267,7 +265,7 @@ const PricingPage = () => {
                   <div className="flex w-full justify-center items-center">
                     <button
                       className={`${shouldShowButton(tier, plan.key, isLoggedIn) ? "w-full" : "hidden"} bg-accentColor flex items-center justify-center gap-x-4 rounded-full px-4 py-[10px] text-sm font-medium text-white  hover:bg-accentColor/80`}
-                      onClick={() => handleTuku(plan)}
+                      onClick={() => handleBuyying(plan)}
                     >
                       {plan.buttonText}
                     </button>
@@ -312,7 +310,7 @@ const PricingPage = () => {
                     <div className="flex w-full justify-center items-center">
                       <button
                         className={`${shouldShowButton(tier, plan.key, isLoggedIn) ? "w-80%" : "hidden"} bg-accentColor flex items-center justify-center gap-x-4 rounded-full px-4 py-[10px] text-sm font-medium text-white  hover:bg-accentColor/80`}
-                        onClick={() => handleTuku(plan)}
+                        onClick={() => handleBuyying(plan)}
                       >
                         {plan.buttonText}
                       </button>

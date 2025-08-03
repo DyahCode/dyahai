@@ -25,6 +25,8 @@ export const AuthProvider = ({ children }) => {
 
   const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
 
+  const host = process.env.DFX_NETWORK == "ic" ? "https://icp0.io" : "http://localhost:5000";
+
   useEffect(() => {
     const checkConnection = async () => {
       const isConnected = await window.ic?.plug?.isConnected();
@@ -49,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     if (!connected) {
       await window.ic.plug.requestConnect({
         whitelist,
-        host: "https://icp0.io",
+        host: host,
         onConnectionUpdate: async () => {
         },
       });

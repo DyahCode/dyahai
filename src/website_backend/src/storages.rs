@@ -1,12 +1,12 @@
-use ic_cdk::{  query, storage, update};
+use ic_cdk::{  query, update};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 use candid::Principal;
 
-type ImageStore = BTreeMap<Principal, Vec<String>>;
+pub type ImageStore = BTreeMap<Principal, Vec<String>>;
 
 thread_local! {
-    static IMAGE_STORE: RefCell<ImageStore> = RefCell::default();
+    pub static IMAGE_STORE: RefCell<ImageStore> = RefCell::default();
 }
 
 #[update]
@@ -59,31 +59,4 @@ pub fn delete_image(principal: Principal, index: usize) -> Vec<String> {
         // Kembalikan daftar CID yang tersisa setelah penghapusan
         store.get(&principal).cloned().unwrap_or_default()
     })
-}
-
-pub fn storage_pre_upgrade() {
-    // Menyimpan seluruh IMAGE_STORE ke stable memory sebelum upgrade
-    IMAGE_STORE.with(|store| {
-        storage::stable_save((store.borrow().clone(),)).unwrap();
-    });
-    ic_cdk::println!("Pre-upgrade: Data saved to stable memory.");
-}
-
-pub fn storage_post_upgrade() {
-    // Memulihkan IMAGE_STORE dari stable memory setelah upgrade
-    let restored_store: Result<(ImageStore,), String> = storage::stable_restore();
-    
-    match restored_store {
-        Ok((store,)) => {
-            // Jika pemulihan berhasil, simpan data ke IMAGE_STORE
-            IMAGE_STORE.with(|image_store| {
-                *image_store.borrow_mut() = store;
-            });
-            ic_cdk::println!("Post-upgrade: Data restored from stable memory.");
-        }
-        Err(e) => {
-            // Jika pemulihan gagal, tangani error atau lakukan tindakan lain
-            ic_cdk::println!("Error restoring data from stable memory: {}", e);
-        }
-    }
 }
