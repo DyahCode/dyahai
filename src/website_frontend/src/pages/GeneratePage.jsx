@@ -394,7 +394,7 @@ const GeneratePage = () => {
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
       console.log("userImageUrl:", userImageUrl);
 
-      await uploadImageToBackend(userImageUrl);
+      await uploadImageToBackend(userImageUrl,storachaCid);
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -415,12 +415,13 @@ const GeneratePage = () => {
     return new Blob([byteNumbers], { type });
   };
 
-  const uploadImageToBackend = async (imageUrl) => {
+  const uploadImageToBackend = async (imageUrl,cid) => {
     try {
       const { selectedStyle } = state;
 
       console.log("imageUrl:", imageUrl);
       console.log("styleUrl:", selectedStyle.image);
+      console.log("cid img:", cid);
 
       // // Fetch image utama
       // const imageRes = await fetch(imageUrl);
@@ -445,28 +446,20 @@ const GeneratePage = () => {
         selectedStyle.image
       );
       console.log("dari response backend >>>>>",response);
-      const jobIdText = new TextDecoder().decode(response);
-      console.log("bawah jobtext >>>>>>>>",jobIdText);
-      await pollUntilReady(jobIdText);
+      // const jobIdText = new TextDecoder().decode(response);
+      // console.log("bawah jobtext >>>>>>>>",jobIdText);
+      await pollUntilReady(response);
+      await removeContentFromStoracha(cid);
     } catch (error) {
+      await removeContentFromStoracha(cid);
     }
   };
 
 
 
-  const pollUntilReady = async (jobId) => {
-    const maxRetries = 30;
-    const delay = 10000;
-    let attempt = 0;
-
-    while (attempt < maxRetries) {
+  const pollUntilReady = async (response) => {
       try {
-        const result = await actor.check_style_status(jobId);
-        console.log("result>>>>>>>>: ", result.status);
-        if (result.status === "COMPLETED" && result.image) {
-
-          const byteArray = result.image[0];
-          const blob = new Blob([byteArray], { type: "image/png" });
+          const blob = new Blob([response], { type: "image/png" });
           const dataUrl = await new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -477,17 +470,10 @@ const GeneratePage = () => {
           const storachaResult = await uploadBlobToStoracha(blob);
 
           await actor.save_image_to_store(storachaResult.toString());
-          return;
-        } else if (result.status === "FAILED") {
-          showAlert("error", "Error", "Image generation failed.");
-          return;
-        }
       } catch (error) {
+        showAlert("error", "Error", "Image generation failed.");
+        return;
       }
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      attempt++;
-    }
-    showAlert("error", "Timeout", "Image generation took too long.");
   };
 
   const convertImageToBase64 = async (imageUrl) => {

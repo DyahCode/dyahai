@@ -34,16 +34,17 @@ export const uploadBlobToStoracha = async (file) => {
 
 export const removeAllContentFromStoracha = async () => {
     const client = await getStorachaClient();
-    const contents = await client.capability.upload.list({ cursor: '', size: 5 });
+    const contents = await client.capability.upload.list();
     if (contents.size === 0) {
         return;
     }
 
     for (const content of contents.results) {
-        const rootBytes = content.root;
+        const rootBytes = content.root["/"];
         const rootLink = CID.decode(rootBytes).link();
         try {
             await client.remove(rootLink, { shards: true });
+            console.log("deleted content from storacha");
         } catch (error) {
         }
     }
