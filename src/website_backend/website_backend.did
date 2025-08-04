@@ -1,7 +1,7 @@
-type StyleStatusResult = record {
-    status : text;
-    image : opt vec nat8;
-};
+// type StyleStatusResult = record {
+//     status : text;
+//     image : opt vec nat8;
+// };
 
 type HttpHeader = record { name: text; value: text };            // boleh juga pakai { name: text; value: text }
 type HttpResponse = record {
@@ -17,7 +17,7 @@ type TransformArgs = record {
 service : {
     "send_http_post_request" : (text, text) -> (blob);
     "send_http_post"         : (text, text) -> (text);
-    "check_style_status"     : (text) -> (StyleStatusResult);
+    // "check_style_status"     : (text) -> (StyleStatusResult);
     // "check_balance" : () -> (text);
     // "tf_balance" : () -> (text);
     "initialize_credit"      : () -> (text);
