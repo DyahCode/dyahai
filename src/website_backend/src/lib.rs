@@ -3,7 +3,6 @@ mod storages;
 mod transaction;
 mod users_store;
 
-// use crate::http::StyleStatusResult;
 use crate::transaction::ParsedTransaction;
 use crate::users_store::{UserData, UserTier};
 use candid::{Nat, Principal,CandidType, Deserialize};
@@ -131,7 +130,6 @@ pub async fn get_tx_summary(
                             principal
                         );
 
-                        // 💳 Tambahkan kredit sesuai plan
                         match new_tier {
                             UserTier::Premium => {
                                 users_store::add_credit(principal, 50);
@@ -147,7 +145,7 @@ pub async fn get_tx_summary(
                                     principal
                                 );
                             }
-                            _ => {} // Basic tidak menambah credit
+                            _ => {}
                         }
                     }
 
@@ -161,7 +159,6 @@ pub async fn get_tx_summary(
                 );
             }
 
-            // Simpan transaksi
             let trx_str = to_string(&tx).unwrap_or_else(|_| "{}".to_string());
             transaction::save_trx(principal, tx);
 
@@ -186,29 +183,23 @@ pub fn get_transaction() -> Vec<String> {
 
 #[ic_cdk::query]
 pub fn calculate_credit_from_icp(amount: Nat) -> u64 {
-    // Sesuaikan harga dari frontend
     const ICP_PRICE_USD: f64 = 6.2;
     const GENERATE_PRICE: f64 = 0.1;
     const ICP_PRICE_XDR: f64 = 4.2;
     const REQUEST_IN_CYCLE: f64 = 10_800_000_000.0;
     const ICP_CYCLE: f64 = ICP_PRICE_XDR * 1_000_000_000_000.0;
 
-    // Hitung nilai 1 credit dalam ICP
     let new_generate_price = GENERATE_PRICE / ICP_PRICE_USD;
     let request_price = REQUEST_IN_CYCLE / ICP_CYCLE;
     let one_credit_is = new_generate_price + request_price;
 
-    // Konversi Nat (BigUint) ke f64
     let big_amount: &BigUint = &amount.0;
     let amount_e8s: f64 = big_amount.to_string().parse().unwrap_or(0.0);
 
-    // Konversi e8s ke ICP
     let icp = amount_e8s / 100_000_000.0;
 
-    // Hitung berapa kredit yang didapat
     let credit = icp / one_credit_is;
 
-    // Bulatkan ke bawah agar tidak memberikan kredit berlebih
     credit.floor() as u64
 }
 
@@ -230,7 +221,6 @@ pub async fn send_http_post_request(image_url: String, style_url: String) -> Vec
 
     let user_data = users_store::get_user_data(principal.clone());
 
-    // Validasi kredit
     match user_data.tier {
         users_store::UserTier::Basic | users_store::UserTier::Premium => {
             if user_data.credits == 0 {
@@ -239,11 +229,9 @@ pub async fn send_http_post_request(image_url: String, style_url: String) -> Vec
             }
         }
         users_store::UserTier::Ultimate => {
-            // Akses bebas
         }
     }
 
-    // Kirim langsung URL ke fungsi HTTP POST
     let response = http::send_http_post(image_url.clone(), style_url.clone()).await;
 
     ic_cdk::println!("Jumlah data respons: {:?}", response.len());
@@ -285,7 +273,6 @@ pub async fn initialize_credit() -> String {
 pub async fn get_balance() -> u8 {
     let principal = ic_cdk::caller();
 
-    // langsung ambil user_data
     let user_data = users_store::get_user_data(principal);
 
     ic_cdk::print(format!(
@@ -300,7 +287,6 @@ pub async fn get_balance() -> u8 {
 pub async fn get_tier() -> String {
     let principal = ic_cdk::caller();
 
-    // langsung ambil user_data
     let user_data = users_store::get_user_data(principal);
 
     ic_cdk::print(format!(

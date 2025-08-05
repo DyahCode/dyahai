@@ -195,9 +195,9 @@ const PricingPage = () => {
 
       const txResult = await TopupCredit(icpInE8s, "plan", 0, selectedPlan.key);
 
-      if (txResult.success) {
+      if (txResult.status === "success") {
         setTxStatus(txResult);
-        setPaymentStatus("success");
+        setPaymentStatus(txResult.status);
         setShowInvoice(false);
       } else if (txResult.status === "timeout") {
         setPaymentStatus("timeout");

@@ -160,7 +160,7 @@ const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
     await refreshCredit();
 
     return {
-      success: true,
+      status: "success",
       data: {
         blockHeight: result.height,
         summary,
@@ -168,8 +168,7 @@ const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
     };
   } catch (error) {
     return {
-      success: false,
-      status: "exception",
+      status: "reject",
       error,
     };
   }
