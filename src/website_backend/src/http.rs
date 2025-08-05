@@ -1,6 +1,5 @@
 
 use base64::{engine::general_purpose, Engine as _};
-use candid::{CandidType, Deserialize};
 use ic_cdk::api::management_canister::http_request::{
     http_request, CanisterHttpRequestArgument, HttpHeader, HttpMethod, HttpResponse, TransformArgs,
     TransformContext, TransformFunc,
@@ -27,23 +26,6 @@ struct InputImages {
     output_format: String,
 }
 
-// #[derive(CandidType, Deserialize)]
-// struct FileResponse {
-//     filename: String,
-//     file_data: Vec<u8>,
-// }
-
-// #[derive(Deserialize)]
-// struct RunResponse {
-//     id: String,
-// }
-
-#[derive(CandidType, Deserialize)]
-pub struct StyleStatusResult {
-    pub status: String,
-    pub image: Option<Vec<u8>>,
-}
-
 #[query(name = "transform")]
 fn transform(raw: TransformArgs) -> HttpResponse {
     HttpResponse {
@@ -53,14 +35,14 @@ fn transform(raw: TransformArgs) -> HttpResponse {
     }
 }
 
-const FLASK_BASE: &str = "https://pure-readily-squid.ngrok-free.app/style";
+const FLASK_BASE: &str = "https://dyahai-proxy.vercel.app/style";
 
 #[update]
 pub async fn send_http_post(source_image: String, target_image: String) -> Vec<u8> {
     ic_cdk::println!("[DEBUG] Source URL: {}", source_image);
     ic_cdk::println!("[DEBUG] Target URL: {}", target_image);
 
-    let url = format!("{}/run", FLASK_BASE); // POST ke Flask
+    let url = format!("{}/run", FLASK_BASE);
 
     let payload = InputPayload {
         input : InputImages {
@@ -85,7 +67,7 @@ pub async fn send_http_post(source_image: String, target_image: String) -> Vec<u
         },
         HttpHeader {
             name: "X-Idempotency-Key".to_string(),
-            value: ic_cdk::api::time().to_string(),
+            value: format!("{}{}", ic_cdk::api::caller().to_text(),ic_cdk::api::time().to_string()),
         },
     ];
 
@@ -104,7 +86,7 @@ pub async fn send_http_post(source_image: String, target_image: String) -> Vec<u
         }),
     };
 
-    match http_request(request, 10_000_000_000).await {
+    match http_request(request, 21_000_000_000).await {
         Ok((response,)) => {
             let body_str = String::from_utf8_lossy(&response.body);
             ic_cdk::println!("[DEBUG] Raw response: {}", body_str);

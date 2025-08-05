@@ -66,12 +66,12 @@ const CreditPaymentPage = () => {
 
       const txResult = await TopupCredit(icpInE8s, "credit", inputCredit, "");
 
-      if (txResult.success) {
+      if (txResult.status === "success") {
 
 
 
         setTxStatus(txResult);
-        setPaymentStatus("success");
+        setPaymentStatus(txResult.status);
         setInputCredit(0);
         setIcpAmount(0);
       } else if (txResult.status === "timeout") {
@@ -177,7 +177,7 @@ const CreditPaymentPage = () => {
                       PlugWallet information:
                     </span>
                     <div className="flex w-full h-full gap-x-2">
-                    
+
                       <div className="flex overflow-hidden  flex-col flex-1 border rounded-lg text-black text-xs md:text-sm justify-start gap-x-1 gap-y-2 p-1">
                         <div className="w-full flex i justify-center ">
                           From:
@@ -385,7 +385,7 @@ const CreditPaymentPage = () => {
                 </button>
               </>
             )}
-            {(paymentStatus === "reject") | (paymentStatus === "timeout") && (
+            {(paymentStatus === "reject") || (paymentStatus === "timeout") && (
               <>
                 <div className="flex flex-col items-center">
                   <svg
@@ -406,7 +406,7 @@ const CreditPaymentPage = () => {
                   onClick={() => setPaymentStatus("idle")}
                   className="mt-4 w-full rounded-full bg-gray-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-gray-800"
                 >
-                  Tutup
+                  Close
                 </button>
               </>
             )}

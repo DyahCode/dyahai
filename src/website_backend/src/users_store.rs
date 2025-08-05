@@ -18,13 +18,11 @@ pub struct UserData {
 
 
 thread_local! {
-    // Penyimpanan untuk Principal dan daftar gambar mereka
     pub static USERS_STORE: RefCell<UserStore> = RefCell::default();
 }
 
 #[init]
 fn init() {
-    // Inisialisasi kosong atau tindakan lain yang diperlukan
     ic_cdk::println!("Canister initialized.");
 }
 
@@ -42,7 +40,7 @@ pub enum UserTier {
 pub fn save_user(principal: Principal) {
     let data = UserData {
         credits: 3,
-        tier: UserTier::Basic, // Default tier
+        tier: UserTier::Basic,
     };
     USERS_STORE.with(|user| {
         user.borrow_mut().insert(principal.clone(), data);
@@ -65,7 +63,6 @@ pub fn upgrade_tier(principal: Principal, new_tier: UserTier) {
 
 #[update]
 pub fn add_credit(principal: Principal, additional_credit: u8) {
-    // Menambahkan credit ke pengguna yang sudah ada
     USERS_STORE.with(|user| {
         if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
             user_data.credits += additional_credit;
@@ -76,12 +73,26 @@ pub fn add_credit(principal: Principal, additional_credit: u8) {
     });
 }
 
+#[update]
+pub fn add_credit_for_dev(principalid: String) -> String {
+    let principal = Principal::from_text(principalid).unwrap();
+    USERS_STORE.with(|user| {
+        if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
+            user_data.credits += 5;
+            ic_cdk::println!("Added credit {} for principal: {}", 5, principal);
+            format!("Added credit {} for principal: {}", 5, principal)
+        } else {
+            format!("User with principal {} not found", principal)
+        }
+    })
+}
+
 #[query]
 pub fn get_credit(principal: Principal) -> u8 {
     USERS_STORE.with(|user| {
         user.borrow()
             .get(&principal)
-            .map(|u| u.credits.clone()) // ✔ ambil field-nya
+            .map(|u| u.credits.clone())
             .unwrap_or_else(|| ic_cdk::trap("User not found"))
     })
 }
@@ -93,7 +104,7 @@ pub fn reduction_credit(principal: Principal) {
     USERS_STORE.with(|user| {
         if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
             if user_data.credits > 0 {
-                user_data.credits += 1;
+                user_data.credits -= 1;
                 ic_cdk::println!("Reduced credit by 1 for principal: {}", principal);
             } else {
                 ic_cdk::trap(&format!("Insufficient credit for principal: {}", principal));
