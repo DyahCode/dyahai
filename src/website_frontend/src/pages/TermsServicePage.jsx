@@ -70,6 +70,9 @@ const termsData = [
   },
 ];
 
+
+
+
 const TermsServicePage = () => {
   const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
 
@@ -88,7 +91,7 @@ const TermsServicePage = () => {
 
         {/* Box */}
         <div className="container py-20">
-          <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group text-fontPrimaryColor mb-[600px]">
+          <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group text-fontPrimaryColor mb-[435px]">
             <div className="w-full flex flex-col gap-2 items-center md:w-[70%]">
               <span className="text-4xl font-bold">
                 Terms of Service – Dyah AI

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../provider/authProvider";
-import { uploadBlobToStoracha, removeContentFromStoracha } from "../hooks/authStoracha";
+import {
+  uploadBlobToStoracha,
+  removeContentFromStoracha,
+} from "../hooks/authStoracha";
 
 import Swal from "sweetalert2";
 import Button from "../components/ui/Button";
@@ -12,30 +15,53 @@ import { IoMdDownload } from "react-icons/io";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 
 import Navbar from "../components/layout/Navbar";
+import CardNotification from "../components/layout/CardNotification";
 
-const imageAstronout = "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg"
-const imageBackpacker = "https://bafybeicbpqiiibishqfergji5w2rpinbrwxg3lidshak4kpylwivdymuku.ipfs.w3s.link/Backpacker.jpg"
-const imageCyberpunk = "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg"
-const imageDetective = "https://bafybeidbim4pl7hd23xojeq725nuld5kercevmkrv3ujdqoe35q7z64k3y.ipfs.w3s.link/Detective.jpg"
-const imageDreamworks = "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg"
-const imageRenaissance = "https://bafybeihpeu2aznlixb4dmuuyakyd6zfkywvicja3gzzfuzztwpo4uo64bu.ipfs.w3s.link/Renaissance.jpg"
-const imageRetro = "https://bafybeid5xc6pzdkdul44uloo2n3s4fy67qx3q3uqh4civ4ay7rwrihwti4.ipfs.w3s.link/Retro.jpg"
-const imageSteampunk = "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg"
-const imageStreetwear = "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg"
-const imageSuperhero = "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg"
-const imageWasteland = "https://bafybeihterx5pdlv4yecxpfouyabl3sdswmgocycnqkii4aevshvlg74iu.ipfs.w3s.link/Wasteland.jpg"
+const imageAstronout =
+  "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
+const imageBackpacker =
+  "https://bafybeicbpqiiibishqfergji5w2rpinbrwxg3lidshak4kpylwivdymuku.ipfs.w3s.link/Backpacker.jpg";
+const imageCyberpunk =
+  "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg";
+const imageDetective =
+  "https://bafybeidbim4pl7hd23xojeq725nuld5kercevmkrv3ujdqoe35q7z64k3y.ipfs.w3s.link/Detective.jpg";
+const imageDreamworks =
+  "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg";
+const imageRenaissance =
+  "https://bafybeihpeu2aznlixb4dmuuyakyd6zfkywvicja3gzzfuzztwpo4uo64bu.ipfs.w3s.link/Renaissance.jpg";
+const imageRetro =
+  "https://bafybeid5xc6pzdkdul44uloo2n3s4fy67qx3q3uqh4civ4ay7rwrihwti4.ipfs.w3s.link/Retro.jpg";
+const imageSteampunk =
+  "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg";
+const imageStreetwear =
+  "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg";
+const imageSuperhero =
+  "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg";
+const imageWasteland =
+  "https://bafybeihterx5pdlv4yecxpfouyabl3sdswmgocycnqkii4aevshvlg74iu.ipfs.w3s.link/Wasteland.jpg";
 
-const imageArtisticW = "https://bafybeighc4i47mpv43e7grqb25a32tfbmodvujml6ab3nieklkamjejxyq.ipfs.w3s.link/Artistic.jpg"
-const imageCyberpunkW = "https://bafybeigszelbvuyn5cc7dacxxgq2e4eoql2cdn37ixy3cz73lcq34zvaum.ipfs.w3s.link/Cyberpunk.jpg"
-const imageDreamy = "https://bafybeia2i7aok5tdtrojxdwlsykkzbg7fj7a5lkj3uafelbtb5jptlfmmq.ipfs.w3s.link/Dreamy.jpg"
-const imageFashion = "https://bafybeiewlwtaavsx2wr6gmvixmfdrpuh2w7hako2sj3a5kj442z6gee4z4.ipfs.w3s.link/Fashion.jpg"
-const imageKorean = "https://bafybeihzldu2nmz6vktsdus36dkior2smf5jti5jrfpdrdjk3qdkkxvqwa.ipfs.w3s.link/Korean.jpg"
-const imageNature = "https://bafybeiby3zppnjdfuuyo2wcghv7g2dvgwsqgsbzlbwadpedvak6sqaux4m.ipfs.w3s.link/Nature.jpg"
-const imageRenaissanceW = "https://bafybeiesv7d6veak3wcfxfz4zrdxarvkkljcyzrdxlzw6f3rpvkwkpelui.ipfs.w3s.link/Renaissance.jpg"
-const imageRetroW = "https://bafybeie2yzo3rwvgsmognxbt5x3g6c4qmz5t5vx2qinfywhbkiuil3q6pa.ipfs.w3s.link/Retro.jpg"
-const imageSchool = "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg"
-const imageSoft = "https://bafybeigsa4lcv3mvemlnocgerre34w7lcfblcdmy5rh6oswbpbhnli4umm.ipfs.w3s.link/Soft.jpg"
-const imageSunset = "https://bafybeifw4mg2mx5y4zxoc5oeauidsknuzpo3327aqma5n5yqj2zwwumzz4.ipfs.w3s.link/Sunset.jpg"
+const imageArtisticW =
+  "https://bafybeighc4i47mpv43e7grqb25a32tfbmodvujml6ab3nieklkamjejxyq.ipfs.w3s.link/Artistic.jpg";
+const imageCyberpunkW =
+  "https://bafybeigszelbvuyn5cc7dacxxgq2e4eoql2cdn37ixy3cz73lcq34zvaum.ipfs.w3s.link/Cyberpunk.jpg";
+const imageDreamy =
+  "https://bafybeia2i7aok5tdtrojxdwlsykkzbg7fj7a5lkj3uafelbtb5jptlfmmq.ipfs.w3s.link/Dreamy.jpg";
+const imageFashion =
+  "https://bafybeiewlwtaavsx2wr6gmvixmfdrpuh2w7hako2sj3a5kj442z6gee4z4.ipfs.w3s.link/Fashion.jpg";
+const imageKorean =
+  "https://bafybeihzldu2nmz6vktsdus36dkior2smf5jti5jrfpdrdjk3qdkkxvqwa.ipfs.w3s.link/Korean.jpg";
+const imageNature =
+  "https://bafybeiby3zppnjdfuuyo2wcghv7g2dvgwsqgsbzlbwadpedvak6sqaux4m.ipfs.w3s.link/Nature.jpg";
+const imageRenaissanceW =
+  "https://bafybeiesv7d6veak3wcfxfz4zrdxarvkkljcyzrdxlzw6f3rpvkwkpelui.ipfs.w3s.link/Renaissance.jpg";
+const imageRetroW =
+  "https://bafybeie2yzo3rwvgsmognxbt5x3g6c4qmz5t5vx2qinfywhbkiuil3q6pa.ipfs.w3s.link/Retro.jpg";
+const imageSchool =
+  "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg";
+const imageSoft =
+  "https://bafybeigsa4lcv3mvemlnocgerre34w7lcfblcdmy5rh6oswbpbhnli4umm.ipfs.w3s.link/Soft.jpg";
+const imageSunset =
+  "https://bafybeifw4mg2mx5y4zxoc5oeauidsknuzpo3327aqma5n5yqj2zwwumzz4.ipfs.w3s.link/Sunset.jpg";
 
 const GeneratePage = () => {
   const {
@@ -291,7 +317,7 @@ const GeneratePage = () => {
     const base64Astronout = await convertImageToBase64(imageAstronout);
     const base64Backpacker = await convertImageToBase64(imageBackpacker);
     const { selectedStyle } = state;
-    console.log("style ",selectedStyle.image)
+    console.log("style ", selectedStyle.image);
 
     // console.log("Astronout Base64:", base64Astronout);
     console.log("Astronout Base64:", base64Astronout.length);
@@ -331,11 +357,12 @@ const GeneratePage = () => {
   const convertImageToPngBlob = async (fileOrBase64) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      
+
       // Jika input berupa File atau Blob, ubah jadi base64 URL
-      const url = typeof fileOrBase64 === "string" && fileOrBase64.startsWith("data:")
-        ? fileOrBase64
-        : URL.createObjectURL(fileOrBase64);
+      const url =
+        typeof fileOrBase64 === "string" && fileOrBase64.startsWith("data:")
+          ? fileOrBase64
+          : URL.createObjectURL(fileOrBase64);
 
       img.onload = () => {
         const canvas = document.createElement("canvas");
@@ -363,38 +390,63 @@ const GeneratePage = () => {
     });
   };
 
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationData, setNotificationData] = useState({
+    title: "",
+    message: "",
+    description: "",
+    actionUrl: null,
+    actionLabel: "",
+  });
 
   const handleGenerate = async () => {
     if (credit <= 0) {
-      showAlert(
-        "warning",
-        "WARNING!!!",
-        "Insufficient credit. Please add credit to generate images."
-      );
+      setNotificationData({
+        title: "Insufficient credit",
+        message: "You don’t have enough credit",
+        description: "Please add credit to generate images.",
+        actionUrl: () => setShowNotification(false),
+        actionLabel: "OK",
+      });
+      setShowNotification(true);
+      // showAlert(
+      //   "warning",
+      //   "WARNING!!!",
+      //   "Insufficient credit. Please add credit to generate images."
+      // );
       return;
     }
     const { selectedFile, selectedStyle } = state;
     if (!selectedFile || !selectedStyle) {
-      showAlert(
-        "warning",
-        "WARNING!!!",
-        !selectedFile
-          ? "Please upload an image first."
-          : "Please select a style first."
-      );
+      setNotificationData({
+        title: "Incomplete Input",
+        message: !selectedFile ? "No Image Uploaded" : "No Style Selected",
+        description: !selectedFile
+          ? "Please upload an image first before generating."
+          : "Please select a style first before generating.",
+        actionUrl: () => setShowNotification(false),
+        actionLabel: "OK",
+      });
+      setShowNotification(true);
+      // showAlert(
+      //   "warning",
+      //   "WARNING!!!",
+      //   !selectedFile
+      //     ? "Please upload an image first."
+      //     : "Please select a style first."
+      // );
       return;
     }
 
     setState((prev) => ({ ...prev, isLoading: true }));
     try {
       const blob = await convertImageToPngBlob(selectedFile);
-      
 
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
       console.log("userImageUrl:", userImageUrl);
 
-      await uploadImageToBackend(userImageUrl,storachaCid);
+      await uploadImageToBackend(userImageUrl, storachaCid);
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -415,7 +467,7 @@ const GeneratePage = () => {
     return new Blob([byteNumbers], { type });
   };
 
-  const uploadImageToBackend = async (imageUrl,cid) => {
+  const uploadImageToBackend = async (imageUrl, cid) => {
     try {
       const { selectedStyle } = state;
 
@@ -439,13 +491,12 @@ const GeneratePage = () => {
       // const styleUint8Array = new Uint8Array(styleBuffer);
       // console.log("styleuint : ", styleUint8Array)
 
-
       // Kirim ke canister
       const response = await actor.send_http_post_request(
         imageUrl,
         selectedStyle.image
       );
-      console.log("dari response backend >>>>>",response);
+      console.log("dari response backend >>>>>", response);
       // const jobIdText = new TextDecoder().decode(response);
       // console.log("bawah jobtext >>>>>>>>",jobIdText);
       await pollUntilReady(response);
@@ -455,25 +506,32 @@ const GeneratePage = () => {
     }
   };
 
-
-
   const pollUntilReady = async (response) => {
-      try {
-          const blob = new Blob([response], { type: "image/png" });
-          const dataUrl = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          });
-          setState((prev) => ({ ...prev, imageUrl: dataUrl }));
-          const storachaResult = await uploadBlobToStoracha(blob);
+    try {
+      const blob = new Blob([response], { type: "image/png" });
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      const storachaResult = await uploadBlobToStoracha(blob);
+      await actor.save_image_to_store(storachaResult.toString());
+      setState((prev) => ({ ...prev, imageUrl: dataUrl }));
+    } catch (error) {
+      // showAlert("error", "Error", "Image generation failed.");
+      setNotificationData({
+        title: "Oops! Something Went Wrong",
+        message: "We couldn’t generate your image.",
+        description:
+          "Please check your connection and try again. If it still doesn’t work, reach out to our support team.",
+        actionUrl: () => setShowNotification(false),
+        actionLabel: "Got it",
+      });
 
-          await actor.save_image_to_store(storachaResult.toString());
-      } catch (error) {
-        showAlert("error", "Error", "Image generation failed.");
-        return;
-      }
+      setShowNotification(true);
+      return;
+    }
   };
 
   const convertImageToBase64 = async (imageUrl) => {
@@ -503,7 +561,17 @@ const GeneratePage = () => {
 
   const handleDownloadImage = () => {
     if (!state.imageUrl) {
-      showAlert("warning", "WARNING!!!", "Image Not Found");
+      // showAlert("warning", "WARNING!!!", "Image Not Found");
+      setNotificationData({
+        title: "Image Not Found",
+        message: "We couldn’t find the image.",
+        description:
+          "It looks like the image is missing or unavailable for download. Please generate a new one.",
+        actionUrl: () => setShowNotification(false),
+        actionLabel: "OK",
+      });
+      setShowNotification(true);
+
       return;
     }
     const link = document.createElement("a");
@@ -513,8 +581,6 @@ const GeneratePage = () => {
     link.click();
     document.body.removeChild(link);
   };
-
-
 
   return (
     <>
@@ -592,7 +658,6 @@ const GeneratePage = () => {
                   </label>
                 </div>
 
-
                 <div className="flex w-full max-w-max flex-col gap-4 text-white">
                   <p>Choose Style:</p>
 
@@ -605,10 +670,11 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "man"
-                        ? "text-fontPrimaryColor"
-                        : "text-gray-400"
-                        }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
+                        state.selectedGenderCategory === "man"
+                          ? "text-fontPrimaryColor"
+                          : "text-gray-400"
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -636,10 +702,11 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "woman"
-                        ? "text-fontPrimaryColor"
-                        : "text-gray-400"
-                        }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
+                        state.selectedGenderCategory === "woman"
+                          ? "text-fontPrimaryColor"
+                          : "text-gray-400"
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -708,8 +775,6 @@ const GeneratePage = () => {
                             </p>
                           </label>
                         ))}
-
-
                     </div>
                   </div>
                 </div>
@@ -764,6 +829,17 @@ const GeneratePage = () => {
           </div>
         </section>
       </main>
+
+      {showNotification && (
+        <CardNotification
+          title={notificationData.title}
+          message={notificationData.message}
+          description={notificationData.description}
+          actionUrl={notificationData.actionUrl}
+          actionLabel={notificationData.actionLabel}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
     </>
   );
 };
