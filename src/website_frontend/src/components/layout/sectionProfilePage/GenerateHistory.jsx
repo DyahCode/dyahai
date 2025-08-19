@@ -129,7 +129,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
 
                 {/* Button Delete */}
                 <button onClick={() => handleDeleteImage(image.id, index)}
-                  className="block top-0 right-0 absolute h-6 flex-row pl-1.5 group-hover:pl-2 pr-1 items-center rounded-es-lg bg-red-500 transition transform space-x-1">
+                  className="flex top-0 right-0 absolute h-6 flex-row pl-1.5 group-hover:pl-2 pr-1 items-center rounded-es-lg bg-red-500 transition transform space-x-1">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-4 fill-white group-hover:">
                     <path d="M7.5 1h9v3H22v2h-2.029l-.5 17H4.529l-.5-17H2V4h5.5zm2 3h5V3h-5zM6.03 6l.441 15h11.058l.441-15zm3.142 3.257L12 12.086l2.828-2.829l1.415 1.415l-2.829 2.828l2.829 2.828l-1.415 1.415L12 14.914l-2.828 2.829l-1.415-1.415l2.829-2.828l-2.829-2.828z" />
                   </svg>

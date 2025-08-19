@@ -2,15 +2,26 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 import Button from "../../ui/Button";
-import Swal from "sweetalert2";
+import CardNotification from "../CardNotification";
 
-
-const avatar1 = "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg"
-const avatar2 = "https://bafybeibopoqhuobckaaquqk6n4aikktqepiyht4pwhbapevkzreshyt7pq.ipfs.w3s.link/image-gallery-2.jpg"
-const avatar3 = "https://bafybeigjfhem4jjxlqu5vtzxw2kb27u2otgkdp2h27hk7gnv6sgcx4miz4.ipfs.w3s.link/image-gallery-3.jpg"
+const avatar1 =
+  "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
+const avatar2 =
+  "https://bafybeibopoqhuobckaaquqk6n4aikktqepiyht4pwhbapevkzreshyt7pq.ipfs.w3s.link/image-gallery-2.jpg";
+const avatar3 =
+  "https://bafybeigjfhem4jjxlqu5vtzxw2kb27u2otgkdp2h27hk7gnv6sgcx4miz4.ipfs.w3s.link/image-gallery-3.jpg";
 
 const About = ({ Login, isLoggedIn }) => {
   const containerRef = useRef(null);
+  const [showWalletNotification, setShowWalletNotification] = useState(false);
+
+  const handleNavigationGenerate = () => {
+    if (isLoggedIn) {
+      window.location.href = "/generate";
+    } else {
+      setShowWalletNotification(true);
+    }
+  };
 
   const itemTestimony = [
     {
@@ -35,13 +46,19 @@ const About = ({ Login, isLoggedIn }) => {
 
   useEffect(() => {
     if (containerRef.current) {
-      const width = containerRef.current.offsetWidth / 3;
+      const width =
+        window.innerWidth >= 1024 // breakpoint lg
+          ? containerRef.current.offsetWidth / 3
+          : containerRef.current.offsetWidth / 1;
       setItemWidth(width);
     }
 
     const handleResize = () => {
       if (containerRef.current) {
-        const width = containerRef.current.offsetWidth / 3;
+        const width =
+          window.innerWidth >= 1024
+            ? containerRef.current.offsetWidth / 3
+            : containerRef.current.offsetWidth / 1;
         setItemWidth(width);
       }
     };
@@ -55,7 +72,6 @@ const About = ({ Login, isLoggedIn }) => {
   const [position, setPosition] = useState(1);
   const duplicatedItems = [...itemTestimony, ...itemTestimony];
   const halfLength = duplicatedItems.length / 2;
-
 
   const updatePosition = async (nextPos) => {
     await animate(x, -nextPos * itemWidth, {
@@ -75,34 +91,17 @@ const About = ({ Login, isLoggedIn }) => {
     if (itemWidth === 0) return;
 
     const interval = setInterval(() => {
-
       updatePosition(position + 1);
     }, 3000);
 
     return () => clearInterval(interval);
   }, [position, itemWidth]);
 
-  const handleNavigationGenerate = () => {
-    if (isLoggedIn) {
-      window.location.href = "/generate";
-    } else {
-      Swal.fire({
-        title: "Please log in",
-        text: "You need to log in to access the Generate feature.",
-        icon: "warning",
-        confirmButtonText: "Log In",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Login();
-        }
-      });
-    }
-  };
   return (
     <>
       <section
         id="about"
-        className="bg-primaryColor text-fontPrimaryColor scroll-mt-20"
+        className="bg-primaryColor text-fontPrimaryColor scroll-mt-20 mb-20"
       >
         <div className="container mx-auto my-auto flex h-full w-full flex-col items-center justify-center gap-y-10 px-0 text-center md:px-8">
           <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 px-8 py-12 text-center">
@@ -118,25 +117,29 @@ const About = ({ Login, isLoggedIn }) => {
             </p>
           </div>
 
-          <div className="container relative p-0 overflow-hidden w-full h-fit py-10 items-center" ref={containerRef}>
+          <div
+            className="container relative p-0 overflow-hidden w-full h-fit items-center"
+            ref={containerRef}
+          >
             <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
 
             <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" />
 
-            <motion.div
-              style={{ x }}
-              className="flex"
-            >
+            <motion.div style={{ x }} className="flex">
               {duplicatedItems.map((item, idx) => {
                 const offset = idx * itemWidth;
 
                 const distance = useTransform(x, (val) => {
-                  const center = -val + itemWidth; 
+                  const center = -val + itemWidth;
                   return Math.abs(center - offset);
                 });
 
                 const scale = useTransform(distance, [0, itemWidth], [1, 0.85]);
-                const opacity = useTransform(distance, [0, itemWidth], [1, 0.65]);
+                const opacity = useTransform(
+                  distance,
+                  [0, itemWidth],
+                  [1, 0.65]
+                );
 
                 return (
                   <motion.div
@@ -150,21 +153,24 @@ const About = ({ Login, isLoggedIn }) => {
                   >
                     <div className=" bg-white/10 rounded-xl text-white flex flex-col justify-center h-full p-4">
                       <div className="w-full h-full flex flex-col justify-between space-y-8">
-                        <p className="text-base/5 mt-2 text-fontPrimaryColor italic">"{item.message}"</p>
+                        <p className="text-base/5 mt-2 text-fontPrimaryColor italic">
+                          "{item.message}"
+                        </p>
                         <div className="flex items-center justify-center gap-x-2">
                           <img
                             src={item.avatar}
                             alt={`user-${item.name}`}
                             className="h-8 w-8 rounded-full"
                           />
-                          <span className="text-sm font-semibold text-fontPrimaryColor/70">{item.name}</span>
+                          <span className="text-sm font-semibold text-fontPrimaryColor/70">
+                            {item.name}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 );
               })}
-
             </motion.div>
           </div>
           <p className="z-10 text-lg font-bold italic">
@@ -181,6 +187,17 @@ const About = ({ Login, isLoggedIn }) => {
             Try Now
           </Button>
         </div>
+
+        {showWalletNotification && (
+          <CardNotification
+            title="Login Required"
+            message="Please login to your Plug Wallet"
+            description="You need to be logged in to your Plug Wallet before connecting and using this feature."
+            actionUrl={() => Login()}
+            actionLabel="Login to Plug Wallet"
+            onClose={() => setShowWalletNotification(false)}
+          />
+        )}
       </section>
     </>
   );

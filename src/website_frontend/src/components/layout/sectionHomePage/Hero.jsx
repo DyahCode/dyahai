@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState} from "react";
 import { useAuth } from "../../../provider/authProvider";
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../../variants";
@@ -7,25 +7,23 @@ import Swal from "sweetalert2";
 import Button from "../../ui/Button";
 // import HeroImage from "../../../assets/images/hero/hero-image.png";
 
-const HeroImage = "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png"
+import CardNotification from "../CardNotification";
+
+
+const HeroImage =
+  "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png";
 
 const Hero = () => {
   const { Login, isLoggedIn } = useAuth();
+  const [showWalletNotification, setShowWalletNotification] = useState(false);
+
+
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
       window.location.href = "/generate";
     } else {
-      Swal.fire({
-        title: "Please log in",
-        text: "You need to log in to access the Generate feature.",
-        icon: "warning",
-        confirmButtonText: "Log In",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Login();
-        }
-      });
+      setShowWalletNotification(true);
     }
   };
 
@@ -61,13 +59,21 @@ const Hero = () => {
               into a realm of boundless imagination.
             </p>
             <div className="flex justify-center gap-x-6 md:justify-start md:gap-x-4">
-
-              <Button variant="primary" size="md" onClick={handleNavigationGenerate} isMotion>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={handleNavigationGenerate}
+                isMotion
+              >
                 Generate
               </Button>
 
-
-              <Button variant="secondary" size="md" onClick={() => (window.location.href = "#feature")} isMotion>
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => (window.location.href = "#feature")}
+                isMotion
+              >
                 Learn More
               </Button>
             </div>
@@ -86,14 +92,29 @@ const Hero = () => {
               Create stunning AI images now with Generative DyahAI. Join us and
               generate extraordinary visuals together!
             </p>
-            <div className="flex justify-end items-center">
-    
-              <Button variant="primary" size="md" onClick={handleNavigationGenerate} isMotion>
+            <div className="flex justify-center md:justify-end items-center">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={handleNavigationGenerate}
+                isMotion
+              >
                 Try Now
               </Button>
             </div>
           </motion.div>
         </div>
+
+        {showWalletNotification && (
+          <CardNotification
+            title="Login Required"
+            message="Please login to your Plug Wallet"
+            description="You need to be logged in to your Plug Wallet before connecting and using this feature."
+            actionUrl={() =>  Login()}
+            actionLabel="Login to Plug Wallet"
+            onClose={() => setShowWalletNotification(false)}
+          />
+        )}
       </main>
     </>
   );

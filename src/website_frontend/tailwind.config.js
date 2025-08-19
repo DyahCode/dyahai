@@ -22,6 +22,7 @@ module.exports = {
         fontPrimaryColor: "#fbf6ee",
         
       },
+      
     },
   },
   plugins: [],

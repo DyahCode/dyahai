@@ -1,10 +1,11 @@
-import React from "react";
+import { React, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 import Swal from "sweetalert2";
-import Button from "../../ui/Button"
+import Button from "../../ui/Button";
 import BeforeAfterSlider from "../../ui/HDResult/slider";
 import FTUImages from "../../ui/FreeToUse/FTUImages";
+import CardNotification from "../CardNotification";
 
 // import AiImage1 from "../../../assets/images/features/AI-image-1.png";
 // import AiImage2 from "../../../assets/images/features/AI-image-2.png";
@@ -21,38 +22,43 @@ import FTUImages from "../../ui/FreeToUse/FTUImages";
 // import ImageShrek from "../../../assets/images/art-styles/shrek.png";
 // import ImageZombie from "../../../assets/images/art-styles/zombie.png";
 
-const AiImage1 = "https://bafybeihviddhik4llwiuvakpaqeduextfm6l2qrsncroyqsbin6veto2we.ipfs.w3s.link/AI-image-1.png"
-const AiImage2 = "https://bafybeibkm4j4wtwsgh2devwchtrxvuhrwyoagm5223b4mqtyl55maejkuq.ipfs.w3s.link/AI-image-2.png"
-const AiImage3 = "https://bafybeiexyfzpp3wfjxirmvfynxujiakoa3sz5t2vl3mrdqypkvr4u3agqi.ipfs.w3s.link/AI-image-3.png"
-const AiImage4 = "https://bafybeicakq52sj5ne6bwtmotfmoega2gh3raqhyg3lwzk6475qu32hrkiq.ipfs.w3s.link/AI-image-4.png"
-const AiImage5 = "https://bafybeihsbbnqzyflfy3gckrj2vr7xsqram56l2o4j5xbst3zjl46c2ysmm.ipfs.w3s.link/AI-image-5.png"
+const AiImage1 =
+  "https://bafybeihviddhik4llwiuvakpaqeduextfm6l2qrsncroyqsbin6veto2we.ipfs.w3s.link/AI-image-1.png";
+const AiImage2 =
+  "https://bafybeibkm4j4wtwsgh2devwchtrxvuhrwyoagm5223b4mqtyl55maejkuq.ipfs.w3s.link/AI-image-2.png";
+const AiImage3 =
+  "https://bafybeiexyfzpp3wfjxirmvfynxujiakoa3sz5t2vl3mrdqypkvr4u3agqi.ipfs.w3s.link/AI-image-3.png";
+const AiImage4 =
+  "https://bafybeicakq52sj5ne6bwtmotfmoega2gh3raqhyg3lwzk6475qu32hrkiq.ipfs.w3s.link/AI-image-4.png";
+const AiImage5 =
+  "https://bafybeihsbbnqzyflfy3gckrj2vr7xsqram56l2o4j5xbst3zjl46c2ysmm.ipfs.w3s.link/AI-image-5.png";
 
-const ImageAstronout = "https://bafybeib7eoqznxsg4dpzjvsv25u2b4dsn7uemr7mfpbvfawi3ut2ydv3g4.ipfs.w3s.link/astronout.png"
-const ImageBaroque = "https://bafybeib56vwpymqe6zrdtq2htk5jvnycjkm7y7fgpc6c6q2tcefcsrbcfu.ipfs.w3s.link/baroque.png"
-const ImageCyberpunk = "https://bafybeifgrdxz2tjmg2thbnstkbnwpp4baxpmtfq2zxnxzmzbn3mvu4jtfa.ipfs.w3s.link/cyberpunk.png"
-const ImageFormal = "https://bafybeididesgtyzutdwuqcwixgso444q6r33q5w7qdr55mboaiho4tehwy.ipfs.w3s.link/formal.png"
-const ImageJoker = "https://bafybeiasrj5bkd754nhlwaxypkm23ftoltkpqyozeymrmrlfr6abi542wq.ipfs.w3s.link/joker.png"
-const ImageOilPainting = "https://bafybeieisbzgxd5yset3duucheemslv243deeszanadozc7o3gwwwe5gz4.ipfs.w3s.link/oil-painting.png"
-const ImageShrek = "https://bafybeiemhgtr44b7h7z5ez33g3tlmmpqhzf6nj2mg246vzb427xbu7yoyq.ipfs.w3s.link/shrek.png"
-const ImageZombie = "https://bafybeif36hbrahuczmxqxlwvi3fcd7obb2qyf5eewyew4yco4dza4pzp3a.ipfs.w3s.link/zombie.png"
+const ImageAstronout =
+  "https://bafybeib7eoqznxsg4dpzjvsv25u2b4dsn7uemr7mfpbvfawi3ut2ydv3g4.ipfs.w3s.link/astronout.png";
+const ImageBaroque =
+  "https://bafybeib56vwpymqe6zrdtq2htk5jvnycjkm7y7fgpc6c6q2tcefcsrbcfu.ipfs.w3s.link/baroque.png";
+const ImageCyberpunk =
+  "https://bafybeifgrdxz2tjmg2thbnstkbnwpp4baxpmtfq2zxnxzmzbn3mvu4jtfa.ipfs.w3s.link/cyberpunk.png";
+const ImageFormal =
+  "https://bafybeididesgtyzutdwuqcwixgso444q6r33q5w7qdr55mboaiho4tehwy.ipfs.w3s.link/formal.png";
+const ImageJoker =
+  "https://bafybeiasrj5bkd754nhlwaxypkm23ftoltkpqyozeymrmrlfr6abi542wq.ipfs.w3s.link/joker.png";
+const ImageOilPainting =
+  "https://bafybeieisbzgxd5yset3duucheemslv243deeszanadozc7o3gwwwe5gz4.ipfs.w3s.link/oil-painting.png";
+const ImageShrek =
+  "https://bafybeiemhgtr44b7h7z5ez33g3tlmmpqhzf6nj2mg246vzb427xbu7yoyq.ipfs.w3s.link/shrek.png";
+const ImageZombie =
+  "https://bafybeif36hbrahuczmxqxlwvi3fcd7obb2qyf5eewyew4yco4dza4pzp3a.ipfs.w3s.link/zombie.png";
 
 const Feature = ({ Login, isLoggedIn }) => {
   const { scrollY } = useScroll();
+  const [showWalletNotification, setShowWalletNotification] = useState(false);
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
       window.location.href = "/generate";
     } else {
-      Swal.fire({
-        title: "Please log in",
-        text: "You need to log in to access the Generate feature.",
-        icon: "warning",
-        confirmButtonText: "Log In",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Login();
-        }
-      });
+      setShowWalletNotification(true);
     }
   };
 
@@ -166,7 +172,13 @@ const Feature = ({ Login, isLoggedIn }) => {
                   <FTUImages />
                 </div>
 
-                <Button variant="primary" size="md" onClick={handleNavigationGenerate} className="w-2/3" isMotion>
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={handleNavigationGenerate}
+                  className="w-2/3"
+                  isMotion
+                >
                   Try it now !
                 </Button>
               </div>
@@ -214,6 +226,17 @@ const Feature = ({ Login, isLoggedIn }) => {
             </div>
           </div>
         </div>
+
+        {showWalletNotification && (
+          <CardNotification
+            title="Login Required"
+            message="Please login to your Plug Wallet"
+            description="You need to be logged in to your Plug Wallet before connecting and using this feature."
+            actionUrl={() => Login()}
+            actionLabel="Login to Plug Wallet"
+            onClose={() => setShowWalletNotification(false)}
+          />
+        )}
       </section>
     </>
   );

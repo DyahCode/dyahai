@@ -5,9 +5,7 @@ import {
   useState,
   useCallback,
 } from "react";
-import {
-  idlFactory as website_backend_idl,
-} from "../../../declarations/website_backend";
+import { idlFactory as website_backend_idl } from "../../../declarations/website_backend";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
 
@@ -25,12 +23,17 @@ export const AuthProvider = ({ children }) => {
 
   const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
 
-  const host = process.env.DFX_NETWORK == "ic" ? "https://icp0.io" : "http://localhost:5000";
+  const host =
+    process.env.DFX_NETWORK == "ic"
+      ? "https://icp0.io"
+      : "http://localhost:5000";
 
   useEffect(() => {
     const checkConnection = async () => {
+
       const isConnected = await window.ic?.plug?.isConnected();
       const hasAgent = window.ic?.plug?.agent;
+
       if (isConnected && hasAgent) {
         const principal = await window.ic.plug.agent.getPrincipal();
         setPrincipalId(principal.toText());
@@ -52,8 +55,7 @@ export const AuthProvider = ({ children }) => {
       await window.ic.plug.requestConnect({
         whitelist,
         host: host,
-        onConnectionUpdate: async () => {
-        },
+        onConnectionUpdate: async () => {},
       });
     }
 
@@ -127,52 +129,54 @@ export const AuthProvider = ({ children }) => {
       const getTier = await customActor.get_tier();
 
       setTier(getTier);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
-const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
-  if (!actor || !window.ic?.plug) {
-    return { success: false, error: "No actor or Plug wallet available" };
-  }
+  const TopupCredit = async (
+    amount,
+    type = "credit",
+    credit = 0,
+    plan = ""
+  ) => {
+    if (!actor || !window.ic?.plug) {
+      return { success: false, error: "No actor or Plug wallet available" };
+    }
 
-  try {
+    try {
+      const canisterPrincipalStr = await actor.get_account_id_for_canister();
 
+      const result = await window.ic.plug.requestTransfer({
+        to: canisterPrincipalStr,
+        amount,
+      });
 
-    const canisterPrincipalStr = await actor.get_account_id_for_canister();
+      console.log("✅ Plug transfer result:", result);
+      const validate_transaction = await actor.get_tx_summary(
+        result.height,
+        0,
+        type,
+        String(credit),
+        plan
+      );
 
-    const result = await window.ic.plug.requestTransfer({
-      to: canisterPrincipalStr,
-      amount,
-    });
+      const summary = JSON.parse(validate_transaction);
 
-    console.log("✅ Plug transfer result:", result);
-    const validate_transaction = await actor.get_tx_summary(
-      result.height,
-      0,
-      type,
-      String(credit),
-      plan
-    );
+      await refreshCredit();
 
-    const summary = JSON.parse(validate_transaction);
-
-    await refreshCredit();
-
-    return {
-      status: "success",
-      data: {
-        blockHeight: result.height,
-        summary,
-      },
-    };
-  } catch (error) {
-    return {
-      status: "reject",
-      error,
-    };
-  }
-};
+      return {
+        status: "success",
+        data: {
+          blockHeight: result.height,
+          summary,
+        },
+      };
+    } catch (error) {
+      return {
+        status: "reject",
+        error,
+      };
+    }
+  };
 
   return (
     <AuthContext.Provider
