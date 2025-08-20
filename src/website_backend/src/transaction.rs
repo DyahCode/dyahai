@@ -33,7 +33,7 @@ pub async fn check_canisters_balance(principal : Principal) -> Result<Tokens, St
         (args,),
     )
     .await
-    .map_err(|e| format!("❌ Gagal panggil ledger: {:?}", e))?;
+    .map_err(|e| format!("Failed for calling ledger: {:?}", e))?;
 
     Ok(response)
 }
@@ -55,7 +55,7 @@ pub async fn transfer_to_client(principal : Principal) -> Result<TransferResult,
         (args,),
     )
     .await
-    .map_err(|e| format!("❌ Gagal panggil ledger: {:?}", e))?;
+    .map_err(|e| format!("Failed for calling ledger: {:?}", e))?;
 
     Ok(response)
 }
@@ -77,7 +77,7 @@ pub async fn get_parsed_transaction(block_height: u64,message : String) -> Resul
         (args,),
     )
     .await
-    .map_err(|e| format!("Gagal panggil ledger: {:?}", e))?;
+    .map_err(|e| format!("Failed for calling ledger: {:?}", e))?;
 
     let block = response
         .blocks
@@ -113,7 +113,7 @@ thread_local! {
 
 #[update]
 pub fn save_trx(principal: Principal, blockresult : ParsedTransaction) {
-    ic_cdk::println!("sedang menyimpan hasil Block");
+    ic_cdk::println!("Saving block result...");
     TRX_STORE.with(|store| {
         store
             .borrow_mut()
@@ -121,7 +121,7 @@ pub fn save_trx(principal: Principal, blockresult : ParsedTransaction) {
             .or_insert_with(Vec::new)
             .push(blockresult);
     });
-    ic_cdk::println!("Hasil Block telah disimpan");
+    ic_cdk::println!("Block result has been saved.");
 }
 
 #[query]
@@ -131,7 +131,7 @@ pub fn retrieve_trx(principal: Principal) -> Vec<String> {
         match store_ref.get(&principal) {
             Some(blockresult) => {
                 ic_cdk::println!(
-                    "✅ Block result ditemukan, jumlah Block: {}",
+                    "Block result found, total Block: {}",
                     blockresult.len()
                 );
                 blockresult
@@ -141,7 +141,7 @@ pub fn retrieve_trx(principal: Principal) -> Vec<String> {
             }
             None => {
                 ic_cdk::println!(
-                    "⚠️ Tidak ada transaksi ditemukan untuk principal: {}",
+                    "No transaction found for principal: {}",
                     principal
                 );
                 vec![]

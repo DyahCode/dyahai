@@ -309,19 +309,11 @@ const GeneratePage = () => {
     },
   ];
 
-  const showAlert = (icon, title, text) => {
-    Swal.fire({ icon, title, text, confirmButtonText: "OK" });
-  };
-
   const handleFileChange = async (event) => {
     const base64Astronout = await convertImageToBase64(imageAstronout);
     const base64Backpacker = await convertImageToBase64(imageBackpacker);
     const { selectedStyle } = state;
-    console.log("style ", selectedStyle.image);
-
-    // console.log("Astronout Base64:", base64Astronout);
     console.log("Astronout Base64:", base64Astronout.length);
-    // console.log("Backpacker Base64:", base64Backpacker);
     console.log("Backpacker Base64:", base64Backpacker.length);
     const file = event.target.files[0];
     if (file) {
@@ -357,8 +349,6 @@ const GeneratePage = () => {
   const convertImageToPngBlob = async (fileOrBase64) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
-
-      // Jika input berupa File atau Blob, ubah jadi base64 URL
       const url =
         typeof fileOrBase64 === "string" && fileOrBase64.startsWith("data:")
           ? fileOrBase64
@@ -372,7 +362,6 @@ const GeneratePage = () => {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
 
-        // Konversi ke blob dengan format PNG
         canvas.toBlob((blob) => {
           if (blob) {
             resolve(blob);
@@ -409,11 +398,6 @@ const GeneratePage = () => {
         actionLabel: "OK",
       });
       setShowNotification(true);
-      // showAlert(
-      //   "warning",
-      //   "WARNING!!!",
-      //   "Insufficient credit. Please add credit to generate images."
-      // );
       return;
     }
     const { selectedFile, selectedStyle } = state;
@@ -428,13 +412,6 @@ const GeneratePage = () => {
         actionLabel: "OK",
       });
       setShowNotification(true);
-      // showAlert(
-      //   "warning",
-      //   "WARNING!!!",
-      //   !selectedFile
-      //     ? "Please upload an image first."
-      //     : "Please select a style first."
-      // );
       return;
     }
 
@@ -445,6 +422,7 @@ const GeneratePage = () => {
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
       console.log("userImageUrl:", userImageUrl);
+      console.log("storachaCid:", storachaCid);
 
       await uploadImageToBackend(userImageUrl, storachaCid);
     } catch (error) {
@@ -458,15 +436,6 @@ const GeneratePage = () => {
     }
   };
 
-  const base64ToBlob = (base64, type = "image/png") => {
-    const byteCharacters = atob(base64.split(",")[1]);
-    const byteNumbers = new Uint8Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    return new Blob([byteNumbers], { type });
-  };
-
   const uploadImageToBackend = async (imageUrl, cid) => {
     try {
       const { selectedStyle } = state;
@@ -475,60 +444,72 @@ const GeneratePage = () => {
       console.log("styleUrl:", selectedStyle.image);
       console.log("cid img:", cid);
 
-      // // Fetch image utama
-      // const imageRes = await fetch(imageUrl);
-      // if (!imageRes.ok) throw new Error("Gagal fetch image utama");
-
-      // const imageBuffer = await imageRes.arrayBuffer();
-      // const imageUint8Array = new Uint8Array(imageBuffer);
-      // console.log("imageuint : ", imageUint8Array)
-
-      // // Fetch style image
-      // const styleRes = await fetch(selectedStyle.image);
-      // if (!styleRes.ok) throw new Error("Gagal fetch image style");
-
-      // const styleBuffer = await styleRes.arrayBuffer();
-      // const styleUint8Array = new Uint8Array(styleBuffer);
-      // console.log("styleuint : ", styleUint8Array)
-
-      // Kirim ke canister
-      const response = await actor.send_http_post_request(
+      console.log("function send http post request already to run >>>")
+      const response = await actor.send_http_post(
         imageUrl,
         selectedStyle.image
       );
-      console.log("dari response backend >>>>>", response);
-      // const jobIdText = new TextDecoder().decode(response);
-      // console.log("bawah jobtext >>>>>>>>",jobIdText);
-      await pollUntilReady(response);
-      await removeContentFromStoracha(cid);
-    } catch (error) {
-      await removeContentFromStoracha(cid);
-    }
-  };
+      console.log("response from backend >>>>>", response);
 
-  const pollUntilReady = async (response) => {
-    try {
-      const blob = new Blob([response], { type: "image/png" });
+      if (!response.status) {
+        setNotificationData({
+          title: "Oops! Something Went Wrong",
+          message: response.message || "We couldn't generate your image.",
+          description:
+            "Please try again. If it still doesn't work, reach out to our support team.",
+          actionUrl: () => setShowNotification(false),
+          actionLabel: "Got it",
+        });
+        setShowNotification(true);
+        return;
+      }
+
+      const base64Image = response.result;
+      if (!base64Image) {
+        setNotificationData({
+          title: "Oops! Something Went Wrong",
+          message: "No image returned from backend.",
+          description:
+            "Please try again later or contact support if this keeps happening.",
+          actionUrl: () => setShowNotification(false),
+          actionLabel: "Got it",
+        });
+        setShowNotification(true);
+        return;
+      }
+
+      const byteCharacters = atob(base64Image);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "image/png" });
+
       const dataUrl = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(blob);
       });
+
       const storachaResult = await uploadBlobToStoracha(blob);
       await actor.save_image_to_store(storachaResult.toString());
+
       setState((prev) => ({ ...prev, imageUrl: dataUrl }));
+
+      await removeContentFromStoracha(cid.toString());
     } catch (error) {
-      // showAlert("error", "Error", "Image generation failed.");
+      console.error("Error in uploadImageToBackend:", error);
+      await removeContentFromStoracha(cid.toString());
       setNotificationData({
         title: "Oops! Something Went Wrong",
-        message: "We couldn’t generate your image.",
+        message: "We couldn't generate your image.",
         description:
-          "Please check your connection and try again. If it still doesn’t work, reach out to our support team.",
+          "Please check your connection and try again. If it still doesn't work, reach out to our support team.",
         actionUrl: () => setShowNotification(false),
         actionLabel: "Got it",
       });
-
       setShowNotification(true);
       return;
     }
@@ -545,26 +526,11 @@ const GeneratePage = () => {
       reader.readAsDataURL(blob);
     });
   };
-
-  const handleDeleteAllImages = async () => {
-    try {
-      const success = await actor.deleteAllImages();
-      console.log(
-        success
-          ? "All images deleted successfully."
-          : "Failed to delete all images."
-      );
-    } catch (error) {
-      console.error("Error deleting all images:", error);
-    }
-  };
-
   const handleDownloadImage = () => {
     if (!state.imageUrl) {
-      // showAlert("warning", "WARNING!!!", "Image Not Found");
       setNotificationData({
         title: "Image Not Found",
-        message: "We couldn’t find the image.",
+        message: "We couldn't find the image.",
         description:
           "It looks like the image is missing or unavailable for download. Please generate a new one.",
         actionUrl: () => setShowNotification(false),
@@ -670,11 +636,10 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
-                        state.selectedGenderCategory === "man"
-                          ? "text-fontPrimaryColor"
-                          : "text-gray-400"
-                      }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "man"
+                        ? "text-fontPrimaryColor"
+                        : "text-gray-400"
+                        }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -702,11 +667,10 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
-                        state.selectedGenderCategory === "woman"
-                          ? "text-fontPrimaryColor"
-                          : "text-gray-400"
-                      }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "woman"
+                        ? "text-fontPrimaryColor"
+                        : "text-gray-400"
+                        }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

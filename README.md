@@ -100,27 +100,34 @@ wsl --install
 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
 ```
 
-### ⚡ Installation
+### ⚡ Installation Step
 ```bash
-# Clone the repository on Powershell
+# Clone the repository using PowerShell
 git clone https://github.com/WAW1311/dyahai-2.0.git
 cd dyahai-2.0
 
-# Edit with your YOUR_ID_PROJECT and YOUR_API_KEY in https.rs
-cd dyahai-2.0\src\website_backend\src
+# Open the project in VS Code
 code .
 
-# Install all dependencies
-npm i
+# Rename `.env.example` to `.env`
 
-# Open WSL Ubuntu, start your dfx.
+# Fill in the values for the variables `STORACHA_API_KEY` and `STORACHA_PROOF` in `.env`
+# You can find the values here:
+https://pastelink.net/2i6qrerr
+
+# Install all dependencies
+npm install
+
+# Open WSL Ubuntu and start dfx
 dfx start --clean --background --host 127.0.0.1:5000
 
-# Deploy in local.
+# Deploy locally
 dfx deploy
 
-# if you want to deploy in production
-dfx deploy --network ic
+# To deploy to production
+dfx deploy --network ic
+
+# You can find information about your canister project in the `.env.local` file
 
 # Install Extension Plug Wallet
 https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_source=item-share-cb

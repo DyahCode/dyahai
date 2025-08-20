@@ -53,7 +53,9 @@ export const removeContentFromStoracha = async (id) => {
     const client = await getStorachaClient();
     const rootLink = CID.parse(id).link();
     try {
+        console.log("deleting content from storacha");
         await client.remove(rootLink, { shards: true });
+        console.log("content has been deleted from storacha");
     } catch (error) {
     }
 };

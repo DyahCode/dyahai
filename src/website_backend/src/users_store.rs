@@ -1,8 +1,7 @@
-use ic_cdk::{ init,  query, update};
+use candid::Principal;
+use ic_cdk::{init, query, update};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
-use candid::Principal;
-
 
 pub type UserStore = BTreeMap<Principal, UserData>;
 
@@ -14,9 +13,6 @@ pub struct UserData {
     pub tier: UserTier,
 }
 
-
-
-
 thread_local! {
     pub static USERS_STORE: RefCell<UserStore> = RefCell::default();
 }
@@ -26,15 +22,12 @@ fn init() {
     ic_cdk::println!("Canister initialized.");
 }
 
-
 #[derive(Debug, CandidType, Deserialize, Clone, PartialEq)]
 pub enum UserTier {
     Basic,
     Premium,
     Ultimate,
 }
-
-
 
 #[update]
 pub fn save_user(principal: Principal) {
@@ -60,13 +53,16 @@ pub fn upgrade_tier(principal: Principal, new_tier: UserTier) {
     });
 }
 
-
 #[update]
 pub fn add_credit(principal: Principal, additional_credit: u8) {
     USERS_STORE.with(|user| {
         if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
             user_data.credits += additional_credit;
-            ic_cdk::println!("Added credit {} for principal: {}", additional_credit, principal);
+            ic_cdk::println!(
+                "Added credit {} for principal: {}",
+                additional_credit,
+                principal
+            );
         } else {
             ic_cdk::trap(&format!("User with principal {} not found", principal));
         }
@@ -97,8 +93,6 @@ pub fn get_credit(principal: Principal) -> u8 {
     })
 }
 
-
-
 #[update]
 pub fn reduction_credit(principal: Principal) {
     USERS_STORE.with(|user| {
@@ -115,7 +109,6 @@ pub fn reduction_credit(principal: Principal) {
     });
 }
 
-
 #[query]
 pub fn get_user_data(principal: Principal) -> UserData {
     USERS_STORE.with(|user| {
@@ -125,7 +118,6 @@ pub fn get_user_data(principal: Principal) -> UserData {
             .unwrap_or_else(|| ic_cdk::trap("User not found"))
     })
 }
-
 
 #[query]
 pub fn is_registered(principal: Principal) -> bool {
