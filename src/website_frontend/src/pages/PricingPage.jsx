@@ -172,12 +172,6 @@ const PricingPage = () => {
   const transferFee = 10_000;
   const navigate = useNavigate();
 
-  // const creditCalculate = (icp) => {
-  //   const icpInE8s = Math.round(icp * 1e8);
-  //   const e8s = icpInE8s + transferFee;
-
-  //   return e8s;
-  // };
 
   const tierPriority = {
     Basic: 0,
@@ -256,35 +250,6 @@ const PricingPage = () => {
     return tierPriority[userTier] < tierPriority[planKey];
   };
 
-  // React.useEffect(() => {
-  //   const Run = () => {
-  //     const { icp, e8s } = creditCalculate(30);
-
-  //     setSelectedPlan({
-  //       key: "Premium",
-  //       name: "Premium",
-  //       price: 200000,
-  //       credit: 50,
-  //       description: "Designed for active users who need advanced features.",
-  //       features: [
-  //         "Full access to basic and advanced AI models",
-  //         "Includes 50 coin for generating",
-  //         "100+ requests per day",
-  //         "Usage history saved",
-  //         "Priority customer support",
-  //       ],
-  //       buttonText: "Upgrade",
-  //     });
-  //     setIcpInE8s(e8s);
-  //     setShowInvoice(true);
-  //     setPaymentStatus("idle");
-  //     // setTxStatus({
-  //     //   txId: 111111111111111111111111111111111111111,
-  //     //   memo: 9999999999999999999999999999,
-  //     // })
-  //   }
-  //   Run()
-  // }, [])
 
 
 
@@ -389,7 +354,6 @@ const PricingPage = () => {
                     {plan.buttonText}
                   </button>
                 </div>
-                {/* </div> */}
               </Box>
 
             ))}
@@ -591,8 +555,6 @@ const PricingPage = () => {
       <Footer />
 
 
-      {/* Popup */}
-      {/* Popup */}
       {/* Popup */}
       {showInvoice && selectedPlan && (
         <section className={`flex space-y-20 w-full h-full justify-center items-center fixed inset-0 bg-black/20 z-[999] backdrop-blur-sm place-items-center transition-opacity duration-300`}>

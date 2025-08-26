@@ -17,10 +17,26 @@ import { usePopup } from "../../provider/PopupProvider";
 const HeroProfile =
   "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
 
-const Navbar = ({
-  navbarStyle,
-}) => {
-  const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
+const plans = [
+  {
+    name: "Premium",
+    features: ["Full access to our models", "Includes 100 coin for generating"],
+  },
+  {
+    name: "Ultimate",
+    features: [
+      "Full access to our models",
+      "Includes 100 coin for generating",
+      "Custom API integration",
+      "Full model customization",
+    ],
+  },
+];
+
+const Navbar = ({ navbarStyle }) => {
+  const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } =
+    useAuth();
+
   const { showPopup, hidePopup } = usePopup();
   const navigate = useNavigate();
   const { isOpen, toggleMenu } = useToggleMenu();
@@ -64,7 +80,6 @@ const Navbar = ({
     if (navbarStyle === "primary") {
       return isScrolled ? "rgba(22, 27, 36, 1)" : "rgba(22, 27, 36, 0)";
     }
-    // secondary atau yang lainnya
     return "rgba(22, 27, 36, 1)";
   };
 
@@ -74,15 +89,20 @@ const Navbar = ({
     if (!window.ic?.plug) {
       showPopup({
         title: "Plug Wallet Not Detected",
-        message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+        message:
+          "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
         type: "default",
         extend: "message",
-        extendMessage: [{
-          error: 200,
-          "server message": "error code",
-        }],
+        extendMessage: [
+          {
+            error: 200,
+            "server message": "error code",
+          },
+        ],
         leftLabel: "Login",
-        onLeft: () => { Login() },
+        onLeft: () => {
+          Login();
+        },
       });
     }
     Login();
@@ -114,7 +134,7 @@ const Navbar = ({
               </a>
             )}
           </div>
-          <ul className="w-[40vh] lg:w-[50vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
+          <ul className="w-[55vh] lg:w-[50vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <a href={item.href} className="hover:text-accentColor">
@@ -231,7 +251,7 @@ const Navbar = ({
 
                           <div className="">
                             <span className="text-sm text-fontPrimaryColor/75">
-                              Wanna try?
+                              {tier === "Ultimate" ? " " : "Wanna try?"}
                             </span>
                             <div className=" mt-4 h-auto w-full gap-x-2 ">
                               <div className="bg-accentColor text-fontPrimaryColor relative mb-4 flex w-full flex-col justify-between rounded-xl px-4 py-5 text-sm overflow-hidden">
@@ -240,7 +260,7 @@ const Navbar = ({
                                     ? "Premium"
                                     : tier === "Premium"
                                       ? "Ultimate"
-                                      : "-"}
+                                      : "Full Access"}
                                 </span>
                                 <span className="text-primaryColor font-semibold absolute right-0 top-0 py-1 px-4 text-sm bg-red-400 rounded-es-xl">
                                   {tier === "Basic"
@@ -251,11 +271,14 @@ const Navbar = ({
                                 </span>
                                 <div className="mt-2 text-sm flex flex-col items-start">
                                   <ol className="ml-1 list-disc list-inside text-sm font-medium">
-                                    <li>
-                                      Full access to basic and advanced AI
-                                      models
-                                    </li>
-                                    <li>100+ requests per day</li>
+                                    {(tier === "Basic"
+                                      ? plans[0].features
+                                      : tier === "Premium"
+                                        ? plans[1].features
+                                        : ["You fully access our features"]
+                                    ).map((feature, idx) => (
+                                      <li key={idx}>{feature}</li>
+                                    ))}
                                   </ol>
                                 </div>
                                 <button

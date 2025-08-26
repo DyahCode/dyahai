@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 
-// import BeforeFreeToUse from "../../../assets/images/features/free-to-use/before.png";
-// import AfterFreeToUse from "../../../assets/images/features/free-to-use/after.png";
 
 const BeforeFreeToUse = "https://bafybeig7whlap6a7w5277tmlatfyaazkjejd5gsi2bdupjf7t5ynks56ly.ipfs.w3s.link/before.png"
 const AfterFreeToUse = "https://bafybeieqxbgazloh6wpptgdt7uzdwdkuf4fsfeo3eb5wz4tyq22wfifimq.ipfs.w3s.link/after.png"

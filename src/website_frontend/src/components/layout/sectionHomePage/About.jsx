@@ -39,7 +39,7 @@ const About = () => {
   useEffect(() => {
     if (containerRef.current) {
       const width =
-        window.innerWidth >= 1024 // breakpoint lg
+        window.innerWidth >= 1024 
           ? containerRef.current.offsetWidth / 3
           : containerRef.current.offsetWidth / 1;
       setItemWidth(width);
@@ -172,7 +172,6 @@ const About = () => {
               })}
             </motion.div>
           </div>
-          {/* </div> */}
         </Container>
       </section>
     </>

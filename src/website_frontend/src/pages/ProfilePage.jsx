@@ -11,6 +11,22 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
 import { FiArrowRightCircle } from "react-icons/fi";
 
+const plans = [
+  {
+    name: "Premium",
+    features: ["Full access to our models", "Includes 100 coin for generating"],
+  },
+  {
+    name: "Ultimate",
+    features: [
+      "Full access to our models",
+      "Includes 100 coin for generating",
+      "Custom API integration",
+      "Full model customization",
+    ],
+  },
+];
+
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
@@ -99,7 +115,6 @@ const ProfilePage = () => {
         <section className="pt-[8dvh] w-full flex justify-end flex-row h-dvh">
           {/* right side */}
           <section className="bg-secondaryColor border-borderShade text-fontPrimaryColor right-0 w-fit lg:min-w-[25rem] lg:w-[25rem] border-l-2 border-opacity-50 order-last flex flex-col justify-between p-2 lg:py-8 lg:px-10">
-            {/* section atas */}
             <div className="">
               <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
 
@@ -108,16 +123,18 @@ const ProfilePage = () => {
                   <li
                     key={index}
                     onClick={() => setSelectedMenu(item.name)}
-                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${selectedMenu === item.name
-                      ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
-                      : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                      }`}
+                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${
+                      selectedMenu === item.name
+                        ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
+                        : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                    }`}
                   >
                     <div
-                      className={`text-2xl items-center justify-center flex aspect-square ${selectedMenu === item.name
-                        ? "text-accentColor"
-                        : "text-fontPrimaryColor/70"
-                        }`}
+                      className={`text-2xl items-center justify-center flex aspect-square ${
+                        selectedMenu === item.name
+                          ? "text-accentColor"
+                          : "text-fontPrimaryColor/70"
+                      }`}
                     >
                       {item.icon}
                     </div>
@@ -129,10 +146,9 @@ const ProfilePage = () => {
               </ul>
             </div>
 
-            {/* section bawah */}
             <div className="">
               <span className="hidden lg:block text-sm text-fontPrimaryColor/75">
-                Wanna try?
+                {tier === "Ultimate" ? " " : "Wanna try?"}
               </span>
               <div className="hidden lg:block mt-4 h-auto w-full gap-x-2 ">
                 <div className="bg-accentColor text-fontPrimaryColor relative mb-4 flex w-full flex-col justify-between rounded-xl px-4 py-5 text-sm overflow-hidden">
@@ -141,7 +157,7 @@ const ProfilePage = () => {
                       ? "Premium"
                       : tier === "Premium"
                         ? "Ultimate"
-                        : "-"}
+                        : "Full Access"}
                   </span>
                   <span className="text-primaryColor font-semibold absolute right-0 top-0 py-1 px-4 text-sm bg-red-400 rounded-es-xl">
                     {tier === "Basic"
@@ -152,8 +168,14 @@ const ProfilePage = () => {
                   </span>
                   <div className="mt-2 text-sm flex flex-col items-start">
                     <ol className="ml-1 list-disc list-inside text-sm font-medium">
-                      <li>Full access to basic AI models</li>
-                      <li>100+ requests per day</li>
+                      {(tier === "Basic"
+                        ? plans[0].features
+                        : tier === "Premium"
+                          ? plans[1].features
+                          : ["You fully access our features"]
+                      ).map((feature, idx) => (
+                        <li key={idx}>{feature}</li>
+                      ))}
                     </ol>
                   </div>
                   <button
@@ -196,13 +218,13 @@ const ProfilePage = () => {
                   variant="outline"
                   size="icon"
                   onClick={Logout}
-                  className="aspect-square lg:aspect-auto lg:px-2 lg:py-[6px] flex items-center text-sm hover:bg-red-500"
+                  className="aspect-square lg:aspect-auto lg:px-2 lg:py-[6px] flex items-center text-sm hover:bg-red-500 group"
                 >
                   <p className="hidden lg:block text-sm">Log Out</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    className="size-6 fill-red-500 stroke-[0.5px] stroke-red-500"
+                    className="size-6 fill-red-500 stroke-[0.5px] stroke-red-500 group-hover:fill-white group-hover:stroke-white transition-colors duration-300"
                   >
                     <g>
                       <path d="M6.5 3.75c-.526 0-1.25.63-1.25 1.821V18.43c0 1.192.724 1.821 1.25 1.821h6.996a.75.75 0 1 1 0 1.5H6.5c-1.683 0-2.75-1.673-2.75-3.321V5.57c0-1.648 1.067-3.321 2.75-3.321h7a.75.75 0 0 1 0 1.5z" />

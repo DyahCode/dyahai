@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 const Footer = () => {
   const menuItems = [
@@ -14,18 +13,6 @@ const Footer = () => {
         id="footer"
         className="footer bg-secondaryColor bottom-0 scroll-mt-20 relative w-full"
       >
-        {/* <div className="bottom-0 h-0 overflow-hidden">
-          <motion.div
-            className="-z-5 absolute h-[20rem] md:h-[32rem] w-full -translate-y-[100%]"
-            style={{
-              background:
-                "linear-gradient(to top, #08baa5 0%, transparent 70%)",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 2 }}
-          />
-        </div> */}
         <div className="pb-8 pt-12 text-center md:px-20 border-t border-borderShade border-opacity-40">
           <div className="flex flex-wrap justify-center gap-6 py-4 md:grid-cols-3">
             <div className="flex items-center md:hidden">

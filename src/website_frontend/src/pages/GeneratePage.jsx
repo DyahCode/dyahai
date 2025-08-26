@@ -407,14 +407,6 @@ const GeneratePage = () => {
         });
       }
 
-      // setNotificationData({
-      //   title: "Insufficient credit",
-      //   message: "You don’t have enough credit",
-      //   description: "Please add credit to generate images.",
-      //   actionUrl: () => setShowNotification(false),
-      //   actionLabel: "OK",
-      // });
-      // setShowNotification(true);
       return;
     }
     const { selectedFile, selectedStyle } = state;

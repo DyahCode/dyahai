@@ -7,7 +7,6 @@ import Button from "../../ui/Button";
 import { usePopup } from "../../../provider/PopupProvider";
 
 
-// import HeroImage from "../../../assets/images/hero/hero-image.png";
 const HeroImage =
   "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png";
 
