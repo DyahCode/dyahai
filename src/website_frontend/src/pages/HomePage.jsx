@@ -1,3 +1,4 @@
+import React from "react";
 import Navbar from "../components/layout/Navbar";
 import Hero from "../components/layout/sectionHomePage/Hero";
 import Feature from "../components/layout/sectionHomePage/Feature";
@@ -5,19 +6,23 @@ import Advantages from "../components/layout/sectionHomePage/Advantages";
 import Gallery from "../components/layout/sectionHomePage/Gallery";
 import About from "../components/layout/sectionHomePage/About";
 import Footer from "../components/layout/sectionHomePage/Footer";
-import { useAuth } from "../provider/authProvider";
+import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
+
 const HomePage = () => {
-  const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
-  
+  React.useEffect(() => {
+
+  }, [])
+
   return (
     <>
-      <div className="font-Poppins flex h-full w-full flex-col justify-center gap-y-40">
-        <Navbar navbarStyle="primary" principalId={principalId} isLoggedIn={isLoggedIn} credit={credit} Login={Login} Logout={Logout} loading={loading} tier={tier} />
+      <div className="flex h-full flex-col items-center overflow-hidden">
+        <Navbar navbarStyle="primary" />
         <Hero />
-        <Feature Login={Login} isLoggedIn={isLoggedIn}/>
+        <Feature />
         <Advantages />
         <Gallery />
-        <About Login={Login} isLoggedIn={isLoggedIn}/>
+        <About />
+        <GettingStarted />
         <Footer />
       </div>
     </>

@@ -17,7 +17,7 @@ export const getStorachaClient = async () => {
             name: "my-space",
             enableIndex: true,
         },
-        });
+    });
 
     const proof = await Proof.parse(process.env.STORACHA_PROOF);
     const space = await client.addSpace(proof);

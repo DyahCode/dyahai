@@ -5,7 +5,6 @@ import {
   removeContentFromStoracha,
 } from "../hooks/authStoracha";
 
-import Swal from "sweetalert2";
 import Button from "../components/ui/Button";
 import Loader from "../components/layout/Loader";
 import "slick-carousel/slick/slick.css";
@@ -15,7 +14,8 @@ import { IoMdDownload } from "react-icons/io";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 
 import Navbar from "../components/layout/Navbar";
-import CardNotification from "../components/layout/CardNotification";
+import { usePopup } from "../provider/PopupProvider";
+import { useNavigate } from "react-router-dom";
 
 const imageAstronout =
   "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
@@ -74,6 +74,10 @@ const GeneratePage = () => {
     actor,
     tier,
   } = useAuth();
+  const { showPopup, hidePopup } = usePopup();
+
+  const navigate = useNavigate();
+
   const [isDragging, setIsDragging] = useState(false);
 
   const [state, setState] = useState({
@@ -390,14 +394,27 @@ const GeneratePage = () => {
 
   const handleGenerate = async () => {
     if (credit <= 0) {
-      setNotificationData({
-        title: "Insufficient credit",
-        message: "You don’t have enough credit",
-        description: "Please add credit to generate images.",
-        actionUrl: () => setShowNotification(false),
-        actionLabel: "OK",
-      });
-      setShowNotification(true);
+
+      if (credit <= 0) {
+        showPopup({
+          title: "Insufficient Credit",
+          message: "Your balance is too low to continue. Please purchase more credits to proceed.",
+          type: "error",
+          leftLabel: "Buy Credits",
+          onLeft: () => { navigate("/topup") },
+          rightLabel: "Cancel",
+          onRight: () => { hidePopup() },
+        });
+      }
+
+      // setNotificationData({
+      //   title: "Insufficient credit",
+      //   message: "You don’t have enough credit",
+      //   description: "Please add credit to generate images.",
+      //   actionUrl: () => setShowNotification(false),
+      //   actionLabel: "OK",
+      // });
+      // setShowNotification(true);
       return;
     }
     const { selectedFile, selectedStyle } = state;
@@ -650,9 +667,9 @@ const GeneratePage = () => {
                         <path
                           fill="none"
                           stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
                           d="M12 15a6 6 0 1 0 0-12a6 6 0 0 0 0 12m0 0v6m-2-2h4"
                         />
                       </svg>
@@ -681,9 +698,9 @@ const GeneratePage = () => {
                         <path
                           fill="none"
                           stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
                           d="M14.232 9.747a6 6 0 1 0-8.465 8.506a6 6 0 0 0 8.465-8.506m0 0L20 4m0 0h-4m4 0v4"
                         />
                       </svg>
@@ -793,17 +810,6 @@ const GeneratePage = () => {
           </div>
         </section>
       </main>
-
-      {showNotification && (
-        <CardNotification
-          title={notificationData.title}
-          message={notificationData.message}
-          description={notificationData.description}
-          actionUrl={notificationData.actionUrl}
-          actionLabel={notificationData.actionLabel}
-          onClose={() => setShowNotification(false)}
-        />
-      )}
     </>
   );
 };

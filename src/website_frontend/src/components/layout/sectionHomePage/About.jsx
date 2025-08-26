@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 import Button from "../../ui/Button";
-import CardNotification from "../CardNotification";
+import { useAuth } from "../../../provider/authProvider";
+import { Container } from "../Container";
 
 const avatar1 =
   "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
@@ -11,17 +12,8 @@ const avatar2 =
 const avatar3 =
   "https://bafybeigjfhem4jjxlqu5vtzxw2kb27u2otgkdp2h27hk7gnv6sgcx4miz4.ipfs.w3s.link/image-gallery-3.jpg";
 
-const About = ({ Login, isLoggedIn }) => {
+const About = () => {
   const containerRef = useRef(null);
-  const [showWalletNotification, setShowWalletNotification] = useState(false);
-
-  const handleNavigationGenerate = () => {
-    if (isLoggedIn) {
-      window.location.href = "/generate";
-    } else {
-      setShowWalletNotification(true);
-    }
-  };
 
   const itemTestimony = [
     {
@@ -97,18 +89,25 @@ const About = ({ Login, isLoggedIn }) => {
     return () => clearInterval(interval);
   }, [position, itemWidth]);
 
+
   return (
     <>
       <section
         id="about"
-        className="bg-primaryColor text-fontPrimaryColor scroll-mt-20 mb-20"
+        className="container text-fontPrimaryColor -scroll-mt-[250px] mb-0"
       >
-        <div className="container mx-auto my-auto flex h-full w-full flex-col items-center justify-center gap-y-10 px-0 text-center md:px-8">
-          <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 px-8 py-12 text-center">
-            <h1 className="text-3xl font-black md:text-7xl">
-              DyahAI Image Generator
-            </h1>
-            <p className="text-fontPrimaryColor text-center text-xl leading-relaxed md:px-10">
+        {/* head section */}
+        <div className="container mt-[20vh] mb-[5vh] md:mt-[40vh] md:mb-[10vh] items-center justify-center text-center">
+          <span className="text-3xl font-black md:text-7xl">
+            DyahAI Image Generator
+          </span>
+        </div>
+
+        {/* body section */}
+        <Container className="space-y-10">
+
+          <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 px-10 md:px-20 text-center">
+            <p className="text-fontPrimaryColor/80 text-center md:text-xl text-base leading-relaxed">
               DyahAI elevates your imagination, transforming each idea into a
               striking, creative masterpiece that exceeds your wildest dreams.
               Powered by cutting-edge AI and secured with blockchain Web 3.0,
@@ -121,9 +120,9 @@ const About = ({ Login, isLoggedIn }) => {
             className="container relative p-0 overflow-hidden w-full h-fit items-center"
             ref={containerRef}
           >
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-12 md:w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
 
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-12 md:w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" />
 
             <motion.div style={{ x }} className="flex">
               {duplicatedItems.map((item, idx) => {
@@ -151,7 +150,7 @@ const About = ({ Login, isLoggedIn }) => {
                       opacity,
                     }}
                   >
-                    <div className=" bg-white/10 rounded-xl text-white flex flex-col justify-center h-full p-4">
+                    <div className=" bg-secondaryColor border border-borderShade/35 rounded-xl text-white flex flex-col justify-center h-full p-4">
                       <div className="w-full h-full flex flex-col justify-between space-y-8">
                         <p className="text-base/5 mt-2 text-fontPrimaryColor italic">
                           "{item.message}"
@@ -173,31 +172,8 @@ const About = ({ Login, isLoggedIn }) => {
               })}
             </motion.div>
           </div>
-          <p className="z-10 text-lg font-bold italic">
-            Bring Your Imagination to Life with DyahAI Realistic Image
-            Generator.
-          </p>
-
-          <Button
-            variant="primary"
-            size="md"
-            onClick={handleNavigationGenerate}
-            isMotion
-          >
-            Try Now
-          </Button>
-        </div>
-
-        {showWalletNotification && (
-          <CardNotification
-            title="Login Required"
-            message="Please login to your Plug Wallet"
-            description="You need to be logged in to your Plug Wallet before connecting and using this feature."
-            actionUrl={() => Login()}
-            actionLabel="Login to Plug Wallet"
-            onClose={() => setShowWalletNotification(false)}
-          />
-        )}
+          {/* </div> */}
+        </Container>
       </section>
     </>
   );

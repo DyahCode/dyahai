@@ -10,43 +10,47 @@ import { AuthProvider } from "./provider/authProvider";
 import RequireAuth from "./provider/requireAuth";
 import TermsSerivePage from "./pages/TermsServicePage";
 import PricingPage from "./pages/PricingPage";
+import { PopupProvider } from "./provider/PopupProvider";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/generate"
-            element={
-              <RequireAuth>
-                <GeneratePage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <ProfilePage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/topup"
-            element={
-              <RequireAuth>
-                <CreditPaymentPage />
-              </RequireAuth>
-            }
-          />
-          <Route path="/*" element={<NotFoundPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/terms" element={<TermsSerivePage />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <PopupProvider>
+      <AuthProvider>
+
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/generate"
+              element={
+                <RequireAuth>
+                  <GeneratePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <ProfilePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/topup"
+              element={
+                <RequireAuth>
+                  <CreditPaymentPage />
+                </RequireAuth>
+              }
+            />
+            <Route path="/*" element={<NotFoundPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/terms" element={<TermsSerivePage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </PopupProvider>
   );
 }
 export default App;
