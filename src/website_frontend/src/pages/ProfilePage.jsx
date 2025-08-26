@@ -27,8 +27,8 @@ const ProfilePage = () => {
           <g
             fill="none"
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M15 7.5a3 3 0 1 1-6 0a3 3 0 0 1 6 0m4.5 13c-.475-9.333-14.525-9.333-15 0" />
             <path d="M11.192 17.565c.394-.21.591-.315.808-.315s.414.105.808.315l.134.072c.394.21.591.315.7.488s.108.383.108.804v.142c0 .42 0 .63-.108.804c-.109.173-.306.278-.7.488l-.134.072c-.394.21-.591.315-.808.315s-.414-.105-.808-.315l-.134-.072c-.394-.21-.591-.315-.7-.488s-.108-.383-.108-.804v-.142c0-.42 0-.63.108-.804c.109-.173.306-.278.7-.488z" />
@@ -48,8 +48,8 @@ const ProfilePage = () => {
           <g
             fill="none"
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M19.27 16.202A7.81 7.81 0 0 1 12.06 21c-4.313 0-7.81-3.492-7.81-7.8S5.89 7.13 8.455 3c4.806 2.1 4.806 8.4 4.806 8.4s1.579-3.038 4.807-4.5c1.034 3.042 2.43 6.365 1.202 9.302" />
             <path d="M12 18a5 5 0 0 1-5-5" />
@@ -69,8 +69,8 @@ const ProfilePage = () => {
           <g
             fill="none"
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M21 12a9 9 0 1 1-18 0a9 9 0 0 1 18 0" />
             <path d="M7 9a2 2 0 1 0 4 0a2 2 0 0 0-4 0m13.718 1.08c-6.38-.75-11.85 3.906-11.716 10.144" />
@@ -108,18 +108,16 @@ const ProfilePage = () => {
                   <li
                     key={index}
                     onClick={() => setSelectedMenu(item.name)}
-                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${
-                      selectedMenu === item.name
-                        ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
-                        : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                    }`}
+                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${selectedMenu === item.name
+                      ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
+                      : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                      }`}
                   >
                     <div
-                      className={`text-2xl items-center justify-center flex aspect-square ${
-                        selectedMenu === item.name
-                          ? "text-accentColor"
-                          : "text-fontPrimaryColor/70"
-                      }`}
+                      className={`text-2xl items-center justify-center flex aspect-square ${selectedMenu === item.name
+                        ? "text-accentColor"
+                        : "text-fontPrimaryColor/70"
+                        }`}
                     >
                       {item.icon}
                     </div>
@@ -186,7 +184,7 @@ const ProfilePage = () => {
                     viewBox="0 0 24 24"
                     className="size-6 fill-none stroke-white stroke-[2px]"
                   >
-                    <g stroke-linecap="round" stroke-linejoin="round">
+                    <g strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20.5 15.8V8.2a1.91 1.91 0 0 0-.944-1.645l-6.612-3.8a1.88 1.88 0 0 0-1.888 0l-6.612 3.8A1.9 1.9 0 0 0 3.5 8.2v7.602a1.91 1.91 0 0 0 .944 1.644l6.612 3.8a1.88 1.88 0 0 0 1.888 0l6.612-3.8A1.9 1.9 0 0 0 20.5 15.8" />
                       <path d="m8.667 12.633l1.505 1.721a1 1 0 0 0 1.564-.073L15.333 9.3" />
                     </g>

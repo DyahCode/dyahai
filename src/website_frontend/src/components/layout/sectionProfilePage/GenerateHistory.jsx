@@ -7,10 +7,11 @@ import { removeContentFromStoracha } from "../../../hooks/authStoracha";
 import { FaEthereum } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
-import Swal from "sweetalert2";
+import { usePopup } from "../../../provider/PopupProvider";
 
 const GenerateHistory = ({ principalId, isLoggedIn }) => {
   const { loading, actor } = useAuth();
+  const { showPopup, hidePopup } = usePopup();
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
@@ -30,24 +31,36 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
 
   async function handleDeleteImage(id, imageIndex) {
     try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "Do you really want to delete this image?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+      showPopup({
+        title: "Deleting selected image now!",
+        message: "Do you really want to delete this image? This action cannot be undone.",
+        type: "warning",
+        leftLabel: "Yes",
+        onLeft: async () => {
+          await actor.delete_image_by_index(imageIndex);
+          await removeContentFromStoracha(id);
+          setImages(images.filter((_, index) => index !== imageIndex));
+
+          showPopup({
+            title: "Image Deleted",
+            message: "The selected image has been removed successfully.",
+            type: "success",
+            leftLabel: "Done",
+            onLeft: async () => { hidePopup(); },
+          });
+        },
+        rightLabel: "Cancel",
+        onRight: () => { hidePopup() },
       });
 
-      if (result.isConfirmed) {
-        await actor.delete_image_by_index(imageIndex);
-        await removeContentFromStoracha(id);
-        setImages(images.filter((_, index) => index !== imageIndex));
-        Swal.fire("Deleted!", "Your image has been deleted.", "success");
-      }
     } catch (error) {
-      Swal.fire("Error!", "There was an error deleting your image.", "error");
+      showPopup({
+        title: "Error Deleting Image",
+        message: "Something went wrong while deleting the image. Please try again.",
+        type: "error",
+        leftLabel: "OK",
+        onLeft: async () => { hidePopup() },
+      });
     }
   }
 

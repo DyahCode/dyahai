@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useScroll } from "framer-motion";
-import { useDropdown } from "../../hooks/useDropdown";
-import { useToggleMenu } from "../../hooks/useTogglemenu";
+import { useDropdown } from "../../utils/useDropdown";
+import { useToggleMenu } from "../../utils/useTogglemenu";
 
 import HumbergerButton from "../ui/HumbergerButton/HumbergerButton";
 import Button from "../ui/Button";
@@ -11,22 +11,17 @@ import { LuWallet } from "react-icons/lu";
 import { FaRegUserCircle, FaRegUser } from "react-icons/fa";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
-
-import CardNotification from "./CardNotification";
+import { useAuth } from "../../provider/authProvider";
+import { usePopup } from "../../provider/PopupProvider";
 
 const HeroProfile =
   "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
 
 const Navbar = ({
   navbarStyle,
-  principalId,
-  loading,
-  isLoggedIn,
-  credit,
-  Login,
-  Logout,
-  tier,
 }) => {
+  const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
+  const { showPopup, hidePopup } = usePopup();
   const navigate = useNavigate();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
@@ -75,11 +70,20 @@ const Navbar = ({
 
   const navbarBackground = getNavbarBackground();
 
-  const [showWalletNotification, setShowWalletNotification] = useState(false);
   const handleLogin = () => {
     if (!window.ic?.plug) {
-      setShowWalletNotification(true);
-      return;
+      showPopup({
+        title: "Plug Wallet Not Detected",
+        message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+        type: "default",
+        extend: "message",
+        extendMessage: [{
+          error: 200,
+          "server message": "error code",
+        }],
+        leftLabel: "Login",
+        onLeft: () => { Login() },
+      });
     }
     Login();
   };
@@ -174,10 +178,10 @@ const Navbar = ({
                             </div>
                             <div className="w-full flex flex-col items-center justify-start space-y-2">
                               {/* profile */}
-                              <div class="flex justify-center items-center">
+                              <div className="flex justify-center items-center">
                                 <svg
                                   viewBox="0 0 24 24"
-                                  class="w-12 h-12 md:w-20 md:h-20"
+                                  className="w-12 h-12 md:w-20 md:h-20"
                                 >
                                   <path
                                     className="fill-none stroke-white stroke-[1.5px]"
@@ -191,7 +195,7 @@ const Navbar = ({
                                   <image
                                     className="size-full object-cover"
                                     href={HeroProfile}
-                                    clip-path="url(#hexClip)"
+                                    clipPath="url(#hexClip)"
                                     preserveAspectRatio="xMidYMid slice"
                                   />
                                 </svg>
@@ -305,7 +309,7 @@ const Navbar = ({
                 className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
                 isMotion
               >
-                Connect PlugWallet
+                Connect
               </Button>
             )}
           </div>
@@ -331,22 +335,6 @@ const Navbar = ({
           ))}
         </ul>
       </motion.div>
-
-      {showWalletNotification && (
-        <CardNotification
-          title="Plug Wallet Not Detected"
-          message="Plug Wallet is not installed on your browser."
-          description="To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet."
-          actionUrl={() =>
-            window.open(
-              "https://chromewebstore.google.com/detail/plug/cfbfdhimifdmdehjmkdobpcjfefblkjm",
-              "_blank"
-            )
-          }
-          actionLabel="Install Plug Wallet"
-          onClose={() => setShowWalletNotification(false)}
-        />
-      )}
     </motion.nav>
   );
 };

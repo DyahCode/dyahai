@@ -12,11 +12,11 @@ const Footer = () => {
     <>
       <footer
         id="footer"
-        className="footer bg-primaryColor bottom-0 scroll-mt-20"
+        className="footer bg-secondaryColor bottom-0 scroll-mt-20 relative w-full"
       >
-        <div className="bottom-0 h-0 overflow-hidden">
+        {/* <div className="bottom-0 h-0 overflow-hidden">
           <motion.div
-            className="-z-5 absolute h-1/2 w-full -translate-y-[100%]"
+            className="-z-5 absolute h-[20rem] md:h-[32rem] w-full -translate-y-[100%]"
             style={{
               background:
                 "linear-gradient(to top, #08baa5 0%, transparent 70%)",
@@ -25,13 +25,13 @@ const Footer = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 2 }}
           />
-        </div>
+        </div> */}
         <div className="pb-8 pt-12 text-center md:px-20 border-t border-borderShade border-opacity-40">
-          <div className="flex flex-wrap justify-center gap-6 py-4 text-white md:grid-cols-3">
+          <div className="flex flex-wrap justify-center gap-6 py-4 md:grid-cols-3">
             <div className="flex items-center md:hidden">
-              <ul className="flex divide-x-2 divide-slate-300 divide-opacity-20">
+              <ul className="flex divide-x divide-slate-300 divide-opacity-20 text-white/70">
                 {menuItems.map((item, index) => (
-                  <li key={index} className="px-2">
+                  <li key={index} className="px-2.5">
                     <a href={item.href}>{item.name}</a>
                   </li>
                 ))}
@@ -43,7 +43,7 @@ const Footer = () => {
                   <li key={index}>
                     <a
                       href={item.href}
-                      className="select-none transition transform ease-in-out duration-150 text-gray-600 hover:text-fontPrimaryColor"
+                      className="select-none transition transform ease-in-out duration-150 text-white/60 hover:text-fontPrimaryColor"
                     >
                       {item.name}
                     </a>

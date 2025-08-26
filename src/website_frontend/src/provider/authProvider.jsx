@@ -8,10 +8,13 @@ import {
 import { idlFactory as website_backend_idl } from "../../../declarations/website_backend";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
+import { usePopup } from "./PopupProvider";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const { showPopup, hidePopup } = usePopup();
+
   const [loading, setLoading] = useState(true);
   const [principalId, setPrincipalId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,18 +33,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkConnection = async () => {
-
       const isConnected = await window.ic?.plug?.isConnected();
       const hasAgent = window.ic?.plug?.agent;
 
       if (isConnected && hasAgent) {
+        await buildActor();
+        setIsLoggedIn(true);
+
         const principal = await window.ic.plug.agent.getPrincipal();
         setPrincipalId(principal.toText());
-        setIsLoggedIn(true);
-        await buildActor();
       }
       setLoading(false);
     };
+
     checkConnection();
   }, []);
 
@@ -50,14 +54,18 @@ export const AuthProvider = ({ children }) => {
       return;
     }
     const connected = await window.ic.plug.isConnected();
-
     if (!connected) {
       await window.ic.plug.requestConnect({
         whitelist,
         host: host,
-        onConnectionUpdate: async () => {},
+        onConnectionUpdate: async () => {
+          await buildActor()
+        },
       });
     }
+
+    await buildActor();
+    setIsLoggedIn(true);
 
     const principal = await window.ic.plug.agent.getPrincipal();
     setPrincipalId(principal.toText());
@@ -70,8 +78,24 @@ export const AuthProvider = ({ children }) => {
       setActor(null);
       window.location.href = "/";
     });
-    await buildActor();
-    setIsLoggedIn(true);
+  };
+
+  const checkingPlugInstalled = async () => {
+    if (!window.ic?.plug) {
+      hidePopup();
+      setTimeout(() => {
+        showPopup({
+          title: "Plug Wallet Not Detected",
+          message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+          type: "default",
+          extend: "plugInstruction",
+          leftLabel: "Login",
+          onLeft: () => { Login() },
+        });
+      }, 100);
+      return false;
+    }
+    return true;
   };
 
   const getAccountId = async (customActor = actor) => {
@@ -96,7 +120,6 @@ export const AuthProvider = ({ children }) => {
       canisterId: process.env.CANISTER_ID_WEBSITE_BACKEND,
       interfaceFactory: website_backend_idl,
     });
-    await new Promise((r) => setTimeout(r, 500));
 
     setActor(newActor);
     await getAccountId(newActor);
@@ -105,6 +128,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const Login = useCallback(async () => {
+    const installed = await checkingPlugInstalled();
+    if (!installed) return;
+
     await initPlug();
   }, []);
 
@@ -129,22 +155,16 @@ export const AuthProvider = ({ children }) => {
       const getTier = await customActor.get_tier();
 
       setTier(getTier);
-    } catch (error) {}
+    } catch (error) { }
   };
 
-  const TopupCredit = async (
-    amount,
-    type = "credit",
-    credit = 0,
-    plan = ""
-  ) => {
+  const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
     if (!actor || !window.ic?.plug) {
       return { success: false, error: "No actor or Plug wallet available" };
     }
 
     try {
       const canisterPrincipalStr = await actor.get_account_id_for_canister();
-
       const result = await window.ic.plug.requestTransfer({
         to: canisterPrincipalStr,
         amount,
@@ -164,7 +184,7 @@ export const AuthProvider = ({ children }) => {
       await refreshCredit();
 
       return {
-        status: "success",
+        success: true,
         data: {
           blockHeight: result.height,
           summary,
@@ -172,7 +192,8 @@ export const AuthProvider = ({ children }) => {
       };
     } catch (error) {
       return {
-        status: "reject",
+        success: false,
+        status: "exception",
         error,
       };
     }
@@ -199,6 +220,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

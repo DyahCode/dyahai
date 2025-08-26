@@ -1,4 +1,8 @@
 import React from "react";
+import ContainerBox, { Box, Container } from "../Container";
+import { motion } from "framer-motion";
+import GlowBackground from "../../ui/GlowHeadSection";
+import HeadSection from "../HeadSection";
 
 // import imageSquare1 from "../../../assets/images/gallery/square-image/1.jpg";
 // import imageSquare2 from "../../../assets/images/gallery/square-image/2.jpg";
@@ -47,13 +51,23 @@ const imagePortrait10 = "https://bafybeifh5kxkqyjh5naxphlvo4vxls4eupp2fubymjqeqh
 const Gallery = () => {
   return (
     <>
-      <section id="gallery" className="bg-primaryColor scroll-mt-20">
-        <div className="border-borderShade container mx-auto flex w-full flex-col items-center space-y-10 rounded-lg border-2 border-opacity-40 px-4 py-16 text-center">
-          <h1 className="text-fontPrimaryColor text-3xl font-bold md:text-7xl">
+      {/* head section */}
+      <HeadSection>
+        <span className="text-4xl font-bold md:text-7xl text-fontPrimaryColor">
+          Our Gallery
+        </span>
+      </HeadSection>
+
+      {/* body section */}
+      <section
+        id="gallery"
+        className="scroll-mt-[650px]">
+        <ContainerBox boxClass="space-y-10 text-center">
+          <span className="text-fontPrimaryColor/95 text-3xl font-bold md:text-7xl">
             Creatifully Generate Image
-          </h1>
-          <div className="container mx-auto">
-            <p className="text-fontPrimaryColor text-center text-base leading-relaxed md:text-xl">
+          </span>
+          <Container className="md:px-10">
+            <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
               Discover the creative possibilities of DyahAI in our Gallery
               Generate Image, where you can explore a wide variety of stunning
               AI-generated artwork. This gallery showcases the powerful
@@ -62,8 +76,8 @@ const Gallery = () => {
               cyberpunk, our AI model can transform any image into a beautiful
               piece of art, all rendered in high resolution.
             </p>
-          </div>
-          <div className="grid h-full w-full grid-cols-2 items-center justify-center overflow-hidden px-5 md:grid-cols-4 md:px-10 lg:grid-cols-5">
+          </Container>
+          <div className="grid h-full w-full grid-cols-2 items-center justify-center overflow-hidden md:grid-cols-4 lg:grid-cols-5">
             <div className="space-y-2 p-1">
               <div className="size-full h-2/5">
                 <img
@@ -234,7 +248,9 @@ const Gallery = () => {
               </div>
             </div>
           </div>
-        </div>
+          {/* </div> */}
+        </ContainerBox>
+
       </section>
     </>
   );
