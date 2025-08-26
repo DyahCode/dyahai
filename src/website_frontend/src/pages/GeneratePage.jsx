@@ -394,27 +394,15 @@ const GeneratePage = () => {
 
   const handleGenerate = async () => {
     if (credit <= 0) {
-
-      if (credit <= 0) {
-        showPopup({
-          title: "Insufficient Credit",
-          message: "Your balance is too low to continue. Please purchase more credits to proceed.",
-          type: "error",
-          leftLabel: "Buy Credits",
-          onLeft: () => { navigate("/topup") },
-          rightLabel: "Cancel",
-          onRight: () => { hidePopup() },
-        });
-      }
-
-      // setNotificationData({
-      //   title: "Insufficient credit",
-      //   message: "You don’t have enough credit",
-      //   description: "Please add credit to generate images.",
-      //   actionUrl: () => setShowNotification(false),
-      //   actionLabel: "OK",
-      // });
-      // setShowNotification(true);
+      showPopup({
+        title: "Insufficient Credit",
+        message: "Your balance is too low to continue. Please purchase more credits to proceed.",
+        type: "error",
+        leftLabel: "Buy Credits",
+        onLeft: () => { navigate("/topup") },
+        rightLabel: "Cancel",
+        onRight: () => { hidePopup() },
+      });
       return;
     }
     const { selectedFile, selectedStyle } = state;
@@ -460,7 +448,7 @@ const GeneratePage = () => {
       console.log("imageUrl:", imageUrl);
       console.log("styleUrl:", selectedStyle.image);
       console.log("cid img:", cid);
-
+      console.log("actor from generate_page:", actor);
       console.log("function send http post request already to run >>>")
       const response = await actor.send_http_post(
         imageUrl,
