@@ -21,7 +21,7 @@
             // Notes about the CSP below:
             // - We added img-src data: because data: images are used often.
             // - frame-ancestors: none mitigates clickjacking attacks. See https://owasp.org/www-community/attacks/Clickjacking.
-            "Content-Security-Policy": "default-src 'self';script-src 'self';connect-src 'self' http://localhost:* https://icp0.io https://*.icp0.io https://icp-api.io https://up.storacha.network https://*.r2.cloudflarestorage.com https://*.fffa4b4363a7e5250af8357087263b3a.r2.cloudflarestorage.com https://*.s3.us-west-2.amazonaws.com https://*.ipfs.w3s.link;img-src 'self' data: https://*.ipfs.w3s.link;style-src * 'unsafe-inline';style-src-elem * 'unsafe-inline';font-src 'self' data: *;object-src 'none';base-uri 'self';frame-ancestors 'none';form-action 'self';upgrade-insecure-requests;",
+            "Content-Security-Policy": "default-src 'self';script-src 'self';connect-src 'self' https://dyahai-proxy.vercel.app/style/run http://localhost:* https://icp0.io https://*.icp0.io https://icp-api.io https://up.storacha.network https://*.r2.cloudflarestorage.com https://*.fffa4b4363a7e5250af8357087263b3a.r2.cloudflarestorage.com https://*.s3.us-west-2.amazonaws.com https://*.ipfs.w3s.link;img-src 'self' data: https://*.ipfs.w3s.link;style-src * 'unsafe-inline';style-src-elem * 'unsafe-inline';font-src 'self' data: *;object-src 'none';base-uri 'self';frame-ancestors 'none';form-action 'self';upgrade-insecure-requests;",
 
             // Security: The permissions policy disables all features for security reasons. If your site needs such permissions, activate them.
             // To configure permissions go here https://www.permissionspolicy.com/
