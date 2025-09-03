@@ -17,6 +17,10 @@ import Navbar from "../components/layout/Navbar";
 import { usePopup } from "../provider/PopupProvider";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
+import { Principal } from "@dfinity/principal";
+
 const imageAstronout =
   "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
 const imageBackpacker =
@@ -441,6 +445,32 @@ const GeneratePage = () => {
     }
   };
 
+  const generate = async (source, target) => {
+    const url = "https://dyahai-proxy.vercel.app/style/run";
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Idempotency-Key": `${principalId}-${Date.now()}`,
+    };
+    const body = {
+      input: {
+        source_image: source,
+        target_image: target,
+        source_indexes: "-1",
+        target_indexes: "-1",
+        background_enhance: true,
+        face_restore: true,
+        face_upsample: true,
+        upscale: 1,
+        codeformer_fidelity: 0.2,
+        output_format: "JPEG",
+      }
+    };
+
+    const response = await axios.post(url, body, { headers });
+    return response.data;
+  };
+
+
   const uploadImageToBackend = async (imageUrl, cid) => {
     try {
       const { selectedStyle } = state;
@@ -450,13 +480,11 @@ const GeneratePage = () => {
       console.log("cid img:", cid);
       console.log("actor from generate_page:", actor);
       console.log("function send http post request already to run >>>")
-      const response = await actor.send_http_post(
-        imageUrl,
-        selectedStyle.image
-      );
+      const response = await generate(imageUrl, selectedStyle.image)
+
       console.log("response from backend >>>>>", response);
 
-      if (!response.status) {
+      if (!response.status == "COMPLETED") {
         setNotificationData({
           title: "Oops! Something Went Wrong",
           message: response.message || "We couldn't generate your image.",
@@ -468,8 +496,10 @@ const GeneratePage = () => {
         setShowNotification(true);
         return;
       }
+      const clientPrincipal = Principal.fromText(principalId);
+      await actor.reduction_credit(clientPrincipal);
 
-      const base64Image = response.result;
+      const base64Image = response.output.image;
       if (!base64Image) {
         setNotificationData({
           title: "Oops! Something Went Wrong",

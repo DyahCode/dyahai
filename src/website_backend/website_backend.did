@@ -29,6 +29,6 @@ service : {
   "get_account_id_for_canister" : () -> (text);
   "get_tx_summary" : (nat64, nat64, text, text, text) -> (text);
   "get_transaction" : () -> (vec text);
-
+  "reduction_credit": (principal) -> ();
   "transform" : (TransformArgs) -> (HttpResponse) query
 }
