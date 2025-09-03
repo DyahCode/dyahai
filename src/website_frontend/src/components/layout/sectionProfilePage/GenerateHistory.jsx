@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../provider/authProvider";
 import { removeContentFromStoracha } from "../../../hooks/authStoracha";
-// import { website_backend } from '../../../../../declarations/website_backend';
 
-import { FaEthereum } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
-import { MdDeleteForever } from "react-icons/md";
 import { usePopup } from "../../../provider/PopupProvider";
 
 const GenerateHistory = ({ principalId, isLoggedIn }) => {
@@ -100,8 +97,6 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
               className="flex h-full w-full flex-col items-start justify-between rounded-lg border border-borderShade/40 overflow-hidden animate-pulse"
             >
 
-
-              {/* Informasi Bar Bawah */}
               <div className="flex h-[55px] w-full bg-white/10 items-center">
                 <div
                   key={index}
@@ -140,7 +135,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                   </span>
                 </div>
 
-                {/* Button Delete */}
+                {/* Delete Button */}
                 <button onClick={() => handleDeleteImage(image.id, index)}
                   className="flex top-0 right-0 absolute h-6 flex-row pl-1.5 group-hover:pl-2 pr-1 items-center rounded-es-lg bg-red-500 transition transform space-x-1">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-4 fill-white group-hover:">
@@ -148,9 +143,9 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                   </svg>
                   <span className="hidden group-hover:block transition transform text-sm font-medium">Delete</span>
                 </button>
-                {/* Button Download */}
+                {/* Download Button */}
 
-                {/* Gambar */}
+                {/* Image */}
                 <div className="flex flex-col items-center gap-3">
                   <img
                     className="size-full"
@@ -159,7 +154,6 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                   />
                 </div>
 
-                {/* Informasi Bar Bawah */}
                 <div className="flex h-full w-full flex-row bg-white items-center text-primaryColor">
                   <div className="m-0.5 ml-1 h-fit overflow-hidden line-clamp-1 md:m-1 md:ml-2 flex flex-1 flex-col">
                     <span className="text-navy-700 text-xs font-medium">

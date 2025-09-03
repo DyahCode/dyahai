@@ -130,7 +130,6 @@ const TermsServicePage = () => {
         {/* Box */}
         <Container className="pt-40">
 
-          {/* <div className="rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group  mb-[435px]"> */}
           <Box className="flex flex-col text-fontPrimaryColor items-center justify-center">
 
             {/* <div className=""> */}

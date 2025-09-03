@@ -50,10 +50,7 @@ const loaderVariants = {
 
 const Loader = () => {
   useEffect(() => {
-    // Disable scroll saat loader aktif
     document.body.style.overflow = "hidden";
-
-    // Aktifkan scroll lagi saat komponen di-unmount
     return () => {
       document.body.style.overflow = "auto";
     };

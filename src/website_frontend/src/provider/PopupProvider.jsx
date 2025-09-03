@@ -106,7 +106,6 @@ export const PopupProvider = ({ children }) => {
         <section
           key={popupData.id}
           className={`flex flex-col space-y-20 w-full h-full justify-center items-center fixed inset-0 bg-black/20 z-[999] backdrop-blur-sm place-items-center transition-opacity duration-300`}>
-          {/* ${popupData.isVisible ? "visible" : "invisible"} */}
 
           {/* <!-- Card --> */}
           <div className="relative max-w-[38rem] min-h-[16rem] w-[90%] grid place-content-center place-items-center text-center rounded-xl opacity-95 hover:opacity-100 transition-opacity duration-200 bg-primaryColor overflow-hidden shadow-[0.063em_0.75em_1.563em_rgba(0,0,0,0.78)]">

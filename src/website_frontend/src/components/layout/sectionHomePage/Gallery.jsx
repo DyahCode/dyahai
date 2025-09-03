@@ -1,30 +1,6 @@
 import React from "react";
 import ContainerBox, { Box, Container } from "../Container";
-import { motion } from "framer-motion";
-import GlowBackground from "../../ui/GlowHeadSection";
 import HeadSection from "../HeadSection";
-
-// import imageSquare1 from "../../../assets/images/gallery/square-image/1.jpg";
-// import imageSquare2 from "../../../assets/images/gallery/square-image/2.jpg";
-// import imageSquare3 from "../../../assets/images/gallery/square-image/3.jpg";
-// import imageSquare4 from "../../../assets/images/gallery/square-image/4.jpg";
-// import imageSquare5 from "../../../assets/images/gallery/square-image/5.jpg";
-// import imageSquare6 from "../../../assets/images/gallery/square-image/6.jpg";
-// import imageSquare7 from "../../../assets/images/gallery/square-image/7.jpg";
-// import imageSquare8 from "../../../assets/images/gallery/square-image/8.jpg";
-// import imageSquare9 from "../../../assets/images/gallery/square-image/9.jpg";
-// import imageSquare10 from "../../../assets/images/gallery/square-image/10.jpg";
-
-// import imagePortrait1 from "../../../assets/images/gallery/portrait-image/1.jpg";
-// import imagePortrait2 from "../../../assets/images/gallery/portrait-image/2.jpg";
-// import imagePortrait3 from "../../../assets/images/gallery/portrait-image/3.jpg";
-// import imagePortrait4 from "../../../assets/images/gallery/portrait-image/4.jpg";
-// import imagePortrait5 from "../../../assets/images/gallery/portrait-image/5.jpg";
-// import imagePortrait6 from "../../../assets/images/gallery/portrait-image/6.jpg";
-// import imagePortrait7 from "../../../assets/images/gallery/portrait-image/7.jpg";
-// import imagePortrait8 from "../../../assets/images/gallery/portrait-image/8.jpg";
-// import imagePortrait9 from "../../../assets/images/gallery/portrait-image/9.jpg";
-// import imagePortrait10 from "../../../assets/images/gallery/portrait-image/10.jpg";
 
 const imageSquare1 = "https://bafybeiacelbfiajmplzorraly754mdnwbopgknoiekwtrmetgukeiqwrzi.ipfs.w3s.link/1.jpg"
 const imageSquare2 = "https://bafybeibdtisgtgdyak7qfqfnpmhxwuqe4u33cyrica2zo6ltefhilvibvu.ipfs.w3s.link/2.jpg"

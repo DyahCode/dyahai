@@ -95,8 +95,6 @@ const Feature = () => {
           </motion.div>
 
           {/* Model Features */}
-          {/* <div className="container w-full h-full items-center overflow-hidden"> */}
-          {/* <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/25 bg-gradient-to-b from-white/[0.020] via-white/[0.015] to-white/[0.01] p-4 md:p-10 lg:p-16"> */}
           <ContainerBox boxClass="space-y-20">
             <div className="relative flex w-full items-center justify-center overflow-hidden">
               <div className="absolute right-[7.5%] hidden h-3/5 w-auto md:flex">
@@ -140,12 +138,8 @@ const Feature = () => {
         {/* section HD Images & Free To Use */}
 
         <Container className="flex flex-col md:flex-row justify-center gap-x-8 space-y-10 md:space-y-0 mx-auto">
-          {/* <div className="text-fontPrimaryColor container mx-auto flex flex-col gap-x-4 gap-y-20 md:flex-row md:gap-y-0"> */}
-
           {/* HD Image features */}
           <Box className="w-full md:w-3/5">
-
-            {/* <div className="md:w-3/5 rounded-lg border border-borderShade border-opacity-40"> */}
             <div className="w-full max-h-fit flex flex-col justify-start items-center">
               <div className="flex h-full w-full flex-col items-center justify-items-center gap-y-10 text-center">
                 <h1 className="text-2xl font-bold md:text-4xl text-white/90">
@@ -169,13 +163,11 @@ const Feature = () => {
                 </p>
               </div>
             </div>
-            {/* </div> */}
           </Box>
 
 
           {/* Free To Use */}
           <Box className="w-full md:w-2/5">
-            {/* <div className="md:w-2/5 rounded-lg border border-borderShade border-opacity-40"> */}
             <div className="w-full max-h-fit flex flex-col justify-start items-center">
               <div className="flex h-full w-full flex-col items-center justify-items-center gap-y-10 text-center">
                 <h1 className="text-2xl font-bold md:text-4xl text-white/90">Free-To-Use</h1>
@@ -199,10 +191,7 @@ const Feature = () => {
                 </Button>
               </div>
             </div>
-            {/* </div> */}
           </Box>
-
-          {/* </div> */}
         </Container>
 
         <div className=" text-fontPrimaryColor z-10 w-full mx-auto justify-items-center space-y-10">

@@ -61,7 +61,7 @@ const TransactionHistory = () => {
               className="flex h-full w-full flex-col items-start justify-between rounded-lg border border-borderShade/40 overflow-hidden animate-pulse"
             >
 
-              {/* Gambar */}
+              {/* Image */}
               <div className="flex flex-col items-center justify-center gap-3 size-full aspect-square bg-white/5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-24 stroke-white opacity-10">
                   <g fill="none" strokeLinecap="round" strokeLinejoin="round" >
@@ -72,7 +72,6 @@ const TransactionHistory = () => {
                 </svg>
               </div>
 
-              {/* Informasi Bar Bawah */}
               <div className="flex h-[55px] w-full bg-white/10 items-center">
 
               </div>
@@ -90,13 +89,12 @@ const TransactionHistory = () => {
             trx.map((trx, idx) => (
               <div key={idx} className="flex flex-row gap-2 rounded-md items-start md:items-center transition duration-200 border border-t-2 border-neutral-500/25 bg-white/[0.025] p-2 group text-fontPrimaryColor relative overflow-hidden">
 
-                {/* KIRI: ICON */}
+                {/* LEFT: ICON */}
                 <div className="h-6 md:h-14 aspect-square">
                   {getMessageIcon(trx.message)}
                 </div>
 
                 <div className="w-full flex flex-col lg:flex-row">
-                  {/* TENGAH: To & Amount */}
                   <div className="flex-1 flex flex-col space-y-2">
 
 
@@ -125,7 +123,7 @@ const TransactionHistory = () => {
 
                   </div>
 
-                  {/* KANAN: Memo & Timestamp */}
+                  {/* RIGHT: Memo & Timestamp */}
                   <div className="justify-end flex flex-col text-left lg:text-right text-xs text-white/40 font-mono pt-4 lg:pt-0">
                     <p className="">
                       {new Date(Number(trx.timestamp.timestamp_nanos / 1_000_000n)).toLocaleString()}
