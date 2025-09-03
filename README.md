@@ -134,7 +134,13 @@ https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_so
 ```
 
 ## 🎥 Video Demonstration :  </br>
-[Video demonstration](https://www.youtube.com/watch?v=-WW5aZ5AHNM)
+[Video demonstration](https://youtu.be/zvcZufyHNoc?si=mux5XDI6TI78YeeU)
+
+## 🎥 Pitch Deck :  </br>
+[Pitch Deck](https://drive.google.com/file/d/1DV04JlF6NE5jtphdk5nDT44hM4onbm1l/view?usp=sharing)
+
+## 🎥 Pitch Video :  </br>
+[Pitch Video](https://youtu.be/zvmsngTkHn4)
 
 ## 👥 Contributors
 <a href="https://github.com/iAnoeloeby"><img src="https://avatars.githubusercontent.com/u/55847059?v=4" title="hasbi" width="80" height="80"></a>
