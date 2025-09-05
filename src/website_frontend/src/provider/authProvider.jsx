@@ -32,43 +32,48 @@ export const AuthProvider = ({ children }) => {
       : "http://localhost:5000";
 
   useEffect(() => {
-    const checkConnection = async () => {
-      const isConnected = await window.ic?.plug?.isConnected();
-      const hasAgent = window.ic?.plug?.agent;
-
-      if (isConnected && hasAgent) {
-        await buildActor();
-        setIsLoggedIn(true);
-
-        const principal = await window.ic.plug.agent.getPrincipal();
-        setPrincipalId(principal.toText());
-      }
-      setLoading(false);
-    };
-
-    checkConnection();
+    (async () => {
+      await checkConnection();
+    })();
   }, []);
+
+  const checkConnection = async () => {
+    const isConnected = await window.ic?.plug?.isConnected();
+    console.log("Plug wallet connected:", isConnected);
+
+    if (isConnected) {
+      await buildActor();
+      setIsLoggedIn(true);
+      console.log("set Log In");
+      const principal = await window.ic.plug.agent.getPrincipal();
+      setPrincipalId(principal.toText());
+      console.log("User principal ID:", principal.toText());
+    }
+    setLoading(false);
+  };
 
   const initPlug = async () => {
     if (!window.ic?.plug) {
       return;
     }
     const connected = await window.ic.plug.isConnected();
+    console.log("Plug wallet connected:", connected);
     if (!connected) {
       await window.ic.plug.requestConnect({
         whitelist,
         host: host,
         onConnectionUpdate: async () => {
-          await buildActor()
         },
       });
     }
 
     await buildActor();
     setIsLoggedIn(true);
+    console.log("set Log In");
 
     const principal = await window.ic.plug.agent.getPrincipal();
     setPrincipalId(principal.toText());
+    console.log("User principal ID:", principal.toText());
 
     window.ic.plug.onExternalDisconnect(() => {
       setPrincipalId("");

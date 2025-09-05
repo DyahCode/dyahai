@@ -9,6 +9,7 @@ const TransactionHistory = () => {
   async function loadTrx() {
     try {
       const fetchedTrx = await actor.get_transaction();
+      console.log("Fetched Trx: ", fetchedTrx);
       const ResultTrx = fetchedTrx.map((trx) => {
         return JSON.parse(trx)
       });

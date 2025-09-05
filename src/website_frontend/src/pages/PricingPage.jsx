@@ -265,7 +265,7 @@ const PricingPage = () => {
         tier={tier}
       />
 
-      <Container className="flex flex-col items-center mt-[40dvh] space-y-60">
+      <Container className="flex flex-col items-center mt-[10dvh] space-y-60">
         <section>
           <div className="text-center mb-40 space-y-10">
             <h1 className="text-4xl font-bold text-center text-fontPrimaryColor">

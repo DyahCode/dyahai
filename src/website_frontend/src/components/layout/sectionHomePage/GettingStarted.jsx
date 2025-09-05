@@ -4,15 +4,16 @@ import { motion } from "framer-motion";
 import Button from "../../ui/Button";
 import { usePopup } from '../../../provider/PopupProvider';
 import { useAuth } from '../../../provider/authProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 const GettingStarted = () => {
   const { showPopup, hidePopup } = usePopup();
   const { isLoggedIn, Login } = useAuth();
-
+  const navigate = useNavigate()
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
-      window.location.href = "/generate";
+      navigate('/generate');
     } else {
       showPopup({
         title: "Plug Wallet Login Required",

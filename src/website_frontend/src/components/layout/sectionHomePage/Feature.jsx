@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import BeforeAfterSlider from "../../ui/HDResult/slider";
 import FTUImages from "../../ui/FreeToUse/FTUImages";
@@ -37,13 +37,14 @@ const ImageZombie =
   "https://bafybeif36hbrahuczmxqxlwvi3fcd7obb2qyf5eewyew4yco4dza4pzp3a.ipfs.w3s.link/zombie.png";
 
 const Feature = () => {
+  const navigate = useNavigate();
   const { isLoggedIn, Login } = useAuth();
   const { showPopup, hidePopup } = usePopup();
   const { scrollY } = useScroll();
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
-      window.location.href = "/generate";
+      navigate("/generate");
     } else {
       showPopup({
         title: "Plug Wallet Login Required",
