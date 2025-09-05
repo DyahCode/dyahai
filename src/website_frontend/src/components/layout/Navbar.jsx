@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, useScroll } from "framer-motion";
 import { useDropdown } from "../../utils/useDropdown";
 import { useToggleMenu } from "../../utils/useTogglemenu";
@@ -34,11 +34,12 @@ const plans = [
 ];
 
 const Navbar = ({ navbarStyle }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } =
     useAuth();
 
   const { showPopup, hidePopup } = usePopup();
-  const navigate = useNavigate();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
   const {
@@ -54,10 +55,10 @@ const Navbar = ({ navbarStyle }) => {
   } = useDropdown();
 
   const menuItems = [
-    { name: "HOME", href: "#" },
+    { name: "HOME", href: "/#" },
+    { name: "ABOUT", href: "/#about" },
     { name: "PRICING", href: "/pricing" },
     { name: "TERMS", href: "/terms" },
-    { name: "ABOUT", href: "#about" },
   ];
 
   const menuContainerVariants = {
@@ -69,6 +70,7 @@ const Navbar = ({ navbarStyle }) => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
+
     const handleScroll = () => {
       setIsScrolled(scrollY.get() > 150);
     };
@@ -81,6 +83,33 @@ const Navbar = ({ navbarStyle }) => {
       return isScrolled ? "rgba(22, 27, 36, 1)" : "rgba(22, 27, 36, 0)";
     }
     return "rgba(22, 27, 36, 1)";
+  };
+
+  const handleNavigation = (href) => {
+    if (href === "/#") {
+      if (location.pathname !== "/") {
+        navigate("/");
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+    if (href.startsWith("/#")) {
+      const sectionId = href.substring(2);
+
+      if (location.pathname !== "/") {
+        navigate("/#" + sectionId);
+        return;
+      }
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate("/#" + sectionId);
+      }
+    } else {
+      navigate(href);
+    }
   };
 
   const navbarBackground = getNavbarBackground();
@@ -104,6 +133,7 @@ const Navbar = ({ navbarStyle }) => {
           Login();
         },
       });
+      return;
     }
     Login();
   };
@@ -121,7 +151,7 @@ const Navbar = ({ navbarStyle }) => {
           <div className="logo text-fontPrimaryColor hover:border-borderShade select-none rounded-lg border-transparent px-3 py-2 hover:border-opacity-40">
             {navbarStyle === "primary" ? (
               <div>
-                <a href="/" className="hidden text-2xl font-bold md:block">
+                <a onClick={() => navigate("/")} className="hidden text-2xl font-bold md:block cursor-pointer">
                   DyahAI.
                 </a>
                 <div onClick={toggleMenu}>
@@ -129,7 +159,7 @@ const Navbar = ({ navbarStyle }) => {
                 </div>
               </div>
             ) : (
-              <a href="/" className="text-2xl font-bold">
+              <a onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">
                 DyahAI.
               </a>
             )}
@@ -137,7 +167,10 @@ const Navbar = ({ navbarStyle }) => {
           <ul className="w-[55vh] lg:w-[50vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
             {menuItems.map((item, index) => (
               <li key={index}>
-                <a href={item.href} className="hover:text-accentColor">
+                <a
+                  onClick={() => handleNavigation(item.href)}
+                  className="hover:text-accentColor cursor-pointer"
+                >
                   {item.name}
                 </a>
               </li>
@@ -348,8 +381,10 @@ const Navbar = ({ navbarStyle }) => {
           {menuItems.map((item, index) => (
             <li key={index}>
               <a
-                href={item.href}
-                onClick={toggleMenu}
+                onClick={() => {
+                  handleNavigation(item.href);
+                  toggleMenu();
+                }}
                 className="text-fontPrimaryColor hover:text-accentColor"
               >
                 {item.name}

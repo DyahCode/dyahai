@@ -5,18 +5,20 @@ import { fadeIn } from "../../../utils/variants";
 
 import Button from "../../ui/Button";
 import { usePopup } from "../../../provider/PopupProvider";
+import { useNavigate } from "react-router-dom";
 
 
 const HeroImage =
   "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const { Login, isLoggedIn } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
-      window.location.href = "/generate";
+      navigate("/generate");
     } else {
       showPopup({
         title: "Plug Wallet Login Required",

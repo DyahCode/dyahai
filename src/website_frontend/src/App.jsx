@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import ScrollToHash from "./components/common/ScrollHash";
 import HomePage from "./pages/HomePage";
 import GeneratePage from "./pages/GeneratePage";
 import ProfilePage from "./pages/ProfilePage";
@@ -16,8 +16,8 @@ function App() {
   return (
     <PopupProvider>
       <AuthProvider>
-
         <Router>
+          <ScrollToHash />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route
