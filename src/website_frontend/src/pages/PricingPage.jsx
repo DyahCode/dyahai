@@ -26,7 +26,7 @@ const plans = [
   {
     key: "Premium",
     name: "Premium",
-    price: 200000,
+    price: 12.10,
     credit: 50,
     description: "Designed for active users who need advanced features.",
     features: [
@@ -41,7 +41,7 @@ const plans = [
   {
     key: "Ultimate",
     name: "Ultimate",
-    price: 300000,
+    price: 18.14,
     credit: 100,
     description: "A complete solution for organizations, and teams.",
     features: [
@@ -157,21 +157,9 @@ const PricingPage = () => {
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [txStatus, setTxStatus] = useState(null);
 
-  const USD_RATE = 16000;
   const ICP_PRICE_USD = 6.2;
-  const GENERATE_PRICE = 0.1;
-  const NEW_GENERATE_PRICE = GENERATE_PRICE / ICP_PRICE_USD;
-
-  const ICP_PRICE_XDR = 4.2;
-  const ICP_CYCLE = ICP_PRICE_XDR * 1_000_000_000_000;
-  const REQUEST_IN_CYCLE = 10_800_000_000;
-  const REQUEST_PRICE = REQUEST_IN_CYCLE / ICP_CYCLE;
-
-  const ONE_CREDIT_IS = NEW_GENERATE_PRICE + REQUEST_PRICE;
 
   const transferFee = 10_000;
-  const navigate = useNavigate();
-
 
   const tierPriority = {
     Basic: 0,
@@ -179,10 +167,8 @@ const PricingPage = () => {
     Ultimate: 2,
   };
 
-  const convertIdrToIcp = (planPrice) => {
-    const usd = planPrice / USD_RATE;
-    const icp = usd / ICP_PRICE_USD;
-
+  const convertUsdToIcp = (usdPrice) => {
+    const icp = usdPrice / ICP_PRICE_USD;
     const icpInE8s = Math.round(icp * 1e8);
     const e8s = icpInE8s + transferFee;
 
@@ -202,9 +188,10 @@ const PricingPage = () => {
         rightLabel: "Cancel",
         onRight: () => { hidePopup() },
       });
+      return;
     }
 
-    const { e8s } = convertIdrToIcp(plan.price);
+    const { e8s } = convertUsdToIcp(plan.price);
 
     setSelectedPlan(plan);
     setIcpInE8s(e8s);
@@ -265,7 +252,7 @@ const PricingPage = () => {
         tier={tier}
       />
 
-      <Container className="flex flex-col items-center mt-[10dvh] space-y-60">
+      <Container className="flex flex-col items-center mt-[15dvh] space-y-60">
         <section>
           <div className="text-center mb-40 space-y-10">
             <h1 className="text-4xl font-bold text-center text-fontPrimaryColor">
@@ -302,11 +289,14 @@ const PricingPage = () => {
                         <div className="flex items-start">
 
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-4 -mt-0.5 text-accentColor">
-                            <path fill="currentColor" d="M7 8.75a3.25 3.25 0 0 0 0 6.5c.935 0 1.71-.435 2.469-1.196a.75.75 0 0 1 1.063 1.058c-.92.923-2.054 1.638-3.532 1.638a4.75 4.75 0 1 1 0-9.5c1.376 0 2.457.621 3.342 1.454c.856.805 1.581 1.86 2.25 2.834l.026.037c.699 1.017 1.34 1.944 2.068 2.629c.709.667 1.44 1.046 2.314 1.046a3.25 3.25 0 0 0 0-6.5c-.935 0-1.71.435-2.469 1.196a.75.75 0 0 1-1.062-1.058C14.387 7.965 15.522 7.25 17 7.25a4.75 4.75 0 1 1 0 9.5c-1.376 0-2.457-.621-3.342-1.454c-.856-.805-1.581-1.86-2.25-2.834l-.026-.037c-.699-1.017-1.34-1.944-2.068-2.629C8.605 9.13 7.874 8.75 7 8.75" />
+                            <path
+                              fill="currentColor"
+                              d="M12 2c-.552 0-1 .448-1 1v1.07c-2.282.243-4 2.068-4 4.28 0 1.933 1.567 3.5 3.5 3.5h2a1.5 1.5 0 1 1 0 3h-3a1 1 0 0 0 0 2h1v1.07c0 .552.448 1 1 1s1-.448 1-1V17c2.282-.243 4-2.068 4-4.28 0-1.933-1.567-3.5-3.5-3.5h-2a1.5 1.5 0 1 1 0-3h3a1 1 0 0 0 0-2h-1V3c0-.552-.448-1-1-1z"
+                            />
                           </svg>
 
                           <span className="text-xl/5 font-semibold text-accentColor h-fit">
-                            {convertIdrToIcp(plan.price).icp.toFixed(2)}
+                            {plan.price}
                           </span>
                         </div>
                         <div className="flex gap-x-1 items-center">
@@ -319,7 +309,7 @@ const PricingPage = () => {
                   <div className="flex flex-col space-y-4 px-2">
                     <div className="flex flex-col">
                       <span className="text-fontPrimaryColor text-base font-semibold">
-                        What’s Inside
+                        What's Inside
                       </span>
                       <p className="text-xs text-fontPrimaryColor/70">
                         This plan gives you access to:
@@ -390,11 +380,14 @@ const PricingPage = () => {
                       <div className="flex items-start">
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-3 -mt-0.5 text-accentColor">
-                          <path fill="currentColor" d="M7 8.75a3.25 3.25 0 0 0 0 6.5c.935 0 1.71-.435 2.469-1.196a.75.75 0 0 1 1.063 1.058c-.92.923-2.054 1.638-3.532 1.638a4.75 4.75 0 1 1 0-9.5c1.376 0 2.457.621 3.342 1.454c.856.805 1.581 1.86 2.25 2.834l.026.037c.699 1.017 1.34 1.944 2.068 2.629c.709.667 1.44 1.046 2.314 1.046a3.25 3.25 0 0 0 0-6.5c-.935 0-1.71.435-2.469 1.196a.75.75 0 0 1-1.062-1.058C14.387 7.965 15.522 7.25 17 7.25a4.75 4.75 0 1 1 0 9.5c-1.376 0-2.457-.621-3.342-1.454c-.856-.805-1.581-1.86-2.25-2.834l-.026-.037c-.699-1.017-1.34-1.944-2.068-2.629C8.605 9.13 7.874 8.75 7 8.75" />
+                          <path
+                            fill="currentColor"
+                            d="M12 2c-.552 0-1 .448-1 1v1.07c-2.282.243-4 2.068-4 4.28 0 1.933 1.567 3.5 3.5 3.5h2a1.5 1.5 0 1 1 0 3h-3a1 1 0 0 0 0 2h1v1.07c0 .552.448 1 1 1s1-.448 1-1V17c2.282-.243 4-2.068 4-4.28 0-1.933-1.567-3.5-3.5-3.5h-2a1.5 1.5 0 1 1 0-3h3a1 1 0 0 0 0-2h-1V3c0-.552-.448-1-1-1z"
+                          />
                         </svg>
 
                         <span className="text-lg/5 font-semibold text-accentColor h-fit">
-                          {`${convertIdrToIcp(plan.price).icp.toFixed(2)}`}
+                          {`${plan.price}`}
                         </span>
                       </div>
                       <div className="flex gap-x-1 items-center">
@@ -803,10 +796,10 @@ const PricingPage = () => {
                         <div className="w-full flex items-end">
 
                           <p className="text-2xl font-medium text-accentColor">
-                            {convertIdrToIcp(selectedPlan.price).icp}
+                            {convertUsdToIcp(selectedPlan.price).icp.toFixed(2)}
                           </p>
                           <span className="ml-1 font-thin">ICP</span>
-                          <span className="text-accentColor3 ml-2 text-xs font-light leading-loose">+  Fee</span>
+                          <span className="text-accentColor3 ml-2 text-xs font-light leading-loose">From USD</span>
                         </div>
                       </div>
                     </div>

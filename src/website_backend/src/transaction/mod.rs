@@ -1,26 +1,11 @@
-use ic_cdk::{  query, update};
-use std::cell::RefCell;
-use std::collections::BTreeMap;
 use candid::Principal;
-use candid::{CandidType, Deserialize};
 use ic_ledger_types::{
-    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse, Timestamp, Tokens,AccountBalanceArgs,
+    AccountIdentifier, GetBlocksArgs, Memo, Operation, QueryBlocksResponse,Tokens,AccountBalanceArgs,TransferArgs, TransferResult,DEFAULT_FEE,
 };
-use serde::Serialize;
 use serde_json::to_string;
 use std::any::Any;
-
-use ic_ledger_types::{TransferArgs, TransferResult,DEFAULT_FEE};
-
-#[derive(CandidType, Deserialize, Serialize, Debug, Clone)]
-pub struct ParsedTransaction {
-    pub from: Option<AccountIdentifier>,
-    pub to: Option<AccountIdentifier>,
-    pub amount: Option<Tokens>,
-    pub memo: Option<Memo>,
-    pub message : Option<String>,
-    pub timestamp: Timestamp,
-}
+pub mod types;
+pub use types::*;
 
 pub async fn check_canisters_balance(principal : Principal) -> Result<Tokens, String> {
     let account = AccountIdentifier::new(&principal, &ic_ledger_types::DEFAULT_SUBACCOUNT);
@@ -105,13 +90,6 @@ pub async fn get_parsed_transaction(block_height: u64,message : String) -> Resul
     Ok(parsed)
 }
 
-pub type TRXStore = BTreeMap<Principal, Vec<ParsedTransaction>>;
-
-thread_local! {
-    pub static TRX_STORE: RefCell<TRXStore> = RefCell::default();
-}
-
-#[update]
 pub fn save_trx(principal: Principal, blockresult : ParsedTransaction) {
     ic_cdk::println!("Saving block result...");
     TRX_STORE.with(|store| {
@@ -124,7 +102,6 @@ pub fn save_trx(principal: Principal, blockresult : ParsedTransaction) {
     ic_cdk::println!("Block result has been saved.");
 }
 
-#[query]
 pub fn retrieve_trx(principal: Principal) -> Vec<String> {
     TRX_STORE.with(|store| {
         let store_ref = store.borrow();

@@ -1,35 +1,14 @@
 use candid::Principal;
-use ic_cdk::{init, query, update};
-use std::cell::RefCell;
-use std::collections::BTreeMap;
+use ic_cdk::{init, update};
+mod types;
+pub use types::*;
 
-pub type UserStore = BTreeMap<Principal, UserData>;
-
-use candid::{CandidType, Deserialize};
-
-#[derive(Clone, CandidType, Deserialize)]
-pub struct UserData {
-    pub credits: u8,
-    pub tier: UserTier,
-}
-
-thread_local! {
-    pub static USERS_STORE: RefCell<UserStore> = RefCell::default();
-}
 
 #[init]
 fn init() {
     ic_cdk::println!("Canister initialized.");
 }
 
-#[derive(Debug, CandidType, Deserialize, Clone, PartialEq)]
-pub enum UserTier {
-    Basic,
-    Premium,
-    Ultimate,
-}
-
-#[update]
 pub fn save_user(principal: Principal) {
     let data = UserData {
         credits: 3,
@@ -41,7 +20,6 @@ pub fn save_user(principal: Principal) {
     ic_cdk::println!("User Stored for principal: {}", principal);
 }
 
-#[update]
 pub fn upgrade_tier(principal: Principal, new_tier: UserTier) {
     USERS_STORE.with(|user| {
         if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
@@ -53,7 +31,6 @@ pub fn upgrade_tier(principal: Principal, new_tier: UserTier) {
     });
 }
 
-#[update]
 pub fn add_credit(principal: Principal, additional_credit: u8) {
     USERS_STORE.with(|user| {
         if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
@@ -83,16 +60,6 @@ pub fn add_credit_for_dev(principalid: String) -> String {
     })
 }
 
-#[query]
-pub fn get_credit(principal: Principal) -> u8 {
-    USERS_STORE.with(|user| {
-        user.borrow()
-            .get(&principal)
-            .map(|u| u.credits.clone())
-            .unwrap_or_else(|| ic_cdk::trap("User not found"))
-    })
-}
-
 #[update]
 pub fn reduction_credit(principal: Principal) {
     USERS_STORE.with(|user| {
@@ -109,7 +76,6 @@ pub fn reduction_credit(principal: Principal) {
     });
 }
 
-#[query]
 pub fn get_user_data(principal: Principal) -> UserData {
     USERS_STORE.with(|user| {
         user.borrow()
@@ -119,7 +85,6 @@ pub fn get_user_data(principal: Principal) -> UserData {
     })
 }
 
-#[query]
 pub fn is_registered(principal: Principal) -> bool {
     USERS_STORE.with(|user| user.borrow().contains_key(&principal))
 }

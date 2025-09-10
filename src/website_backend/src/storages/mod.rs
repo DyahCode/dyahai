@@ -1,15 +1,8 @@
 use candid::Principal;
-use ic_cdk::{query, update};
-use std::cell::RefCell;
-use std::collections::BTreeMap;
+pub mod types;
+pub use types::*;
 
-pub type ImageStore = BTreeMap<Principal, Vec<String>>;
 
-thread_local! {
-    pub static IMAGE_STORE: RefCell<ImageStore> = RefCell::default();
-}
-
-#[update]
 pub fn save_image(principal: Principal, cid: String) {
     ic_cdk::println!("Saving CID...");
     IMAGE_STORE.with(|store| {
@@ -22,7 +15,6 @@ pub fn save_image(principal: Principal, cid: String) {
     ic_cdk::println!("CID has been saved.");
 }
 
-#[query]
 pub fn retrieve_images(principal: Principal) -> Vec<String> {
     // Mengambil semua gambar yang terkait dengan Principal
     IMAGE_STORE.with(|store| {
@@ -36,7 +28,6 @@ pub fn retrieve_images(principal: Principal) -> Vec<String> {
         }
     })
 }
-#[update]
 pub fn delete_image(principal: Principal, index: usize) -> Vec<String> {
     ic_cdk::println!("Trying to delete CID at index: {}", index);
 
