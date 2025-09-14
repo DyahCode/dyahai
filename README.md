@@ -37,27 +37,27 @@ DyahAI is an AI platform that lets users transform ordinary images into unique w
 ## 🏆 Pre-existing Project
 DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. At WCHL 2025, DyahAI continued its innovation journey by expanding its capabilities and introducing a range of new features aimed at enhancing user experience, and technological integration.
 
-## ⚡What’s New During the WCHL 2025
+## ⚡What’s New During the WCHL Regional Round 2025
 <table>
   <tr>
     <th colspan="4" align="center">🕰️ Old Features</th>
   </tr>
   <tr>
     <td align="center">
-      <h3>🧮 Motoko</h3>
-      <p>Native language of ICP, used for rapid prototyping of canisters.</p>
+      <h3>Credit</h3>
+      <p>Credits were implemented as an internal balance system stored directly in the canister.</p>
     </td>
     <td align="center">
-      <h3>🔐 Internet Identity</h3>
-      <p>Default identity system on ICP, easy to implement but limited wallet compatibility.</p>
+      <h3>Payment</h3>
+      <p>Payments in the dapp were processed by deducting balances from this internal credit system.</p>
     </td>
     <td align="center">
-      <h3>🚫 Top-up</h3>
-      <p>Users couldn't add tokens or credits directly into the app.</p>
+      <h3>Top-up</h3>
+      <p>Users topped up their credits by converting ICP payments into changes on the simulated credit balance.</p>
     </td>
     <td align="center">
-      <h3>💾 Stable Memory</h3>
-      <p>Used ICP's stable memory for internal data storage.</p>
+      <h3>Limited Transparency</h3>
+      <p>Transactions and credit usage were only recorded internally, making them inaccessible for public verification.</p>
     </td>
   </tr>
 
@@ -66,25 +66,25 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
   </tr>
   <tr>
     <td align="center">
-      <h3>🦀 Rust</h3>
-      <p>Faster, safer, and more powerful for advanced system and AI integration.</p>
+      <h3>Dyah AI Token</h3>
+      <p>DYA tokens are issued following the ICRC ledger standard, ensuring interoperability and security.</p>
     </td>
     <td align="center">
-      <h3>👛 Plug Wallet</h3>
-      <p>More flexible user authentication with wallet support for transactions and identity.</p>
+      <h3>Token Burning</h3>
+      <p>Dapp payments are executed by burning DYA tokens from the user’s balance.</p>
     </td>
     <td align="center">
-      <h3>💳 Top-up</h3>
-      <p>Users can top-up credits using ICP tokens to unlock features.</p>
+      <h3>Token Minting</h3>
+      <p>Users can request new DYA tokens to be minted by depositing a defined amount of ICP.</p>
     </td>
     <td align="center">
-      <h3>📦 IPFS</h3>
-      <p>More scalable and decentralized file storage using IPFS integration.</p>
+      <h3>Blockchain Explorer</h3>
+      <p>All token transfers and activities are publicly available through the DyahAI token ledger explorer.</p>
     </td>
   </tr>
 </table>
 
-<img src="https://pbs.twimg.com/media/GwjBQ-5bwAALWI7?format=jpg&name=4096x4096" />
+<img src="https://bafybeihef6cylhmlpjcl57i5czryevwn3fwz5gdhxwjh5b352atrc7osrq.ipfs.w3s.link/homepage.png" />
 
 ## 📊 Architecture Workflow
 <img src="https://pbs.twimg.com/media/GwmcmufbAAAG997?format=jpg&name=large" />
@@ -115,23 +115,40 @@ code .
 # You can find the values here:
 https://pastelink.net/2i6qrerr
 
+# Add your MINTER_PRINCIPAL_ID (your DFX identity principal) into `.env`
+# Run this command to get your principal:
+dfx identity get-principal
+
+# Copy the output and paste it into your `.env` file:
+# MINTER_PRINCIPAL_ID=aaaaa-aa-bbbbbb-cccccc-ddddd-eeee
+
 # Install all dependencies
 npm install
 
-# Open WSL Ubuntu and start dfx
-dfx start --clean --background --host 127.0.0.1:5000
+# Run deployment using bash script
+bash deploy.sh
 
-# Deploy locally
-dfx deploy
-
-# To deploy to production
-dfx deploy --network ic
+# ⚠️ If you want to deploy to mainnet (Internet Computer):
+# Open file `deploy.sh` and add flag `--network ic`
+# to every command starting with `dfx` (except `dfx start`).
+--network ic
+# Example: change `dfx deploy backend` -> `dfx deploy backend --network ic`
 
 # You can find information about your canister project in the `.env.local` file
 
 # Install Extension Plug Wallet
 https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_source=item-share-cb
 ```
+## 🛠️ Extra Step for Local Deployment : </br>
+
+- **If you deploy locally, make sure to switch Plug Wallet into Dev/Test Mode**:
+
+1. Open the Plug Wallet extension in your browser.
+2. Click the three dots icon in the top right corner.
+3. Select Settings.
+4. Go to the Developer Zone.
+5. Enable Test Mode.
+6. Done ✅ (now your wallet can connect to http://127.0.0.1:5000).
 
 ## 🎥 Video Demonstration :  </br>
 [Video demonstration](https://youtu.be/zvcZufyHNoc?si=mux5XDI6TI78YeeU)

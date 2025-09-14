@@ -3,7 +3,8 @@ import ContainerBox, { Box, Container } from "../Container";
 import HeadSection from "../HeadSection";
 
 const imageSquare1 = "https://bafybeiacelbfiajmplzorraly754mdnwbopgknoiekwtrmetgukeiqwrzi.ipfs.w3s.link/1.jpg"
-const imageSquare2 = "https://bafybeibdtisgtgdyak7qfqfnpmhxwuqe4u33cyrica2zo6ltefhilvibvu.ipfs.w3s.link/2.jpg"
+// const imageSquare2 = "https://bafybeibdtisgtgdyak7qfqfnpmhxwuqe4u33cyrica2zo6ltefhilvibvu.ipfs.w3s.link/2.jpg" //error
+const imageSquare2 = "https://bafybeihuewv7uxhsk2oj4a2erfbkyaatlrcomtegxdq54erha2q47bxr3i.ipfs.w3s.link/?filename=2.jpg"
 const imageSquare3 = "https://bafybeidekxisel7qtgkzkerkykcvgineghwvraxpjhaq6cnjfjtbf35unm.ipfs.w3s.link/3.jpg"
 const imageSquare4 = "https://bafybeiec4c73jdjr6rto647ulokbfefs3cijuxghuvnaxhyrgig6prd5fe.ipfs.w3s.link/4.jpg"
 const imageSquare5 = "https://bafybeiell5kvsdnrixaiqungptykgdupvgvm43f3oko5y2aslbqg3b75ku.ipfs.w3s.link/5.jpg"
@@ -19,9 +20,11 @@ const imagePortrait3 = "https://bafybeidcr6e5u5yykcn54oadfepe3rm63o5n5hspoikjra2
 const imagePortrait4 = "https://bafybeihqd2kv22f2gq4f3f4j45qlkqhltkfqqqxjnibfqh4k5zj2sble5u.ipfs.w3s.link/4.jpg"
 const imagePortrait5 = "https://bafybeigxewba73jvkxk2r7wvpci6hlokbbpbvqumupl64khtbknlv3z7k4.ipfs.w3s.link/5.jpg"
 const imagePortrait6 = "https://bafybeia7utgnwfasb2gvzelbsfqbei5gvpvjldcrqvijlphojs5qhom4zq.ipfs.w3s.link/6.jpg"
-const imagePortrait7 = "https://bafybeiafqwfuybsokptz2efjy3jodckrfoajgeq4u3moqtqk4jka4eym6y.ipfs.w3s.link/7.jpg"
+// const imagePortrait7 = "https://bafybeiafqwfuybsokptz2efjy3jodckrfoajgeq4u3moqtqk4jka4eym6y.ipfs.w3s.link/7.jpg" //error
+const imagePortrait7 = "https://bafybeid5gpibnx7uxp5xujspnzti63e67khhi4n7m27nj7el6ek5h65adu.ipfs.w3s.link/?filename=7.jpg"
 const imagePortrait8 = "https://bafybeiguficfp3wgrxcd5677r4ck6nxwbzi3esqz4tghgz3rskefjnp3ru.ipfs.w3s.link/8.jpg"
-const imagePortrait9 = "https://bafybeicpj2pie2y7sf5dvbzfqg5sgn5p3xuw2rqbu3t2rqbbzu6ltckhve.ipfs.w3s.link/9.jpg"
+// const imagePortrait9 = "https://bafybeicpj2pie2y7sf5dvbzfqg5sgn5p3xuw2rqbu3t2rqbbzu6ltckhve.ipfs.w3s.link/9.jpg" //error
+const imagePortrait9 = "https://bafybeibqbml5xgxqvgyxzxx7d3ujd5r4cfdqp27z6mxgngsbxda5lk47sm.ipfs.w3s.link/?filename=9.jpg"
 const imagePortrait10 = "https://bafybeifh5kxkqyjh5naxphlvo4vxls4eupp2fubymjqeqhq2znpmtr6jwi.ipfs.w3s.link/10.jpg"
 
 const Gallery = () => {

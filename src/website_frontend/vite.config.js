@@ -31,6 +31,7 @@ export default defineConfig({
     environment("all", { prefix: "CANISTER_" }),
     environment("all", { prefix: "DFX_" }),
     environment("all", { prefix: "STORACHA_" }),
+    environment("all", { prefix: "MINTER_" }),
   ],
   resolve: {
     alias: [

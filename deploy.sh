@@ -4,12 +4,18 @@ set -euo pipefail
 dfx start --clean --background --host 127.0.0.1:5000
 sleep 5
 
-dfx deploy website_backend
+dfx canister create website_backend
 CANISTER_BACKEND=$(dfx canister id website_backend)
+dfx canister create dyahai_token
+CANISTER_TOKEN=$(dfx canister id dyahai_token)
+
+
 
 IDENTITY=$(dfx identity get-principal)
 
 LOGO_BASE64=$(cat logo.txt)
+
+dfx deploy website_backend --argument "(opt variant { Init = record { canister_ledger = \"$CANISTER_TOKEN\"; } })"
 
 cat > init-args.did <<EOF
 (
@@ -62,15 +68,14 @@ cat > init-args.did <<EOF
 )
 EOF
 
-dfx deploy dyah_token --argument-file init-args.did
-CANISTER_TOKEN=$(dfx canister id dyah_token)
+dfx deploy dyahai_token --argument-file init-args.did
 
 cat > init-args-index.did <<EOF
 (opt variant { Init = record { ledger_id = principal "$CANISTER_TOKEN"; retrieve_blocks_from_ledger_interval_seconds = opt 10; } })
 EOF
 
-dfx deploy dyah_token_index --argument-file init-args-index.did
-CANISTER_TOKEN_INDEX=$(dfx canister id dyah_token_index)
+dfx deploy dyahai_token_index --argument-file init-args-index.did
+CANISTER_TOKEN_INDEX=$(dfx canister id dyahai_token_index)
 
 dfx deploy website_frontend
 CANISTER_FRONTEND=$(dfx canister id website_frontend)

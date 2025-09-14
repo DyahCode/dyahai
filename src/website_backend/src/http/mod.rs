@@ -28,17 +28,6 @@ pub async fn send_http_post(source_image: String, target_image: String) -> Respo
         ic_cdk::trap("User not registered");
     }
 
-    let user_data = get_user_data(principal.clone());
-
-    if user_data.credits == 0 {
-        ic_cdk::println!("Insufficient credit for this user");
-        return ResponseAPI {
-            status: false,
-            message: "Insufficient credit for this user".to_string(),
-            result: "null".to_string(),
-        };
-    }
-
     ic_cdk::println!("[DEBUG] Source URL: {}", source_image);
     ic_cdk::println!("[DEBUG] Target URL: {}", target_image);
 
@@ -91,7 +80,7 @@ pub async fn send_http_post(source_image: String, target_image: String) -> Respo
         }),
     };
 
-    match http_request(request, 21_000_000_000).await {
+    match http_request(request, 21_000_000).await {
         Ok((response,)) => {
             let body_str = String::from_utf8_lossy(&response.body);
             ic_cdk::println!("[DEBUG] Raw response: {}", body_str);
@@ -118,7 +107,6 @@ pub async fn send_http_post(source_image: String, target_image: String) -> Respo
                     .get("output")
                     .and_then(|o| o.get("image"))
                     .and_then(|i| i.as_str());
-                reduction_credit(principal.clone());
                 ResponseAPI {
                     status: true,
                     message: "completed".to_string(),

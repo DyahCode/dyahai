@@ -1,22 +1,17 @@
 use candid::Principal;
-use ic_cdk::{init, update};
 mod types;
+use crate::wallet::*;
+use candid::Nat;
 pub use types::*;
 
-
-#[init]
-fn init() {
-    ic_cdk::println!("Canister initialized.");
-}
-
-pub fn save_user(principal: Principal) {
+pub async fn save_user(principal: Principal) {
     let data = UserData {
-        credits: 3,
         tier: UserTier::Basic,
     };
     USERS_STORE.with(|user| {
         user.borrow_mut().insert(principal.clone(), data);
     });
+    add_credit(principal, 3, "Added 3 DYA token".into()).await;
     ic_cdk::println!("User Stored for principal: {}", principal);
 }
 
@@ -31,49 +26,29 @@ pub fn upgrade_tier(principal: Principal, new_tier: UserTier) {
     });
 }
 
-pub fn add_credit(principal: Principal, additional_credit: u8) {
-    USERS_STORE.with(|user| {
-        if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
-            user_data.credits += additional_credit;
-            ic_cdk::println!(
-                "Added credit {} for principal: {}",
-                additional_credit,
-                principal
-            );
-        } else {
-            ic_cdk::trap(&format!("User with principal {} not found", principal));
-        }
-    });
-}
-
-#[update]
-pub fn add_credit_for_dev(principalid: String) -> String {
-    let principal = Principal::from_text(principalid).unwrap();
-    USERS_STORE.with(|user| {
-        if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
-            user_data.credits += 5;
-            ic_cdk::println!("Added credit {} for principal: {}", 5, principal);
-            format!("Added credit {} for principal: {}", 5, principal)
-        } else {
-            format!("User with principal {} not found", principal)
-        }
+pub async fn add_credit(principal: Principal, additional_credit: u8, message : String) {
+    if !is_registered(principal) {
+        ic_cdk::trap("No user found for adding credit");
+    }
+    let memo = Some(Memo(message
+            .into_bytes()
+            .into(),
+    ));
+    let _mint = transfer_token(TransferArg {
+        from_subaccount: None,
+        to: principal.into(),
+        fee: None,
+        created_at_time: Some(ic_cdk::api::time()),
+        memo: memo,
+        amount: Nat::from(additional_credit as u64) * Nat::from(100_000_000u64),
     })
-}
-
-#[update]
-pub fn reduction_credit(principal: Principal) {
-    USERS_STORE.with(|user| {
-        if let Some(user_data) = user.borrow_mut().get_mut(&principal) {
-            if user_data.credits > 0 {
-                user_data.credits -= 1;
-                ic_cdk::println!("Reduced credit by 1 for principal: {}", principal);
-            } else {
-                ic_cdk::trap(&format!("Insufficient credit for principal: {}", principal));
-            }
-        } else {
-            ic_cdk::trap(&format!("User with principal {} not found", principal));
-        }
-    });
+    .await;
+    ic_cdk::println!("Minted {} DYA tokens to {}", additional_credit, principal);
+    ic_cdk::println!(
+        "Added credit {} for principal: {}",
+        additional_credit,
+        principal
+    );
 }
 
 pub fn get_user_data(principal: Principal) -> UserData {

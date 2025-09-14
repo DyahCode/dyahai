@@ -8,7 +8,6 @@ use candid::{CandidType, Deserialize};
 
 #[derive(Clone, CandidType, Deserialize)]
 pub struct UserData {
-    pub credits: u8,
     pub tier: UserTier,
 }
 

@@ -1,6 +1,6 @@
 pub use crate::users::*;
-use crate::transaction::*;
 use crate::storages::*;
+use crate::wallet::*;
 use ic_cdk::storage;
 use ic_cdk::{
     post_upgrade, pre_upgrade,
@@ -8,21 +8,22 @@ use ic_cdk::{
 use candid::{CandidType, Deserialize};
 #[derive(CandidType, Deserialize)]
 pub struct AppState {
-    pub trx_store: TRXStore,
+    // pub trx_store: TRXStore,
     pub users_store: UserStore,
     pub image_store: ImageStore,
+    pub init_args: InitArgs
 }
 
 #[pre_upgrade]
 fn pre_upgrade() {
-    let trx = TRX_STORE.with(|s| s.borrow().clone());
     let users = USERS_STORE.with(|s| s.borrow().clone());
     let images = IMAGE_STORE.with(|s| s.borrow().clone());
+    let args = LEDGERID.with(|s| s.borrow().clone()).expect("Failed to get init args");
 
     let state = AppState {
-        trx_store: trx,
         users_store: users,
         image_store: images,
+        init_args: args
     };
 
     storage::stable_save((state,)).unwrap();
@@ -35,9 +36,9 @@ fn post_upgrade() {
         ic_cdk::trap("Failed to restore state");
     };
 
-    TRX_STORE.with(|s| *s.borrow_mut() = state.trx_store);
     USERS_STORE.with(|s| *s.borrow_mut() = state.users_store);
     IMAGE_STORE.with(|s| *s.borrow_mut() = state.image_store);
+    LEDGERID.with(|s| *s.borrow_mut() = Some(state.init_args));
 
     ic_cdk::println!("Post-upgrade: All state restored.");
 }

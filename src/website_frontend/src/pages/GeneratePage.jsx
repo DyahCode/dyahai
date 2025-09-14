@@ -4,7 +4,7 @@ import {
   uploadBlobToStoracha,
   removeContentFromStoracha,
 } from "../hooks/authStoracha";
-
+import PaymentSnap from "../components/ui/PaymentSnap";
 import Button from "../components/ui/Button";
 import Loader from "../components/layout/Loader";
 import "slick-carousel/slick/slick.css";
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Principal } from "@dfinity/principal";
+import { BurnTokens } from "../hooks/wallet";
 
 const imageAstronout =
   "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
@@ -29,16 +30,22 @@ const imageCyberpunk =
   "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg";
 const imageDetective =
   "https://bafybeidbim4pl7hd23xojeq725nuld5kercevmkrv3ujdqoe35q7z64k3y.ipfs.w3s.link/Detective.jpg";
+// const imageDreamworks =
+//   "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg"; //error
 const imageDreamworks =
-  "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg";
+  "https://bafkreibm7xqvntxrfw7zzrqj6e4jxxror37g6h2qw2skoq6qh53l4unubu.ipfs.w3s.link";
 const imageRenaissance =
   "https://bafybeihpeu2aznlixb4dmuuyakyd6zfkywvicja3gzzfuzztwpo4uo64bu.ipfs.w3s.link/Renaissance.jpg";
 const imageRetro =
   "https://bafybeid5xc6pzdkdul44uloo2n3s4fy67qx3q3uqh4civ4ay7rwrihwti4.ipfs.w3s.link/Retro.jpg";
+// const imageSteampunk =
+//   "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg"; //error
 const imageSteampunk =
-  "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg";
+  "https://bafkreihoojn34ebcs74awsrvcxjtqvwd2lr2icqabbwsdgcpo2wq4djef4.ipfs.w3s.link";
+// const imageStreetwear =
+//   "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg"; //error
 const imageStreetwear =
-  "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg";
+  "https://bafkreihjukmlckruk2aihl42rvd5o2qf3ft3prnrukqaj4pac5wcwlio6y.ipfs.w3s.link/?filename=Streetwear.jpg";
 const imageSuperhero =
   "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg";
 const imageWasteland =
@@ -60,8 +67,10 @@ const imageRenaissanceW =
   "https://bafybeiesv7d6veak3wcfxfz4zrdxarvkkljcyzrdxlzw6f3rpvkwkpelui.ipfs.w3s.link/Renaissance.jpg";
 const imageRetroW =
   "https://bafybeie2yzo3rwvgsmognxbt5x3g6c4qmz5t5vx2qinfywhbkiuil3q6pa.ipfs.w3s.link/Retro.jpg";
+// const imageSchool =
+//   "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg"; //error
 const imageSchool =
-  "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg";
+  "https://bafkreiblejhvlolnax7h43fe2cvstyhgqvsfkkocycrrswisgb7ibmhbm4.ipfs.w3s.link/?filename=School.jpg";
 const imageSoft =
   "https://bafybeigsa4lcv3mvemlnocgerre34w7lcfblcdmy5rh6oswbpbhnli4umm.ipfs.w3s.link/Soft.jpg";
 const imageSunset =
@@ -75,8 +84,9 @@ const GeneratePage = () => {
     Login,
     Logout,
     refreshCredit,
-    actor,
     tier,
+    actor,
+    actorLedger,
   } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
@@ -93,7 +103,8 @@ const GeneratePage = () => {
     selectedGenderCategory: "man",
     balance: 0,
   });
-
+  const [paymentStatus, setPaymentStatus] = useState("idle");
+  const [showInvoice, setShowInvoice] = useState(false);
   const itemStyle = [
     {
       id: "1",
@@ -318,11 +329,6 @@ const GeneratePage = () => {
   ];
 
   const handleFileChange = async (event) => {
-    const base64Astronout = await convertImageToBase64(imageAstronout);
-    const base64Backpacker = await convertImageToBase64(imageBackpacker);
-    const { selectedStyle } = state;
-    console.log("Astronout Base64:", base64Astronout.length);
-    console.log("Backpacker Base64:", base64Backpacker.length);
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -397,18 +403,6 @@ const GeneratePage = () => {
   });
 
   const handleGenerate = async () => {
-    if (credit <= 0) {
-      showPopup({
-        title: "Insufficient Credit",
-        message: "Your balance is too low to continue. Please purchase more credits to proceed.",
-        type: "error",
-        leftLabel: "Buy Credits",
-        onLeft: () => { navigate("/topup") },
-        rightLabel: "Cancel",
-        onRight: () => { hidePopup() },
-      });
-      return;
-    }
     const { selectedFile, selectedStyle } = state;
     if (!selectedFile || !selectedStyle) {
       setNotificationData({
@@ -423,9 +417,17 @@ const GeneratePage = () => {
       setShowNotification(true);
       return;
     }
-
-    setState((prev) => ({ ...prev, isLoading: true }));
+    setShowInvoice(true);
+    setPaymentStatus("processing");
+    const burn = await BurnTokens(actorLedger);
+    console.log("Burn: ", burn);
+    if (!burn.Ok) {
+      setPaymentStatus("failed");
+      return;
+    }
+    setPaymentStatus("success");
     try {
+      setState((prev) => ({ ...prev, isLoading: true }));
       const blob = await convertImageToPngBlob(selectedFile);
 
       const storachaCid = await uploadBlobToStoracha(blob);
@@ -441,7 +443,6 @@ const GeneratePage = () => {
       }));
     } finally {
       setState((prev) => ({ ...prev, isLoading: false }));
-      await refreshCredit();
     }
   };
 
@@ -496,8 +497,8 @@ const GeneratePage = () => {
         setShowNotification(true);
         return;
       }
-      const clientPrincipal = Principal.fromText(principalId);
-      await actor.reduction_credit(clientPrincipal);
+      // const clientPrincipal = Principal.fromText(principalId);
+      // await actor.reduction_credit(clientPrincipal);
 
       const base64Image = response.output.image;
       if (!base64Image) {
@@ -827,6 +828,7 @@ const GeneratePage = () => {
             </div>
           </div>
         </section>
+        <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} />
       </main>
     </>
   );

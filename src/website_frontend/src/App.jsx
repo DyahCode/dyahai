@@ -11,6 +11,7 @@ import RequireAuth from "./provider/requireAuth";
 import TermsSerivePage from "./pages/TermsServicePage";
 import PricingPage from "./pages/PricingPage";
 import { PopupProvider } from "./provider/PopupProvider";
+import BlockExplorerPage  from "../src/pages/BlockExplorerPage";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/*" element={<NotFoundPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/terms" element={<TermsSerivePage />} />
+            <Route path="/dyascan" element={<BlockExplorerPage />} />
           </Routes>
         </Router>
       </AuthProvider>

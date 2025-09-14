@@ -3,15 +3,16 @@ pub mod transaction;
 pub mod users;
 pub mod http;
 pub mod stable_memory;
+pub mod wallet;
 use candid::{ Nat, Principal};
-use ic_cdk::api;
-use ic_ledger_types::Memo;
+pub use ic_ledger_types::Memo;
 use num_bigint::BigUint;
 use serde_json::to_string;
 pub use storages::types::*;
-pub use transaction::*;
+pub use transaction::types::*;
 pub use users::*;
 pub use http::*;
+pub use wallet::types::*;
 
 // #[ic_cdk::update]
 // pub async fn check_balance() -> String {
@@ -74,7 +75,7 @@ pub async fn get_tx_summary(
         }
     };
 
-    let result = transaction::get_parsed_transaction(block_height, message).await;
+    let result = transaction::get_parsed_transaction(block_height, message.clone()).await;
 
     match result {
         Ok(tx) => {
@@ -90,9 +91,9 @@ pub async fn get_tx_summary(
                             ic_cdk::println!("Nat amount: {:?}", nat_amount);
 
                             let sumcredit = calculate_credit_from_icp(nat_amount) as u8;
-                            ic_cdk::println!("Credit calculated: {}", sumcredit);
+                            ic_cdk::println!("Credit calculated: {}", sumcredit); 
 
-                            users::add_credit(principal, sumcredit);
+                            users::add_credit(principal, sumcredit, message.clone()).await;
                             ic_cdk::println!("Credit added to {}", principal);
                         } else {
                             ic_cdk::println!("No amount in transaction");
@@ -111,26 +112,24 @@ pub async fn get_tx_summary(
                                 );
                             }
                         };
-
                         users::upgrade_tier(principal, new_tier.clone());
                         ic_cdk::println!("Plan upgraded to {:?} for user {}", new_tier, principal);
 
                         match new_tier {
                             UserTier::Premium => {
-                                users::add_credit(principal, 50);
-                                ic_cdk::println!("Added 50 credits to Premium user: {}", principal);
+                                users::add_credit(principal, 25, message.clone()).await;
+                                ic_cdk::println!("Added 25 credits to Premium user: {}", principal);
                             }
                             UserTier::Ultimate => {
-                                users::add_credit(principal, 100);
+                                users::add_credit(principal, 50, message.clone()).await;
                                 ic_cdk::println!(
-                                    "Added 100 credits to Ultimate user: {}",
+                                    "Added 40 credits to Ultimate user: {}",
                                     principal
                                 );
                             }
                             _ => {}
                         }
                     }
-
                     _ => {}
                 }
             } else {
@@ -142,7 +141,6 @@ pub async fn get_tx_summary(
             }
 
             let trx_str = to_string(&tx).unwrap_or_else(|_| "{}".to_string());
-            transaction::save_trx(principal, tx);
 
             trx_str
         }
@@ -150,16 +148,6 @@ pub async fn get_tx_summary(
             ic_cdk::println!("Error getting transaction: {}", e);
             format!("{{\"status\": \"error\", \"message\": \"{}\"}}", e)
         }
-    }
-}
-
-#[query]
-pub fn get_transaction() -> Vec<String> {
-    let principal = ic_cdk::caller();
-    if !users::is_registered(principal) {
-        ic_cdk::trap("No user found");
-    } else {
-        transaction::retrieve_trx(principal)
     }
 }
 
@@ -184,13 +172,6 @@ pub fn calculate_credit_from_icp(amount: Nat) -> u64 {
     credit.floor() as u64
 }
 
-#[query]
-pub async fn get_account_id_for_canister() -> String {
-    let principal = api::id();
-    ic_cdk::println!("Principal ID from canister backend: {}", principal);
-    principal.to_text()
-}
-
 #[update]
 pub async fn save_image_to_store(cid: String) {
     let principal = ic_cdk::caller();
@@ -209,23 +190,14 @@ pub async fn initialize_credit() -> String {
         ic_cdk::trap("Anonymous principal not allowed");
     }
     if !users::is_registered(principal) {
-        users::save_user(principal.clone());
+        users::save_user(principal.clone()).await;
     }
     principal.to_string()
 }
 
 #[query]
-pub async fn get_balance() -> u8 {
-    let principal = ic_cdk::caller();
-
-    let user_data = users::get_user_data(principal);
-
-    user_data.credits.clone()
-}
-
-#[query]
-pub async fn get_tier() -> String {
-    let principal = ic_cdk::caller();
+pub async fn get_tier(principal: String) -> String {
+    let principal = Principal::from_text(principal).unwrap();
 
     let user_data = users::get_user_data(principal);
 
@@ -238,8 +210,8 @@ pub async fn get_tier() -> String {
 }
 
 #[query]
-pub async fn get_images_by_principal() -> Vec<String> {
-    let principal = ic_cdk::caller();
+pub async fn get_images_by_principal(principal: String) -> Vec<String> {
+    let principal = Principal::from_text(principal).unwrap();
     if !users::is_registered(principal) {
         ic_cdk::trap("No user found");
     } else {

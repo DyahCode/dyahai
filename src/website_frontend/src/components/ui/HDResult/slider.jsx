@@ -4,7 +4,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FaArrowsLeftRight } from "react-icons/fa6";
 
 
-const HdAfter = "https://bafybeigto2mh2jkjcdjwpvynkgjlzr2ytzto6opv2duvvhpmxpr677pyqq.ipfs.w3s.link/after.png"
+const HdAfter = "https://bafybeifg4grodncflcjhocb3eo4jxhly2co7gtio4apo4mil2tw42ypixq.ipfs.w3s.link" //error
 const HdBefore = "https://bafybeiegirbbarj7kp3purg34dfm7nl44fpagejrpcxj5lfqie25jdmidu.ipfs.w3s.link/before.png"
 
 const BeforeAfterSlider = () => {
