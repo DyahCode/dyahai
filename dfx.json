@@ -5,6 +5,16 @@
       "package": "website_backend",
       "type": "rust"
     },
+    "dyahai_token": {
+      "type": "custom",
+      "candid": "src/dyahai_token/ledger.did",
+      "wasm": "src/dyahai_token/ic-icrc1-ledger.wasm.gz"
+    },
+    "dyahai_token_index": {
+      "type": "custom",
+      "candid": "src/dyahai_token_index/index-ng.did",
+      "wasm": "src/dyahai_token_index/ic-icrc1-index-ng.wasm.gz"
+    },
     "website_frontend": {
       "dependencies": [
         "website_backend"

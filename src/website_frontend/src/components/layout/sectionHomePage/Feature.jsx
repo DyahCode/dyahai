@@ -9,13 +9,17 @@ import ContainerBox, { Box, Container } from "../Container";
 import { usePopup } from "../../../provider/PopupProvider";
 
 const AiImage1 =
-  "https://bafybeihviddhik4llwiuvakpaqeduextfm6l2qrsncroyqsbin6veto2we.ipfs.w3s.link/AI-image-1.png";
+  "https://bafkreicqclc24yrtmjkrjo5bkhrnu2gfaehmmiy46hnzn4fvpzpsep5sze.ipfs.w3s.link/?filename=AI-image-1.png";
+// const AiImage1 =
+//   "https://bafybeihviddhik4llwiuvakpaqeduextfm6l2qrsncroyqsbin6veto2we.ipfs.w3s.link/AI-image-1.png"; //error
 const AiImage2 =
   "https://bafybeibkm4j4wtwsgh2devwchtrxvuhrwyoagm5223b4mqtyl55maejkuq.ipfs.w3s.link/AI-image-2.png";
 const AiImage3 =
   "https://bafybeiexyfzpp3wfjxirmvfynxujiakoa3sz5t2vl3mrdqypkvr4u3agqi.ipfs.w3s.link/AI-image-3.png";
 const AiImage4 =
-  "https://bafybeicakq52sj5ne6bwtmotfmoega2gh3raqhyg3lwzk6475qu32hrkiq.ipfs.w3s.link/AI-image-4.png";
+  "https://bafkreibrisihlu5sefwr5yqqiwsb3fla5lk4w3scpp4rm2jckgftjkzjx4.ipfs.w3s.link/?filename=AI-image-4.png";
+// const AiImage4 =
+//   "https://bafybeicakq52sj5ne6bwtmotfmoega2gh3raqhyg3lwzk6475qu32hrkiq.ipfs.w3s.link/AI-image-4.png"; //error
 const AiImage5 =
   "https://bafybeihsbbnqzyflfy3gckrj2vr7xsqram56l2o4j5xbst3zjl46c2ysmm.ipfs.w3s.link/AI-image-5.png";
 
@@ -29,8 +33,10 @@ const ImageFormal =
   "https://bafybeididesgtyzutdwuqcwixgso444q6r33q5w7qdr55mboaiho4tehwy.ipfs.w3s.link/formal.png";
 const ImageJoker =
   "https://bafybeiasrj5bkd754nhlwaxypkm23ftoltkpqyozeymrmrlfr6abi542wq.ipfs.w3s.link/joker.png";
+// const ImageOilPainting =
+//   "https://bafybeieisbzgxd5yset3duucheemslv243deeszanadozc7o3gwwwe5gz4.ipfs.w3s.link/oil-painting.png"; //error
 const ImageOilPainting =
-  "https://bafybeieisbzgxd5yset3duucheemslv243deeszanadozc7o3gwwwe5gz4.ipfs.w3s.link/oil-painting.png";
+  "https://bafybeibliftdx3q4qtagi3n6mpf63vpazydfpf24sze4wgzsowyurr7dau.ipfs.w3s.link";
 const ImageShrek =
   "https://bafybeiemhgtr44b7h7z5ez33g3tlmmpqhzf6nj2mg246vzb427xbu7yoyq.ipfs.w3s.link/shrek.png";
 const ImageZombie =

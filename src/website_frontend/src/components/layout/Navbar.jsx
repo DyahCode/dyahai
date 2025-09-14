@@ -59,6 +59,7 @@ const Navbar = ({ navbarStyle }) => {
     { name: "ABOUT", href: "/#about" },
     { name: "PRICING", href: "/pricing" },
     { name: "TERMS", href: "/terms" },
+    { name: "Block Explorer", href: "/dyascan" },
   ];
 
   const menuContainerVariants = {
@@ -191,6 +192,7 @@ const Navbar = ({ navbarStyle }) => {
                     >
                       <LuWallet size={24} />
                       <span>{credit}</span>
+                      <span>DYA</span>
                     </Button>
                     {isCreditOpen && (
                       <div className="absolute right-0">
@@ -201,7 +203,7 @@ const Navbar = ({ navbarStyle }) => {
                             onClick={() => navigate("/topup")}
                             className="w-max px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                           >
-                            <p className="text-sm">Top up Now</p>
+                            <p className="text-sm">Mint Token</p>
                           </Button>
                         </div>
                       </div>

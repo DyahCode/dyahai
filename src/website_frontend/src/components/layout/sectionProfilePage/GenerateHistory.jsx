@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../provider/authProvider";
 import { removeContentFromStoracha } from "../../../hooks/authStoracha";
-
 import { IoMdDownload } from "react-icons/io";
 import { usePopup } from "../../../provider/PopupProvider";
 
 const GenerateHistory = ({ principalId, isLoggedIn }) => {
-  const { loading, actor } = useAuth();
+  const { loading, actor, website_backend } = useAuth();
   const { showPopup, hidePopup } = usePopup();
   const navigate = useNavigate();
 
@@ -15,7 +14,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
 
   async function loadImages() {
     try {
-      const fetchedImages = await actor.get_images_by_principal();
+      const fetchedImages = await website_backend.get_images_by_principal(principalId);
       const ResultCid = fetchedImages.map((cid) => ({
         id: cid,
         url: `https://${cid}.ipfs.w3s.link/`,

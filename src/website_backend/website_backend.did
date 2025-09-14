@@ -1,34 +1,21 @@
-type HttpHeader = record { name : text; value : text };
+type HttpHeader = record { value : text; name : text };
 type HttpResponse = record {
-  status : nat16;
+  status : nat;
+  body : blob;
   headers : vec HttpHeader;
-  body : blob
 };
-type TransformArgs = record {
-  response : HttpResponse;
-  context : blob
-};
-
-type ResponseAPI = record {
-  status : bool;
-  message : text;
-  result : text
-}
-
-service : {
-  "send_http_post" : (text, text) -> (ResponseAPI);
-  "add_credit_for_dev" : (text) -> (text);
-  // "check_balance" : () -> (text);
-  // "tf_balance" : () -> (text);
-  "initialize_credit" : () -> (text);
-  "get_balance" : () -> (nat8);
-  "get_images_by_principal" : () -> (vec text);
-  "delete_image_by_index" : (nat64) -> ();
-  "save_image_to_store" : (text) -> ();
-  "get_tier" : () -> (text);
-  "get_account_id_for_canister" : () -> (text);
-  "get_tx_summary" : (nat64, nat64, text, text, text) -> (text);
-  "get_transaction" : () -> (vec text);
-  "reduction_credit": (principal) -> ();
-  "transform" : (TransformArgs) -> (HttpResponse) query
+type IndexArgs = variant { Upgrade : UpgradeArgs; Init : InitArgs };
+type InitArgs = record { canister_ledger : text };
+type ResponseAPI = record { status : bool; result : text; message : text };
+type TransformArgs = record { context : blob; response : HttpResponse };
+type UpgradeArgs = record { canister_ledger : opt text };
+service : (opt IndexArgs) -> {
+  delete_image_by_index : (nat64) -> ();
+  get_images_by_principal : (text) -> (vec text) query;
+  get_tier : (text) -> (text) query;
+  get_tx_summary : (nat64, nat64, text, text, text) -> (text);
+  initialize_credit : () -> (text);
+  save_image_to_store : (text) -> ();
+  send_http_post : (text, text) -> (ResponseAPI);
+  transform : (TransformArgs) -> (HttpResponse) query;
 }
