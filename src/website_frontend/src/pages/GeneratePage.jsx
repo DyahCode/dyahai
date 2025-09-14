@@ -428,6 +428,7 @@ const GeneratePage = () => {
     setPaymentStatus("success");
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
+      await refreshCredit();
       const blob = await convertImageToPngBlob(selectedFile);
 
       const storachaCid = await uploadBlobToStoracha(blob);
