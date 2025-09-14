@@ -68,7 +68,6 @@ export const AuthProvider = ({ children }) => {
     if (isConnected) {
       await initPlug();
     }
-    setLoading(false);
   };
 
   const initPlug = async () => {
@@ -78,6 +77,7 @@ export const AuthProvider = ({ children }) => {
     setAuthClient(authclient);
     await buildActor(authclient);
     setIsLoggedIn(true);
+    setLoading(false);
     console.log("set Log In");
 
     const principal = authclient.principal;

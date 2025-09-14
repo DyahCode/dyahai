@@ -428,14 +428,13 @@ const GeneratePage = () => {
     setPaymentStatus("success");
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
-      await refreshCredit();
       const blob = await convertImageToPngBlob(selectedFile);
-
+      
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
       console.log("userImageUrl:", userImageUrl);
       console.log("storachaCid:", storachaCid);
-
+      
       await uploadImageToBackend(userImageUrl, storachaCid);
     } catch (error) {
       setState((prev) => ({
@@ -443,6 +442,7 @@ const GeneratePage = () => {
         output: "An error occurred while uploading the image.",
       }));
     } finally {
+      await refreshCredit();
       setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
