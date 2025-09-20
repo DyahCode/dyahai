@@ -431,7 +431,7 @@ const GeneratePage = () => {
             message: `Type : Burn Token<br>
               Amount : 1 DYA<br>
               To : ${process.env.MINTER_PRINCIPAL_ID}<br>
-              memo : ${message}`,
+              Memo : ${message}`,
             type: "default",
             leftLabel: "REJECT",
             rightLabel: "APPROVE",
