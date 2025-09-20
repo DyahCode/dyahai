@@ -12,7 +12,7 @@ const BlockExplorerPage = () => {
   const location = useLocation();
   const [transactions, setTransactions] = useState([]);
   const [transaction, setTransaction] = useState([]);
-  const [numBlock,setnumBlock] = useState(0);
+  const [numBlock, setnumBlock] = useState(0);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const block = searchParams.get("block");
@@ -104,26 +104,26 @@ const BlockExplorerPage = () => {
     }
     return (data.blocks || []).map((block, index) => {
       const map = Object.fromEntries(block.Map);
-
       const tx = Object.fromEntries(map.tx.Map);
+      const txType = opMap[tx.op?.Text] || tx.op?.Text;
+      const feeValue =
+        map.fee?.Nat64 ?? tx.fee?.Nat64 ?? 0;
 
       return {
         blockIndex: index,
-        fee: Number(map.fee?.Nat64 || 0) / 100_000_000,
+        fee: Number(feeValue) / 100_000_000,
         timestamp: new Date(
           Number(map.ts?.Nat64 || 0) / 1_000_000
         ),
         parentHash: decodeHash(map.phash),
-
-        // transaksi detail
         amount: Number(tx.amt?.Nat64 || 0) / 100_000_000,
-        from: decodeAddress(tx.from?.Array),
-        to: decodeAddress(tx.to?.Array),
+        from: txType == "mint" ? "Minting Account" : decodeAddress(tx.from?.Array),
+        to: txType == "burn" ? "Minting Account" : decodeAddress(tx.to?.Array),
         memo: decodeBlob(tx.memo),
-        operation: opMap[tx.op?.Text] || tx.op?.Text,
-        txTimestamp: new Date(
-          Number(tx.ts?.Nat64 || 0) / 1_000_000
-        ).toString(),
+        operation: txType,
+        txTimestamp: tx.ts?.Nat64 ? new Date(
+          Number(tx.ts?.Nat64) / 1_000_000
+        ).toString() : null,
       };
     });
   }
@@ -156,7 +156,7 @@ const BlockExplorerPage = () => {
   }
 
 
-  function shorten(str, front = 8, back = 6) {
+  function shorten(str, front = 8, back = 8) {
     if (!str) return "";
     return str.length > front + back
       ? `${str.slice(0, front)}...${str.slice(-back)}`
@@ -308,7 +308,7 @@ const BlockExplorerPage = () => {
                 <div className="flex w-[45%] flex-col  h-full justify-center items-start">
                   <h2 className="font-semibold text-sm">LATEST BLOCK</h2>
                   <p className="font-medium text-sm flex gap-2">
-                    {numBlock - 1}
+                    {(numBlock - 1)}
                   </p>
                 </div>
               </div>
@@ -371,7 +371,7 @@ const BlockExplorerPage = () => {
                       </div>
                       <div className="w-[30%]">
                         <div className="cursor-pointer text-blue-600 underline" onClick={() => navigate(`/dyascan?hash=${tx.parentHash}`)}>{shorten(tx.parentHash)}</div>
-                        <span className="text-gray-600">{timeAgo(tx.txTimestamp)}</span>
+                        <span className="text-gray-600">{timeAgo(tx.timestamp)}</span>
                       </div>
                       <div className="w-[40%]">
                         <p>

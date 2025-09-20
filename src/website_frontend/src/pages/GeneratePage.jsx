@@ -87,6 +87,7 @@ const GeneratePage = () => {
     tier,
     actor,
     actorLedger,
+    authClient,
   } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
@@ -417,11 +418,47 @@ const GeneratePage = () => {
       setShowNotification(true);
       return;
     }
-    setShowInvoice(true);
-    setPaymentStatus("processing");
-    const burn = await BurnTokens(actorLedger);
+    const burning = async () => {
+      setShowInvoice(true);
+      setPaymentStatus("processing");
+
+      if (authClient.provider !== "Plug") {
+        const message = "Burned 1 DYA to generate image";
+
+        return new Promise((resolve, reject) => {
+          showPopup({
+            title: "Confirm Transaction",
+            message: `Type : Burn Token<br>
+              Amount : 1 DYA<br>
+              To : ${process.env.MINTER_PRINCIPAL_ID}<br>
+              memo : ${message}`,
+            type: "default",
+            leftLabel: "REJECT",
+            rightLabel: "APPROVE",
+            onLeft: async () => {
+              hidePopup();
+              resolve(null);
+            },
+            onRight: async () => {
+              hidePopup();
+              try {
+                const burn = await BurnTokens(actorLedger);
+                resolve(burn);
+              } catch (err) {
+                reject(err);
+              }
+            },
+          });
+        });
+      } else {
+        const burn = await BurnTokens(actorLedger);
+        return burn;
+      }
+    };
+
+    const burn = await burning();
     console.log("Burn: ", burn);
-    if (!burn.Ok) {
+    if (!burn ||!burn.Ok) {
       setPaymentStatus("failed");
       return;
     }
@@ -429,12 +466,12 @@ const GeneratePage = () => {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
       const blob = await convertImageToPngBlob(selectedFile);
-      
+
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
       console.log("userImageUrl:", userImageUrl);
       console.log("storachaCid:", storachaCid);
-      
+
       await uploadImageToBackend(userImageUrl, storachaCid);
     } catch (error) {
       setState((prev) => ({
@@ -829,7 +866,7 @@ const GeneratePage = () => {
             </div>
           </div>
         </section>
-        <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} />
+        <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} authClient={authClient} />
       </main>
     </>
   );

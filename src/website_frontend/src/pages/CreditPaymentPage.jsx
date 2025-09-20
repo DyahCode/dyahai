@@ -6,7 +6,7 @@ import PaymentSnap from "../components/ui/PaymentSnap";
 import { LuArrowDownUp } from "react-icons/lu";
 import dya from "../assets/favicon/dya.svg";
 const CreditPaymentPage = () => {
-  const { TopupCredit, clientId, accountId, } = useAuth();
+  const { TopupCredit, clientId, accountId,authClient } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
   const [inputCredit, setInputCredit] = useState(0);
@@ -17,34 +17,18 @@ const CreditPaymentPage = () => {
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [txStatus, setTxStatus] = useState(null);
 
-
-
-
-  const ICP_PRICE_USD = 6.2;
-  const GENERATE_PRICE = 0.1;
-  const NEW_GENERATE_PRICE = GENERATE_PRICE / ICP_PRICE_USD;
-
-  const ICP_PRICE_XDR = 4.2;
-  const ICP_CYCLE = ICP_PRICE_XDR * 1_000_000_000_000;
-  const REQUEST_IN_CYCLE = 10_800_000_000;
-  const REQUEST_PRICE = REQUEST_IN_CYCLE / ICP_CYCLE;
-
-  const ONE_CREDIT_IS = NEW_GENERATE_PRICE + REQUEST_PRICE;
-
-
   const presetValues = [1, 3, 5, 10, 20, 50, 100, 200, 500, 1000];
-
-
+  
+  
   const creditCalculate = (value) => {
+    const ONE_CREDIT_IS = 0.0187;
     const numValue = Number(value);
     const icp = numValue * ONE_CREDIT_IS;
 
     setInputCredit(numValue);
     setIcpAmount(icp);
 
-    let e8s = Math.round(icp * 1e8);
-    const transferFee = 10_000;
-    e8s += transferFee;
+    const e8s = Math.round(icp * 1e8);
 
     setIcpInE8s(e8s);
   };
@@ -95,7 +79,7 @@ const CreditPaymentPage = () => {
           <div className="container">
             <div className="flex flex-col rounded-2xl items-center justify-center transition duration-200 border border-t-2 border-t-neutral-500/25 border-neutral-500/10 hover:border-neutral-500/25 bg-gradient-to-b from-white/[0.025] via-white/[0.015] to-white/[0.01] backdrop-blur-2xl p-2 md:p-10 group my-12">
               <div className="w-full md:w-1/2 h-full flex flex-col text-fontPrimaryColor items-center">
-                <span className="text-xl">Swap with Plug Wallet</span>
+                <span className="text-xl">Swap with {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"}</span>
                 <span>Pay as you want with anything</span>
                 <div className="rounded-2xl p-4 md:p-8 mt-4 w-full border lg:flex lg:flex-col lg:justify-center bg-white">
                   <div>
@@ -216,7 +200,7 @@ const CreditPaymentPage = () => {
           </div>
         </section>
       </main>
-      <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} />
+      <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} authClient={authClient} />
     </>
   );
 };

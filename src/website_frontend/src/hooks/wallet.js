@@ -1,6 +1,6 @@
 import { Principal } from "@dfinity/principal";
 import { dyahai_token_index } from "../../../declarations/dyahai_token_index";
-export const fetchBalance = async (authclient,retries = 8) => {
+export const fetchBalance = async (authclient,retries = 3) => {
     const balance = await dyahai_token_index.icrc1_balance_of({
         owner: Principal.fromText(authclient.principal),
         subaccount: []

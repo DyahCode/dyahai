@@ -149,6 +149,7 @@ const PricingPage = () => {
     isLoggedIn,
     Logout,
     tier,
+    authClient,
   } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
@@ -179,8 +180,8 @@ const PricingPage = () => {
   const handlePayment = (plan) => {
     if (!isLoggedIn) {
       showPopup({
-        title: "Plug Wallet Login Required",
-        message: "To use this feature, please log in to your Plug Wallet first. Once you are logged in, you can connect and continue using this feature.",
+        title: "Login Required",
+        message: "To use this feature, please log in first. Once you are logged in, you can connect and continue using this feature.",
         type: "warning",
         leftLabel: "Login",
         onLeft: async () => {
@@ -573,7 +574,7 @@ const PricingPage = () => {
 
               <div className='w-full h-full flex flex-col relative p-8 text-fontPrimaryColor'>
                 <span className="text-center text-lg font-medium">
-                  PlugWallet
+                  {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"}
                 </span>
                 <span htmlFor="pageviews" className="text-md text-fontPrimaryColor/80">
                   Bill information
@@ -588,7 +589,7 @@ const PricingPage = () => {
                         Validate Payment
                       </span>
                       <span className="mt-2 text-sm/4 text-fontPrimaryColor/70">
-                        We are verifying your Plug Wallet payment. This process may take
+                        We are verifying your {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"} payment. This process may take
                         a moment as we securely process and confirm your transaction.
                       </span>
                     </div>
@@ -706,7 +707,7 @@ const PricingPage = () => {
                           </svg>
 
                           <div className="absolute animate-pulse text-center text-lg font-semibold text-fontPrimaryColor/25 z-5 flex flex-col">
-                            <span>Waiting for Plug Wallet Payment</span>
+                            <span>Waiting for {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"} Payment</span>
                             <span>Validation</span>
                           </div>
                         </div>

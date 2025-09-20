@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvoice }) => {
+const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvoice,authClient }) => {
     return (
         <>
             {showInvoice && paymentStatus !== "idle" && (
@@ -27,7 +27,7 @@ const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvo
 
                             <div className='w-full h-full flex flex-col relative p-8 text-fontPrimaryColor'>
                                 <span className="text-center text-lg font-medium">
-                                    PlugWallet
+                                    {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"}
                                 </span>
                                 <span htmlFor="pageviews" className="text-md text-fontPrimaryColor/80">
                                     Bill information
@@ -39,7 +39,7 @@ const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvo
                                             Validate Payment
                                         </span>
                                         <span className="mt-2 text-sm/4 text-fontPrimaryColor/70">
-                                            We are verifying your Plug Wallet payment. This process may take
+                                            We are verifying your {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"} payment. This process may take
                                             a moment as we securely process and confirm your transaction.
                                         </span>
                                     </div>
@@ -157,7 +157,7 @@ const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvo
                                                 </svg>
 
                                                 <div className="absolute animate-pulse text-center text-lg font-semibold text-fontPrimaryColor/25 z-5 flex flex-col">
-                                                    <span>Waiting for Plug Wallet Payment</span>
+                                                    <span>Waiting for {authClient.provider === "Plug" ? "Plug Wallet" : "Internet Identity"} Payment</span>
                                                     <span>Validation</span>
                                                 </div>
                                             </div>
