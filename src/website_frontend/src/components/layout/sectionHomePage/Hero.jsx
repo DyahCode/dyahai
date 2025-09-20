@@ -21,8 +21,8 @@ const Hero = () => {
       navigate("/generate");
     } else {
       showPopup({
-        title: "Plug Wallet Login Required",
-        message: "To use this feature, please log in to your Plug Wallet first. Once you are logged in, you can connect and continue using this feature.",
+        title: "Login Required",
+        message: "To use this feature, please log in first. Once you are logged in, you can connect and continue using this feature.",
         type: "warning",
         leftLabel: "Login",
         onLeft: () => { Login() },

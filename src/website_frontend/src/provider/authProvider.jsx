@@ -5,14 +5,17 @@ import {
   useState,
   useCallback,
 } from "react";
-import { idlFactory as website_backend_idl,website_backend,canisterId } from "../../../declarations/website_backend";
+import { idlFactory as website_backend_idl, website_backend, canisterId, createActor } from "../../../declarations/website_backend";
 import { idlFactory as ledger_idl } from "../../../declarations/dyahai_token";
-import { idlFactory as ledgerIndex_idl , dyahai_token_index } from "../../../declarations/dyahai_token_index";
+import { idlFactory as ledgerIndex_idl, dyahai_token_index } from "../../../declarations/dyahai_token_index";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
 import { usePopup } from "./PopupProvider";
 import { fetchBalance } from "../hooks/wallet";
 import { PlugLogin, CreateActor } from "ic-auth";
+import { IdbStorage, AuthClient } from "@dfinity/auth-client";
+import { LedgerCanister } from "@dfinity/ledger-icp";
+import { HttpAgent } from "@dfinity/agent";
 
 const AuthContext = createContext(null);
 
@@ -30,9 +33,8 @@ export const AuthProvider = ({ children }) => {
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
-
   const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
-
+  const db = new IdbStorage({ dbName: "dyahai", storeName: "authclient", version: 1 });
   const host =
     process.env.DFX_NETWORK == "ic"
       ? "https://icp0.io"
@@ -40,75 +42,134 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      await checkConnection();
+      const method = await db.get("method");
+      console.log("method", method);
+      if (!method) {
+        return;
+      }
+      await checkConnection(method);
     })();
   }, []);
 
-  const checkingPlugInstalled = async () => {
-    if (!window.ic?.plug) {
-      hidePopup();
-      setTimeout(() => {
-        showPopup({
-          title: "Plug Wallet Not Detected",
-          message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
-          type: "default",
-          extend: "plugInstruction",
-          leftLabel: "Login",
-          onLeft: () => { Login() },
-        });
-      }, 100);
-      return false;
+  const checkConnection = async (method) => {
+    let isConnected;
+    if (method === "Plug") {
+      const isInstalled = await checkingPlugInstalled(method);
+      if (!isInstalled) {
+        return;
+      }
+      isConnected = await window.ic?.plug?.isConnected();
+    } else {
+      const client = await AuthClient.create()
+      isConnected = await client.isAuthenticated();
     }
-    return true;
-  };
-  const checkConnection = async () => {
-    const isConnected = await window.ic?.plug?.isConnected();
-    console.log("Plug wallet connected:", isConnected);
-
+    console.log("isConnected", isConnected);
     if (isConnected) {
-      await initPlug();
+      await initLogin(method);
+      return;
     }
+    Logout();
+    return;
   };
 
-  const initPlug = async () => {
-    const authclient = await PlugLogin(whitelist, host);
-    console.log("PlugLogin userObject:", authclient);
-    console.log("provider authclient:", authclient.provider);
-    setAuthClient(authclient);
-    await buildActor(authclient);
+  const initLogin = async (method) => {
+    let authclient;
+    if (method === "Plug") {
+      authclient = await PlugLogin(whitelist, host);
+      setAuthClient(authclient);
+      await db.set("method", authclient.provider);
+      await buildActor(authclient);
+      window.ic.plug.onExternalDisconnect(async () => {
+        await db.remove("method");
+        setAuthClient(null);
+        setPrincipalId("");
+        setAccountId("");
+        setIsLoggedIn(false);
+        setCredit(0);
+        setActor(null);
+        setActorLedger(null);
+        setActorIndex(null);
+        if (window.location.pathname !== "/") {
+          window.location.href = "/";
+        }
+      });
+    } else {
+      console.log("IdentityLogin");
+      const client = await AuthClient.create();
+      const isConnected = await client.isAuthenticated();
+      if (!isConnected) {
+        authclient = await IdentityLogin(client, host);
+        setAuthClient(authclient);
+        await db.set("method", authclient.provider);
+      } else {
+        const identity = client.getIdentity();
+        const agent = new HttpAgent({
+          identity: identity,
+          host: host,
+
+        });
+        if (process.env.DFX_NETWORK != "ic") {
+          await agent.fetchRootKey();
+        }
+        authclient = {
+          principal: identity.getPrincipal().toText(),
+          agent: agent,
+          provider: "Internet Identity",
+        };
+        setAuthClient(authclient);
+      }
+      await buildActor(authclient);
+    }
     setIsLoggedIn(true);
     setLoading(false);
     console.log("set Log In");
-
     const principal = authclient.principal;
     setPrincipalId(principal);
     console.log("User principal ID:", principal);
-    window.ic.plug.onExternalDisconnect(() => {
-      setAuthClient(null);
-      setPrincipalId("");
-      setAccountId("");
-      setIsLoggedIn(false);
-      setCredit(0);
-      setActor(null);
-      setActorLedger(null);
-      setActorIndex(null);
-      setAuthClient(null);
-      window.location.href = "/";
+  };
+
+  const IdentityLogin = async (client, host) => {
+    return new Promise((resolve, reject) => {
+      client.login({
+        identityProvider:
+          process.env.DFX_NETWORK === "ic"
+            ? "https://identity.ic0.app"
+            : `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:5000`,
+        onSuccess: async () => {
+          try {
+            const identity = client.getIdentity();
+            const agent = new HttpAgent({ identity, host });
+
+            if (process.env.DFX_NETWORK !== "ic") {
+              await agent.fetchRootKey();
+            }
+
+            resolve({
+              principal: identity.getPrincipal().toText(),
+              agent: agent,
+              provider: "Internet Identity",
+            });
+          } catch (e) {
+            reject(e);
+          }
+        },
+        onError: (err) => {
+          reject(err);
+        },
+      });
     });
   };
 
   const buildActor = async (authclient = authClient) => {
     const newActor = await CreateActor(authclient.agent, website_backend_idl, process.env.CANISTER_ID_WEBSITE_BACKEND);
-    console.log("Actor created:", newActor);
 
     const newActorLedger = await CreateActor(authclient.agent, ledger_idl, process.env.CANISTER_ID_DYAHAI_TOKEN);
-    console.log("ActorLedger created:", newActorLedger);
 
     const newActorIndex = await CreateActor(authclient.agent, ledgerIndex_idl, process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX);
-    console.log("ActorIndex created:", newActorIndex);
     setActor(newActor);
     setActorLedger(newActorLedger);
     setActorIndex(newActorIndex);
+    console.log("All Actors created:");
 
     await getAccountId(authclient);
 
@@ -116,7 +177,6 @@ export const AuthProvider = ({ children }) => {
   };
   const getAccountId = async (authclient = authClient) => {
     const principal = Principal.fromText(authclient.principal);
-    // const principal = await window.ic.plug.agent.getPrincipal();
     const clientAccountId = AccountIdentifier.fromPrincipal({
       principal: principal,
     });
@@ -132,9 +192,13 @@ export const AuthProvider = ({ children }) => {
   const refreshCredit = async (customActor = actor, authclient = authClient) => {
     try {
       if (!customActor) return;
-      await customActor.initialize_credit();
-      const balance = await fetchBalance(authclient);
-      setCredit(Number(balance));
+      const isNewUser = await customActor.initialize_credit();
+      if (isNewUser) {
+        setCredit(3);
+      } else {
+        const balance = await fetchBalance(authclient);
+        setCredit(Number(balance));
+      }
       const getTier = await website_backend.get_tier(authclient.principal);
       setTier(getTier);
     } catch (error) {
@@ -143,19 +207,41 @@ export const AuthProvider = ({ children }) => {
   };
 
   const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
-    if (!actor || !window.ic?.plug) {
-      return { success: false, error: "No actor or Plug wallet available" };
-    }
-
-    try {
-      const result = await window.ic.plug.requestTransfer({
+    let result;
+    if (authClient.provider === "Plug") {
+      if (!actor || !window.ic?.plug) {
+        return { status: "failed", error: "No actor or Plug wallet available" };
+      }
+      result = await window.ic.plug.requestTransfer({
         to: canisterId,
         amount,
       });
-
-      console.log("✅ Plug transfer result:", result);
+      console.log("result:", result);
+      if (!result.height) {
+        return { status: "failed", error: "Transfer failed" };
+      }
+    } else {
+      const ledger = LedgerCanister.create(
+        {
+          agent: authClient.agent,
+          canisterId: "ryjl3-tyaaa-aaaaa-aaaba-cai"
+        });
+      result = await ledger.transfer({
+        to: AccountIdentifier.fromPrincipal({
+          principal: Principal.fromText(canisterId),
+        }),
+        amount: BigInt(amount),
+        fee: BigInt(10_000),
+        createdAt: BigInt(Date.now() * 1_000_000),
+      });
+      console.log("result:", result);
+      if (!result) {
+        return { status: "failed", error: "Transfer failed" };
+      }
+    }
+    try {
       const validate_transaction = await actor.get_tx_summary(
-        result.height,
+        authClient.provider === "Plug" ? result.height : result,
         0,
         type,
         String(credit),
@@ -167,37 +253,61 @@ export const AuthProvider = ({ children }) => {
       await refreshCredit();
 
       return {
-        success: true,
+        status: "success",
         data: {
-          blockHeight: result.height,
+          blockHeight: authClient.provider === "Plug" ? result.height : result,
           summary,
         },
       };
     } catch (error) {
       return {
-        success: false,
-        status: "exception",
-        error,
+        status: "error",
+        error: error,
       };
     }
   };
-  const Login = useCallback(async () => {
-    const installed = await checkingPlugInstalled();
-    if (!installed) return;
-
-    await initPlug();
+  const checkingPlugInstalled = async (method) => {
+    if (!window.ic?.plug) {
+      hidePopup();
+      setTimeout(() => {
+        showPopup({
+          title: "Plug Wallet Not Detected",
+          message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+          type: "default",
+          extend: "plugInstruction",
+          leftLabel: "Login",
+          onLeft: () => { Login(method) },
+        });
+      }, 100);
+      return false;
+    }
+    return true;
+  };
+  const Login = useCallback(async (method) => {
+    if (method === "Plug") {
+      const installed = await checkingPlugInstalled(method);
+      if (!installed) return;
+    }
+    await initLogin(method);
   }, []);
 
   const Logout = useCallback(async () => {
-    if (window.ic?.plug) {
+    if (await db.get("method") === "Plug") {
       await window.ic.plug.disconnect();
-      setPrincipalId("");
-      setIsLoggedIn(false);
-      setCredit(0);
-      setActor(null);
-      setActorLedger(null);
-      setActorIndex(null);
-      setAuthClient(null);
+
+    } else {
+      const client = await AuthClient.create()
+      await client.logout();
+    }
+    await db.remove("method");
+    setPrincipalId("");
+    setIsLoggedIn(false);
+    setCredit(0);
+    setActor(null);
+    setActorLedger(null);
+    setActorIndex(null);
+    setAuthClient(null);
+    if (window.location.pathname !== "/") {
       window.location.href = "/";
     }
   }, []);
@@ -205,6 +315,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        db,
         authClient,
         actor,
         actorIndex,

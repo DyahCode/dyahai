@@ -62,7 +62,6 @@ pub async fn get_tx_summary(
     let principal = ic_cdk::caller();
     let memo_obj = Memo(memo);
 
-    // Set message sesuai tx_type
     let message = match tx_type.as_str() {
         "credit" => format!("Added {} credit ", credit),
         "plan" => format!("Upgraded plan to {}", plan),
@@ -152,24 +151,15 @@ pub async fn get_tx_summary(
 }
 
 pub fn calculate_credit_from_icp(amount: Nat) -> u64 {
-    const ICP_PRICE_USD: f64 = 6.2;
-    const GENERATE_PRICE: f64 = 0.1;
-    const ICP_PRICE_XDR: f64 = 4.2;
-    const REQUEST_IN_CYCLE: f64 = 10_800_000_000.0;
-    const ICP_CYCLE: f64 = ICP_PRICE_XDR * 1_000_000_000_000.0;
-
-    let new_generate_price = GENERATE_PRICE / ICP_PRICE_USD;
-    let request_price = REQUEST_IN_CYCLE / ICP_CYCLE;
-    let one_credit_is = new_generate_price + request_price;
+    const ONE_CREDIT_IN_ICP: f64 = 0.0187;
 
     let big_amount: &BigUint = &amount.0;
     let amount_e8s: f64 = big_amount.to_string().parse().unwrap_or(0.0);
 
     let icp = amount_e8s / 100_000_000.0;
+    let credit = icp / ONE_CREDIT_IN_ICP;
 
-    let credit = icp / one_credit_is;
-
-    credit.floor() as u64
+    credit as u64
 }
 
 #[update]
@@ -184,15 +174,17 @@ pub async fn save_image_to_store(cid: String) {
 }
 
 #[update]
-pub async fn initialize_credit() -> String {
+pub async fn initialize_credit() -> bool {
     let principal = ic_cdk::caller();
     if principal == Principal::anonymous() {
         ic_cdk::trap("Anonymous principal not allowed");
     }
     if !users::is_registered(principal) {
         users::save_user(principal.clone()).await;
+        return true
     }
-    principal.to_string()
+    downgrade_tier(principal);
+    return false
 }
 
 #[query]

@@ -1,5 +1,15 @@
 {
   "canisters": {
+    "internet_identity": {
+      "candid": "src/internet_identity/internet_identity.did",
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "type": "custom",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    },
     "website_backend": {
       "candid": "src/website_backend/website_backend.did",
       "package": "website_backend",

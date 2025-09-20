@@ -31,7 +31,7 @@ const TransactionHistory = () => {
         const data = trx.transaction.burn[0];
         return {
           kind,
-          amount: BigInt(data.amount),
+          amount: Number(data.amount || 0) / 100_000_000,
           from: data.from?.owner?._arr
             ? Principal.fromUint8Array(data.from.owner._arr).toText()
             : null,
@@ -48,7 +48,7 @@ const TransactionHistory = () => {
         const data = trx.transaction.mint[0];
         return {
           kind,
-          amount: BigInt(data.amount),
+          amount: Number(data.amount || 0) / 100_000_000,
           from: process.env.CANISTER_ID_WEBSITE_BACKEND,
           to: data.to?.owner?._arr
             ? Principal.fromUint8Array(data.to.owner._arr).toText()
@@ -65,7 +65,7 @@ const TransactionHistory = () => {
         const data = trx.transaction.transfer[0];
         return {
           kind,
-          amount: BigInt(data.amount),
+          amount: Number(data.amount || 0) / 100_000_000,
           fee: data.fee?.length ? BigInt(data.fee[0]) : 0n,
           from: data.from?.owner?._arr
             ? Principal.fromUint8Array(data.from.owner._arr).toText()
@@ -194,7 +194,7 @@ const TransactionHistory = () => {
                         <div className="flex items-start text-sm gap-1">
                           <span className="w-fit border border-borderShade border-opacity-20 rounded-md ml-1 px-1 bg-white/[0.025]">Amount :</span>
                           <span className="w-fit flex flex-row items-center border border-borderShade border-opacity-20 rounded-md px-1 bg-white/[0.025] text-accentColor/70 font-bold">
-                            {Number(transactionInfo(trx).amount / 100_000_000n)}
+                            {transactionInfo(trx).amount}
                             <img className="size-5 ml-1" src={dya} alt="" />
                           </span>
                         </div>

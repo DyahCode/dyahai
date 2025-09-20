@@ -9,6 +9,7 @@ use candid::{CandidType, Deserialize};
 #[derive(Clone, CandidType, Deserialize)]
 pub struct UserData {
     pub tier: UserTier,
+    pub expired: Option<u64>,
 }
 
 thread_local! {

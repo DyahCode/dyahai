@@ -13,6 +13,9 @@ import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
 import { useAuth } from "../../provider/authProvider";
 import { usePopup } from "../../provider/PopupProvider";
+import identity from "../../assets/identity.ico";
+
+const plugLogo = "https://bafybeid3aty76qvbd7lgs2xqfozscqncbfl64rzwtuyuaa6s2bmofqiaie.ipfs.w3s.link/plug-wallet-logo.png";
 
 const HeroProfile =
   "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
@@ -54,12 +57,18 @@ const Navbar = ({ navbarStyle }) => {
     dropdownRef: userRef,
   } = useDropdown();
 
+  const {
+    isDropdownOpen: isConnectOpen,
+    toggleDropdown: toggleConnect,
+    dropdownRef: ConnectRef,
+  } = useDropdown();
+
   const menuItems = [
     { name: "HOME", href: "/#" },
     { name: "ABOUT", href: "/#about" },
     { name: "PRICING", href: "/pricing" },
     { name: "TERMS", href: "/terms" },
-    { name: "Block Explorer", href: "/dyascan" },
+    { name: "BLOCK EXPLORER", href: "/dyascan" },
   ];
 
   const menuContainerVariants = {
@@ -115,28 +124,30 @@ const Navbar = ({ navbarStyle }) => {
 
   const navbarBackground = getNavbarBackground();
 
-  const handleLogin = () => {
-    if (!window.ic?.plug) {
-      showPopup({
-        title: "Plug Wallet Not Detected",
-        message:
-          "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
-        type: "default",
-        extend: "message",
-        extendMessage: [
-          {
-            error: 200,
-            "server message": "error code",
+  const handleLogin = (method) => {
+    if (method === "Plug") {    
+      if (!window.ic?.plug) {
+        showPopup({
+          title: "Plug Wallet Not Detected",
+          message:
+            "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+          type: "default",
+          extend: "message",
+          extendMessage: [
+            {
+              error: 200,
+              "server message": "error code",
+            },
+          ],
+          leftLabel: "Login",
+          onLeft: () => {
+            Login(method);
           },
-        ],
-        leftLabel: "Login",
-        onLeft: () => {
-          Login();
-        },
-      });
-      return;
+        });
+        return;
+      }
     }
-    Login();
+    Login(method);
   };
 
   return (
@@ -165,7 +176,7 @@ const Navbar = ({ navbarStyle }) => {
               </a>
             )}
           </div>
-          <ul className="w-[55vh] lg:w-[50vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
+          <ul className="w-[75vh] lg:w-[70vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <a
@@ -360,15 +371,53 @@ const Navbar = ({ navbarStyle }) => {
                 </div>
               </div>
             ) : (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleLogin}
-                className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
-                isMotion
-              >
-                Connect
-              </Button>
+              // <Button
+              //   variant="outline"
+              //   size="icon"
+              //   onClick={handleLogin}
+              //   className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
+              //   isMotion
+              // >
+              //   Connect
+              // </Button>
+              <div className="relative space-y-3" ref={ConnectRef}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={toggleConnect}
+                  className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
+                  isMotion
+                >
+                  Connect
+                </Button>
+                {isConnectOpen && (
+                  <div className="absolute right-0">
+                    <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-full h-full rounded-lg border z-20 px-4 py-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleLogin("Internet Identity")}
+                        className="w-max px-2 mb-3 py-[6px] text-sm hover:bg-accentColor/[0.125]"
+                      > <div className="flex items-center gap-2">
+                        <img className="w-6 h-6" src={identity} alt="" />
+                        <p className="text-sm">Internet Identity</p>
+                      </div>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleLogin("Plug")}
+                        className="w-[176.38px] px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
+                      >
+                        <div className="flex items-center gap-2">
+                        <img className="w-6 h-6" src={plugLogo} alt="" />
+                        <p className="text-sm">Plug Wallet</p>
+                      </div>
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

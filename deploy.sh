@@ -9,11 +9,11 @@ CANISTER_BACKEND=$(dfx canister id website_backend)
 dfx canister create dyahai_token
 CANISTER_TOKEN=$(dfx canister id dyahai_token)
 
-
-
 IDENTITY=$(dfx identity get-principal)
 
 LOGO_BASE64=$(cat logo.txt)
+
+dfx deploy internet_identity
 
 dfx deploy website_backend --argument "(opt variant { Init = record { canister_ledger = \"$CANISTER_TOKEN\"; } })"
 
@@ -25,10 +25,6 @@ cat > init-args.did <<EOF
       token_symbol = "DYA";
       transfer_fee = 10_000 : nat;
       metadata = vec {
-        record { "icrc1:symbol"; variant { Text = "DYA" } };
-        record { "icrc1:name"; variant { Text = "Dyah AI" } };
-        record { "icrc1:decimals"; variant { Nat = 8 : nat } };
-        record { "icrc1:fee"; variant { Nat = 10_000 : nat } };
         record {
           "icrc1:logo";
           variant {
@@ -46,14 +42,14 @@ cat > init-args.did <<EOF
             owner = principal "$CANISTER_BACKEND";
             subaccount = null;
           };
-          1_000_000_000_000_000_000 : nat;
+          10_000_000_000_299_890_000 : nat;
         };
       };
       fee_collector_account = null;
       archive_options = record {
-        num_blocks_to_archive = 100_000 : nat64;
+        num_blocks_to_archive = 0 : nat64;
         max_transactions_per_response = null;
-        trigger_threshold = 90_000 : nat64;
+        trigger_threshold = 2_000 : nat64;
         more_controller_ids = null;
         max_message_size_bytes = null;
         cycles_for_archive_creation = null;

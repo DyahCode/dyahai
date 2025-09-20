@@ -142,9 +142,7 @@ export const PopupProvider = ({ children }) => {
                   <span className="text-left text-white text-lg tracking-[0.035em] mt-2.5 mb-4 font-semibold">
                     {popupData.title}
                   </span>
-                  <p className="text-left text-[#cccccc] text-base tracking-[0.031rem]">
-                    {popupData.message}
-                  </p>
+                  <p className="text-left text-[#cccccc] text-base tracking-[0.031rem]" dangerouslySetInnerHTML={{ __html: popupData.message }}/>
 
                   {/* extend content */}
 

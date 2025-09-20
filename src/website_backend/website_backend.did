@@ -14,7 +14,8 @@ service : (opt IndexArgs) -> {
   get_images_by_principal : (text) -> (vec text) query;
   get_tier : (text) -> (text) query;
   get_tx_summary : (nat64, nat64, text, text, text) -> (text);
-  initialize_credit : () -> (text);
+  initialize_credit : () -> (bool);
+  is_registered : (principal) -> (bool) query;
   save_image_to_store : (text) -> ();
   send_http_post : (text, text) -> (ResponseAPI);
   transform : (TransformArgs) -> (HttpResponse) query;
