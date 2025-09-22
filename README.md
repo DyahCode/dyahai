@@ -38,24 +38,24 @@ DyahAI is an AI platform that lets users transform ordinary images into unique w
 DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. At WCHL 2025, DyahAI continued its innovation journey by expanding its capabilities and introducing a range of new features aimed at enhancing user experience, and technological integration.
 
 ## ⚡What’s New During the WCHL Regional Round 2025
-<table>
+<table cellspacing="0" cellpadding="8">
   <tr>
     <th colspan="4" align="center">🕰️ Old Features</th>
   </tr>
   <tr>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Credit</h3>
       <p>Credits were implemented as an internal balance system stored directly in the canister.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Payment</h3>
       <p>Payments in the dapp were processed by deducting balances from this internal credit system.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Top-up</h3>
       <p>Users topped up their credits by converting ICP payments into changes on the simulated credit balance.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Limited Transparency</h3>
       <p>Transactions and credit usage were only recorded internally, making them inaccessible for public verification.</p>
     </td>
@@ -65,19 +65,19 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
     <th colspan="4" align="center">🚀 New Features</th>
   </tr>
   <tr>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Dyah AI Token</h3>
       <p>DYA tokens are issued following the ICRC ledger standard, ensuring interoperability and security.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Token Burning</h3>
       <p>Dapp payments are executed by burning DYA tokens from the user’s balance.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Token Minting</h3>
       <p>Users can request new DYA tokens to be minted by depositing a defined amount of ICP.</p>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <h3>Blockchain Explorer</h3>
       <p>All token transfers and activities are publicly available through the DyahAI token ledger explorer.</p>
     </td>
@@ -91,55 +91,52 @@ DyahAI is the winning project of Hackathon 7.0 organized by ICP Hub Indonesia. A
 
 ## 🔗 Get Started
 ### 📋 Prerequisites
+Install WSL on PowerShell 
 ```bash
-# Open PowerShell on "Run as administrator" mode
-# Enter the wsl --install command, then restart your machine.
 wsl --install
+```
 
-# Open WSL, and install dfx.
+Open WSL, and install dfx.
+```bash
 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
 ```
 
 ### ⚡ Installation Step
+1. Clone the repository using PowerShell
 ```bash
-# Clone the repository using PowerShell
 git clone https://github.com/WAW1311/dyahai-2.0.git
-cd dyahai-2.0
+```
 
-# Open the project in VS Code
-code .
-
-# Rename `.env.example` to `.env`
-
-# Fill in the values for the variables `STORACHA_API_KEY` and `STORACHA_PROOF` in `.env`
-# You can find the values here:
+2. Rename `.env.example` to `.env`
+   
+3. Copy `STORACHA_API_KEY` and `STORACHA_PROOF` links below and paste them into the `.env` file <br>
 https://pastelink.net/2i6qrerr
 
-# Add your MINTER_PRINCIPAL_ID (your DFX identity principal) into `.env`
-# Run this command to get your principal:
+4. Copy your dfx identity principal `MINTER_PRINCIPAL_ID` from the command below and paste it into the `.env` file
+```bash
 dfx identity get-principal
+```
 
-# Copy the output and paste it into your `.env` file:
-# MINTER_PRINCIPAL_ID=aaaaa-aa-bbbbbb-cccccc-ddddd-eeee
-
-# Install all dependencies
+5. Install all dependencies
+```bash
 npm install
+```
 
-# Run deployment using bash script
+6. Run deployment using bash script
+```bash
 bash deploy.sh
+```
 
-# ⚠️ If you want to deploy to mainnet (Internet Computer):
-# Open file `deploy.sh` and add flag `--network ic`
-# to every command starting with `dfx` (except `dfx start`).
---network ic
-# Example: change `dfx deploy backend` -> `dfx deploy backend --network ic`
+#### ⚠️ If you want to deploy to mainnet (Internet Computer):
+7. Open the `deploy.sh` file and add the `--network ic` flag to every command starting with `dfx` (except `dfx start`) <br>
+e.g., change `dfx deploy backend` to `dfx deploy backend --network ic`
 
-# You can find information about your canister project in the `.env.local` file
-
-# Install Extension Plug Wallet
+8. Install Extension Plug Wallet
+```bash
 https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_source=item-share-cb
 ```
-## 🛠️ Extra Step for Local Deployment : </br>
+
+## 🛠️ Extra Step for Local Deployment </br>
 
 - **If you deploy locally, make sure to switch Plug Wallet into Dev/Test Mode**:
 
@@ -150,13 +147,13 @@ https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_so
 5. Enable Test Mode.
 6. Done ✅ (now your wallet can connect to http://127.0.0.1:5000).
 
-## 🎥 Video Demonstration :  </br>
+## 🎥 Video Demonstration  </br>
 [Video demonstration](https://youtu.be/zvcZufyHNoc?si=mux5XDI6TI78YeeU)
 
-## 🎥 Pitch Deck :  </br>
+## 🎥 Pitch Deck  </br>
 [Pitch Deck](https://drive.google.com/file/d/1DV04JlF6NE5jtphdk5nDT44hM4onbm1l/view?usp=sharing)
 
-## 🎥 Pitch Video :  </br>
+## 🎥 Pitch Video </br>
 [Pitch Video](https://youtu.be/zvmsngTkHn4)
 
 ## 👥 Contributors
