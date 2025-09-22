@@ -130,10 +130,10 @@ bash deploy.sh
 ```
 
 #### ⚠️ If you want to deploy to mainnet (Internet Computer):
-7. Open the `deploy.sh` file and add the `--network ic` flag to every command starting with `dfx` (except `dfx start`) <br>
+8. Open the `deploy.sh` file and add the `--network ic` flag to every command starting with `dfx` (except `dfx start`) <br>
 e.g., change `dfx deploy backend` to `dfx deploy backend --network ic`
 
-8. Install Extension Plug Wallet
+9. Install Extension Plug Wallet
 ```bash
 https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_source=item-share-cb
 ```
