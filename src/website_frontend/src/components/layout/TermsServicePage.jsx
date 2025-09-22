@@ -3,7 +3,7 @@ import { useAuth } from "../provider/authProvider";
 import Navbar from "../components/layout/Navbar.jsx";
 import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
 import ContainerBox, { Box, Container } from "../components/layout/Container";
-import Footer from "../components/layout/Footer";
+import Footer from "./Footer";
 
 const termsData = [
   {

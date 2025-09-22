@@ -5,8 +5,9 @@ import Feature from "../components/layout/sectionHomePage/Feature";
 import Advantages from "../components/layout/sectionHomePage/Advantages";
 import Gallery from "../components/layout/sectionHomePage/Gallery";
 import About from "../components/layout/sectionHomePage/About";
-import Footer from "../components/layout/sectionHomePage/Footer";
 import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
+import SystemProfile from "../components/layout/sectionHomePage/SystemProfile";
+import Footer from "../components/layout/Footer";
 
 const HomePage = () => {
   React.useEffect(() => {
@@ -18,10 +19,11 @@ const HomePage = () => {
       <div className="flex h-full flex-col items-center overflow-hidden">
         <Navbar navbarStyle="primary" />
         <Hero />
+        <SystemProfile />
         <Feature />
         <Advantages />
         <Gallery />
-        <About />
+        <About showReviews />
         <GettingStarted />
         <Footer />
       </div>

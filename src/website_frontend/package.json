@@ -17,6 +17,7 @@
     "@dfinity/candid": "^1.4.0",
     "@dfinity/principal": "^1.4.0",
     "@storacha/client": "^1.4.2",
+    "axios": "^1.12.2",
     "clsx": "^2.1.1",
     "files-from-path": "^1.1.4",
     "framer-motion": "^11.11.10",
@@ -27,7 +28,6 @@
     "react-scroll": "^1.9.3",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.14.5",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

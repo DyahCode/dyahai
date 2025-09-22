@@ -18,7 +18,6 @@
   "dependencies": {
     "@dfinity/auth-client": "^2.2.0",
     "@dfinity/ledger-icp": "^4.0.0",
-    "axios": "^1.11.0",
     "ic-auth": "^1.1.0"
   },
   "description": "Welcome to your new `website` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.",

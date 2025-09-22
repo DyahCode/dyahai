@@ -24,7 +24,7 @@ const Button = ({
     sm: "px-3 py-2 ",
     md: "px-4 py-2 ",
     lg: "px-8 py-3 ",
-    icon: "px-4 py-2 gap-2",
+    icon: "px-4 py-2.5 gap-2",
   };
 
   if (isMotion) {
@@ -32,12 +32,12 @@ const Button = ({
       <motion.button
         onClick={onClick}
         whileHover={{ scale: 1.075 }}
-        className={clsx(
-          baseClass,
-          variantClass[variant],
-          sizeClass[size],
-          className
-        )}
+        className={`
+          ${baseClass}
+          ${variantClass[variant]}
+          ${sizeClass[size]}
+          ${className}
+        `}
       >
         {children}
       </motion.button>
@@ -46,12 +46,12 @@ const Button = ({
     return (
       <button
         onClick={onClick}
-        className={clsx(
-          baseClass,
-          variantClass[variant],
-          sizeClass[size],
-          className
-        )}
+        className={`
+          ${baseClass}
+          ${variantClass[variant]}
+          ${sizeClass[size]}
+          ${className}
+        `}
       >
         {children}
       </button>

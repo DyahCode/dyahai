@@ -46,9 +46,9 @@ const GettingStarted = () => {
             Try Now
           </Button>
         </div>
-
+        {/* bg-blend-soft-light */}
         <motion.div
-          className="-z-0 bottom-0 overflow-hidden h-full w-full bg-blend-soft-light"
+          className="-z-0 bottom-0 overflow-hidden h-full w-full"
           style={{
             background:
               `linear-gradient(
