@@ -14,11 +14,8 @@ import Button from "../components/ui/Button";
 
 const BlockExplorerPage = () => {
   const {
-    TopupCredit,
     credit,
     principalId,
-    clientId,
-    accountId,
     Login,
     isLoggedIn,
     Logout,
@@ -31,14 +28,12 @@ const BlockExplorerPage = () => {
   const [numBlock, setnumBlock] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // jumlah item per halaman
+  const itemsPerPage = 10;
 
-  // hitung index data yang ditampilkan
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentTransactions = transactions.slice(indexOfFirst, indexOfLast);
 
-  // total halaman
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
 
   const goToPage = (page) => {
@@ -429,7 +424,6 @@ const BlockExplorerPage = () => {
                       </div>
                     </div>
                   ))}
-                  {/* Pagination Controls */}
                   <div className="flex gap-2 mt-4">
                     <button
                       onClick={() => goToPage(currentPage - 1)}
@@ -438,8 +432,6 @@ const BlockExplorerPage = () => {
                     >
                       Prev
                     </button>
-
-                    {/* number pages */}
                     {Array.from({ length: totalPages }, (_, i) => (
                       <button
                         key={i}

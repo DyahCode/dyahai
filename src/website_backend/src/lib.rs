@@ -163,13 +163,13 @@ pub fn calculate_credit_from_icp(amount: Nat) -> u64 {
 }
 
 #[update]
-pub async fn save_image_to_store(cid: String) {
+pub async fn save_image_to_store(metadata: Metadata) {
     let principal = ic_cdk::caller();
     if !users::is_registered(principal) {
-        ic_cdk::trap("No user found for saving CID");
+        ic_cdk::trap("No user found for saving Image");
     } else {
-        storages::save_image(principal, cid.clone());
-        ic_cdk::println!("Image successfully saved: {}", cid.clone());
+        storages::save_image(principal, metadata.clone());
+        ic_cdk::println!("Image successfully saved: {:?}", metadata.clone());
     }
 }
 
@@ -202,13 +202,13 @@ pub async fn get_tier(principal: String) -> String {
 }
 
 #[query]
-pub async fn get_images_by_principal(principal: String) -> Vec<String> {
+pub async fn get_images_by_principal(principal: String) -> Vec<Metadata> {
     let principal = Principal::from_text(principal).unwrap();
     if !users::is_registered(principal) {
         ic_cdk::trap("No user found");
     } else {
         let cid = storages::retrieve_images(principal);
-        cid.iter().map(|cid| cid.to_string()).collect()
+        cid
     }
 }
 
