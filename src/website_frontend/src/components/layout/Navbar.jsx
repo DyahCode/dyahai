@@ -65,10 +65,9 @@ const Navbar = ({ navbarStyle }) => {
 
   const menuItems = [
     { name: "HOME", href: "/#" },
-    { name: "ABOUT", href: "/#about" },
     { name: "PRICING", href: "/pricing" },
-    { name: "TERMS", href: "/terms" },
-    { name: "BLOCK EXPLORER", href: "/dyascan" },
+    { name: "ABOUT", href: "/about" },
+    { name: "LEDGER", href: "/dyascan" },
   ];
 
   const menuContainerVariants = {
@@ -125,7 +124,7 @@ const Navbar = ({ navbarStyle }) => {
   const navbarBackground = getNavbarBackground();
 
   const handleLogin = (method) => {
-    if (method === "Plug") {    
+    if (method === "Plug") {
       if (!window.ic?.plug) {
         showPopup({
           title: "Plug Wallet Not Detected",
@@ -176,14 +175,16 @@ const Navbar = ({ navbarStyle }) => {
               </a>
             )}
           </div>
-          <ul className="w-[75vh] lg:w-[70vh] text-md bg-secondaryColor border-borderShade text-fontPrimaryColor hidden rounded-lg border border-opacity-50 px-8 py-2 justify-between font-semibold tracking-tight md:flex">
+          <ul className="w-[45vh] lg:w-[50vh] bg-secondaryColor border-borderShade hidden rounded-lg border border-opacity-50 px-8 py-2.5 justify-between font-semibold tracking-tight md:flex">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <a
                   onClick={() => handleNavigation(item.href)}
-                  className="hover:text-accentColor cursor-pointer"
+                  className="cursor-pointer"
                 >
-                  {item.name}
+                  <span className="text-sm text-fontPrimaryColor hover:text-accentColor2 duration-150 transition-all">
+                    {item.name}
+                  </span>
                 </a>
               </li>
             ))}
@@ -385,7 +386,7 @@ const Navbar = ({ navbarStyle }) => {
                   variant="outline"
                   size="icon"
                   onClick={toggleConnect}
-                  className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
+                  className="text-sm hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
                   isMotion
                 >
                   Connect
@@ -399,9 +400,9 @@ const Navbar = ({ navbarStyle }) => {
                         onClick={() => handleLogin("Internet Identity")}
                         className="w-max px-2 mb-3 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                       > <div className="flex items-center gap-2">
-                        <img className="w-6 h-6" src={identity} alt="" />
-                        <p className="text-sm">Internet Identity</p>
-                      </div>
+                          <img className="w-6 h-6" src={identity} alt="" />
+                          <p className="text-sm">Internet Identity</p>
+                        </div>
                       </Button>
                       <Button
                         variant="outline"
@@ -410,9 +411,9 @@ const Navbar = ({ navbarStyle }) => {
                         className="w-[176.38px] px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                       >
                         <div className="flex items-center gap-2">
-                        <img className="w-6 h-6" src={plugLogo} alt="" />
-                        <p className="text-sm">Plug Wallet</p>
-                      </div>
+                          <img className="w-6 h-6" src={plugLogo} alt="" />
+                          <p className="text-sm">Plug Wallet</p>
+                        </div>
                       </Button>
                     </div>
                   </div>

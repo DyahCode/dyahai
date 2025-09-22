@@ -17,7 +17,7 @@ const Advantages = () => {
   return (
     <>
       {/* head section */}
-      <HeadSection>
+      <HeadSection backgroundMotion>
         <span className="text-4xl font-bold md:text-7xl text-fontPrimaryColor">
           Why you should choose DyahAI ?
         </span>

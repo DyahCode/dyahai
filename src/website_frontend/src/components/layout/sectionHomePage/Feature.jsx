@@ -81,9 +81,9 @@ const Feature = () => {
         id="feature"
         className="bg-primaryColor z-[20] w-full space-y-10 scroll-mt-[250px]"
       >
-        <div className="absolute md:h-[50dvh] lg:h-[70dvh] w-full select-none">
+        {/* <div className="absolute md:h-[50dvh] lg:h-[70dvh] w-full select-none">
           <div className="-z-4 relative left-0 top-0 h-full w-full translate-y-[-100%] bg-gradient-to-t from-primaryColor to-transparent"></div>
-        </div>
+        </div> */}
 
         {/* section 1 */}
         <div className=" text-fontPrimaryColor z-10 w-full mx-auto justify-items-center space-y-10">

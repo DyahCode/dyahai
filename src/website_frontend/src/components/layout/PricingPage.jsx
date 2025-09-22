@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Container } from "../components/layout/Container";
 import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
 import { usePopup } from "../provider/PopupProvider";
-import Footer from "../components/layout/Footer";
+import Footer from "./Footer";
 
 
 

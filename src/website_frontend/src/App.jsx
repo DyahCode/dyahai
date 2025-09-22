@@ -1,16 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ScrollToHash from "./components/common/ScrollHash";
-import HomePage from "./pages/HomePage";
-import GeneratePage from "./pages/GeneratePage";
-import ProfilePage from "./pages/ProfilePage";
-import NotFoundPage from "./pages/404Page";
-import CreditPaymentPage from "./pages/CreditPaymentPage";
+import { PopupProvider } from "./provider/PopupProvider";
 import { AuthProvider } from "./provider/authProvider";
 import RequireAuth from "./provider/requireAuth";
+import ScrollToHash from "./components/common/ScrollHash";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 import TermsSerivePage from "./pages/TermsServicePage";
+import GeneratePage from "./pages/GeneratePage";
+import ProfilePage from "./pages/ProfilePage";
 import PricingPage from "./pages/PricingPage";
-import { PopupProvider } from "./provider/PopupProvider";
+import CreditPaymentPage from "./pages/CreditPaymentPage";
+import NotFoundPage from "./pages/404Page";
 import BlockExplorerPage  from "../src/pages/BlockExplorerPage";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <ScrollToHash />
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route
               path="/generate"
               element={
