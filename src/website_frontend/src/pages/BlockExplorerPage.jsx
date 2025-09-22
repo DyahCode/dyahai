@@ -13,14 +13,7 @@ import Button from "../components/ui/Button";
 import Footer from "../components/layout/Footer";
 
 const BlockExplorerPage = () => {
-  const {
-    credit,
-    principalId,
-    Login,
-    isLoggedIn,
-    Logout,
-    tier,
-  } = useAuth();
+  const { credit, principalId, Login, isLoggedIn, Logout, tier } = useAuth();
 
   const location = useLocation();
   const [transactions, setTransactions] = useState([]);
@@ -137,23 +130,21 @@ const BlockExplorerPage = () => {
 
       const tx = Object.fromEntries(map.tx.Map);
       const txType = opMap[tx.op?.Text] || tx.op?.Text;
-      const feeValue =
-        map.fee?.Nat64 ?? tx.fee?.Nat64 ?? 0;
+      const feeValue = map.fee?.Nat64 ?? tx.fee?.Nat64 ?? 0;
       return {
         blockIndex: index,
         fee: Number(feeValue) / 100_000_000,
-        timestamp: new Date(
-          Number(map.ts?.Nat64 || 0) / 1_000_000
-        ),
+        timestamp: new Date(Number(map.ts?.Nat64 || 0) / 1_000_000),
         parentHash: decodeHash(map.phash),
         amount: Number(tx.amt?.Nat64 || 0) / 100_000_000,
-        from: txType == "mint" ? "Minting Account" : decodeAddress(tx.from?.Array),
+        from:
+          txType == "mint" ? "Minting Account" : decodeAddress(tx.from?.Array),
         to: txType == "burn" ? "Minting Account" : decodeAddress(tx.to?.Array),
         memo: decodeBlob(tx.memo),
         operation: txType,
-        txTimestamp: tx.ts?.Nat64 ? new Date(
-          Number(tx.ts?.Nat64) / 1_000_000
-        ).toString() : null,
+        txTimestamp: tx.ts?.Nat64
+          ? new Date(Number(tx.ts?.Nat64) / 1_000_000).toString()
+          : null,
       };
     });
   }
@@ -164,7 +155,8 @@ const BlockExplorerPage = () => {
     const diffInSeconds = Math.floor((now - dateObj) / 1000);
 
     if (diffInSeconds < 5) return "just now";
-    if (diffInSeconds < 60) return `${diffInSeconds} second${diffInSeconds > 1 ? "s" : ""} ago`;
+    if (diffInSeconds < 60)
+      return `${diffInSeconds} second${diffInSeconds > 1 ? "s" : ""} ago`;
 
     const minutes = Math.floor(diffInSeconds / 60);
     if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
@@ -338,7 +330,7 @@ const BlockExplorerPage = () => {
                 <div className="flex w-full flex-col  h-full justify-center items-start">
                   <h2 className="font-semibold text-sm">LATEST BLOCK</h2>
                   <p className="font-medium text-sm flex gap-2">
-                    {(numBlock - 1)}
+                    {numBlock - 1}
                   </p>
                 </div>
               </div>
@@ -424,33 +416,97 @@ const BlockExplorerPage = () => {
                       </div>
                     </div>
                   ))}
+
                   <div className="flex gap-2 mt-4">
                     <button
                       onClick={() => goToPage(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="px-3 py-1 rounded-md border disabled:opacity-50"
+                      className="h-8 px-3 flex justify-center items-center rounded-md border disabled:opacity-50 disabled:bg-primaryColor hover:bg-accentColor cursor-pointer"
                     >
                       Prev
                     </button>
-                    {Array.from({ length: totalPages }, (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => goToPage(i + 1)}
-                        className={`px-3 py-1 rounded-md border ${currentPage === i + 1 ? "bg-accentColor text-white" : ""
+                    {totalPages <= 4 ? (
+                      Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => goToPage(i + 1)}
+                          className={`h-8 flex justify-center items-center aspect-square rounded-md border ${
+                            currentPage === i + 1
+                              ? "bg-accentColor text-white"
+                              : ""
                           }`}
-                      >
-                        {i + 1}
-                      </button>
-                    ))}
+                        >
+                          {i + 1}
+                        </button>
+                      ))
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => goToPage(1)}
+                          className={`h-8 flex justify-center items-center aspect-square rounded-md border ${
+                            currentPage === 1 ? "bg-accentColor text-white" : ""
+                          }`}
+                        >
+                          1
+                        </button>
 
+                        {currentPage > 3 && <span className="px-2">...</span>}
+
+                        {/* middle pages */}
+                        {Array.from(
+                          {
+                            length: Math.min(
+                              3,
+                              totalPages - 2 
+                            ),
+                          },
+                          (_, i) => {
+                            const page = Math.max(2, currentPage - 1) + i;
+                            if (page >= totalPages) return null;
+                            return (
+                              <button
+                                key={page}
+                                onClick={() => goToPage(page)}
+                                className={`h-8 flex justify-center items-center aspect-square rounded-md border ${
+                                  currentPage === page
+                                    ? "bg-accentColor text-white"
+                                    : ""
+                                }`}
+                              >
+                                {page}
+                              </button>
+                            );
+                          }
+                        )}
+
+                        {currentPage < totalPages - 2 && (
+                          <span className="px-2">...</span>
+                        )}
+
+                        {/* always show last page */}
+                        <button
+                          onClick={() => goToPage(totalPages)}
+                          className={`h-8 flex justify-center items-center aspect-square rounded-md border ${
+                            currentPage === totalPages
+                              ? "bg-accentColor text-white"
+                              : ""
+                          }`}
+                        >
+                          {totalPages}
+                        </button>
+                      </>
+                    )}
+
+                    {/* Next */}
                     <button
                       onClick={() => goToPage(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-1 rounded-md border disabled:opacity-50"
+                      className="h-8 px-3 flex justify-center items-center rounded-md border bg-primaryColor disabled:opacity-50 cursor-pointer hover:bg-accentColor disabled:bg-primaryColor"
                     >
                       Next
                     </button>
                   </div>
+
                 </div>
               </Box>
             </div>

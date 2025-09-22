@@ -119,6 +119,7 @@ const TeamProfile = () => {
               </div>
             </div>
           ))}
+          
         </div>
       </section >
     </>

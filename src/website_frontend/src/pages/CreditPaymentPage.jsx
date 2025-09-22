@@ -151,9 +151,7 @@ const CreditPaymentPage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col gap-y-2 mt-4">
-                    {/* <span htmlFor="pageviews" className="text-sm text-gray-500">
-                      PlugWallet information:
-                    </span> */}
+                  
                     <div className="flex w-full h-full gap-x-2">
 
                       <div className="flex overflow-hidden  flex-col flex-1 border rounded-lg text-black text-xs md:text-sm justify-start gap-x-1 gap-y-2 p-1">
