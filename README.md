@@ -112,17 +112,19 @@ git clone https://github.com/WAW1311/dyahai-2.0.git
 3. Copy `STORACHA_API_KEY` and `STORACHA_PROOF` links below and paste them into the `.env` file <br>
 https://pastelink.net/2i6qrerr
 
-4. Copy your dfx identity principal `MINTER_PRINCIPAL_ID` from the command below and paste it into the `.env` file
+4. Run the command below to get your dfx identity principal
 ```bash
 dfx identity get-principal
 ```
 
-5. Install all dependencies
+5. Copy the result and paste it into the `MINTER_PRINCIPAL_ID` key in the `.env` file.
+
+6. Install all dependencies
 ```bash
 npm install
 ```
 
-6. Run deployment using bash script
+7. Run deployment using bash script
 ```bash
 bash deploy.sh
 ```
