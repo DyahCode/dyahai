@@ -535,9 +535,6 @@ const GeneratePage = () => {
         setShowNotification(true);
         return;
       }
-      // const clientPrincipal = Principal.fromText(principalId);
-      // await actor.reduction_credit(clientPrincipal);
-
       const base64Image = response.output.image;
       if (!base64Image) {
         setNotificationData({
@@ -566,9 +563,19 @@ const GeneratePage = () => {
         reader.onerror = reject;
         reader.readAsDataURL(blob);
       });
-
       const storachaResult = await uploadBlobToStoracha(blob);
-      await actor.save_image_to_store(storachaResult.toString());
+      const metadata = {
+        id: storachaResult.toString(),
+        name: `${selectedStyle.label} ${selectedStyle.genderCategory}`,
+        description: [],
+        assets: {
+          url: `https://${storachaResult.toString()}.ipfs.w3s.link/`,
+          mime: "image/png",
+          purpose: [],
+        },
+        created_at_time: BigInt(Date.now() * 1_000_000),
+      }
+      await actor.save_image_to_store(metadata);
 
       setState((prev) => ({ ...prev, imageUrl: dataUrl }));
 

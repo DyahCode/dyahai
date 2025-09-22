@@ -3,48 +3,47 @@ pub mod types;
 pub use types::*;
 
 
-pub fn save_image(principal: Principal, cid: String) {
-    ic_cdk::println!("Saving CID...");
+pub fn save_image(principal: Principal, metadata: Metadata) {
+    ic_cdk::println!("Saving Metadata...");
     IMAGE_STORE.with(|store| {
         store
             .borrow_mut()
             .entry(principal)
             .or_insert_with(Vec::new)
-            .push(cid);
+            .push(metadata);
     });
-    ic_cdk::println!("CID has been saved.");
+    ic_cdk::println!("Metadata has been saved.");
 }
 
-pub fn retrieve_images(principal: Principal) -> Vec<String> {
-    // Mengambil semua gambar yang terkait dengan Principal
+pub fn retrieve_images(principal: Principal) -> Vec<Metadata> {
     IMAGE_STORE.with(|store| {
-        if let Some(cid) = store.borrow().get(&principal) {
-            ic_cdk::println!("CID has been loaded, total CID: {}", cid.len());
-            cid.clone()
+        if let Some(metadata) = store.borrow().get(&principal) {
+            ic_cdk::println!("Metadata has been loaded, total Metadata: {}", metadata.len());
+            metadata.clone()
         } else {
-            ic_cdk::println!("No CID found for principal: {:?}", principal.to_string());
-            let notfoundimages: Vec<String> = vec![];
+            ic_cdk::println!("No Metadata found for principal: {:?}", principal.to_string());
+            let notfoundimages: Vec<Metadata> = vec![];
             notfoundimages
         }
     })
 }
-pub fn delete_image(principal: Principal, index: usize) -> Vec<String> {
-    ic_cdk::println!("Trying to delete CID at index: {}", index);
+pub fn delete_image(principal: Principal, index: usize) {
+    ic_cdk::println!("Trying to delete Metadata at index: {}", index);
 
     IMAGE_STORE.with(|store| {
         let mut store = store.borrow_mut();
 
-        if let Some(cid) = store.get_mut(&principal) {
-            if index < cid.len() {
-                cid.remove(index);
-                ic_cdk::println!("CID at index: {} has been deleted", index);
-                ic_cdk::println!("CID has been loaded, total CID: {}", cid.len());
+        if let Some(metadata) = store.get_mut(&principal) {
+            if index < metadata.len() {
+                metadata.remove(index);
+                ic_cdk::println!("Metadata at index: {} has been deleted", index);
+                ic_cdk::println!("Metadata has been loaded, total Metadata: {}", metadata.len());
             } else {
-                ic_cdk::println!("Invalid index, CID not found.");
+                ic_cdk::println!("Invalid index, Metadata not found.");
             }
         } else {
-            ic_cdk::println!("No CID found for this principal.");
+            ic_cdk::println!("No Metadata found for this principal.");
+            ic_cdk::trap("No Metadata found for this principal.");
         }
-        store.get(&principal).cloned().unwrap_or_default()
     })
 }

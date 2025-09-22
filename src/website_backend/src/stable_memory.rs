@@ -8,9 +8,8 @@ use ic_cdk::{
 use candid::{CandidType, Deserialize};
 #[derive(CandidType, Deserialize)]
 pub struct AppState {
-    // pub trx_store: TRXStore,
     pub users_store: UserStore,
-    pub image_store: ImageStore,
+    pub image_store: NFTs,
     pub init_args: InitArgs
 }
 
