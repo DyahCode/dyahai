@@ -78,6 +78,9 @@ CANISTER_FRONTEND=$(dfx canister id website_frontend)
 
 rm -f init-args.did init-args-index.did
 
+sed -i '/^MINTER_PRINCIPAL_ID=/d' .env 2>/dev/null || true
+sed -i "1iMINTER_PRINCIPAL_ID='$IDENTITY'" .env
+
 echo "Backend Canister ID : $CANISTER_BACKEND"
 echo "Frontend Canister ID: $CANISTER_FRONTEND"
 echo "Token Canister ID   : $CANISTER_TOKEN"

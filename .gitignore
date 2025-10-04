@@ -24,4 +24,5 @@ dist/
 # environment variables
 .env
 .env.local
+.env.development
 canister_ids.json

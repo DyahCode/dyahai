@@ -104,7 +104,7 @@ sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
 ### ⚡ Installation Step
 1. Clone the repository using PowerShell
 ```bash
-git clone https://github.com/WAW1311/dyahai-2.0.git
+git clone https://github.com/DyahCode/dyahai.git
 ```
 
 2. Rename `.env.example` to `.env`
