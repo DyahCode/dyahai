@@ -15,7 +15,55 @@ LOGO_BASE64=$(cat logo.txt)
 
 dfx deploy internet_identity
 
-dfx deploy website_backend --argument "(opt variant { Init = record { canister_ledger = \"$CANISTER_TOKEN\"; } })"
+cat > init-args-nft.did <<EOF
+(
+  record {
+    icrc3_args = opt record {
+      maxRecordsToArchive = 4_000 : nat;
+      archiveIndexType = variant { Stable };
+      maxArchivePages = 62_500 : nat;
+      settleToRecords = 2_000 : nat;
+      archiveCycles = 2_000_000_000_000 : nat;
+      maxActiveRecords = 4_000 : nat;
+      maxRecordsInArchiveInstance = 5_000_000 : nat;
+      archiveControllers = null;
+      supportedBlocks = vec {};
+    };
+    icrc37_args = opt record {
+      deployer = principal "$CANISTER_BACKEND";
+      max_approvals = opt (100 : nat);
+      max_approvals_per_token_or_collection = opt (10 : nat);
+      settle_to_approvals = null;
+      max_revoke_approvals = null;
+      collection_approval_requires_token = opt true;
+    };
+    icrc7_args = opt record {
+      deployer = principal "$CANISTER_BACKEND";
+      allow_transfers = opt true;
+      supply_cap = null;
+      tx_window = null;
+      burn_account = null;
+      default_take_value = opt (1_000 : nat);
+      logo = opt "https://hvfji-caaaa-aaaau-abx7q-cai.icp0.io/assets/dya-18e7c22d.svg";
+      permitted_drift = null;
+      name = opt "DyahAI NFT";
+      description = opt "A Collection of Generative Image by DyahAI";
+      max_take_value = opt (10_000 : nat);
+      max_update_batch_size = opt (100 : nat);
+      max_query_batch_size = opt (100 : nat);
+      max_memo_size = opt (512 : nat);
+      supported_standards = null;
+      symbol = opt "DNFT";
+    };
+  },
+)
+EOF
+
+dfx deploy nft --argument-file init-args-nft.did
+
+CANISTER_NFT=$(dfx canister id nft)
+
+dfx deploy website_backend --argument "(opt variant { Init = record { canister_ledger_token = \"$CANISTER_TOKEN\"; canister_ledger_nft = \"$CANISTER_NFT\"; } })"
 
 cat > init-args.did <<EOF
 (
@@ -73,16 +121,17 @@ EOF
 dfx deploy dyahai_token_index --argument-file init-args-index.did
 CANISTER_TOKEN_INDEX=$(dfx canister id dyahai_token_index)
 
+sed -i '/^MINTER_PRINCIPAL_ID=/d' .env 2>/dev/null || true
+sed -i "1iMINTER_PRINCIPAL_ID='$IDENTITY'" .env
+
 dfx deploy website_frontend
 CANISTER_FRONTEND=$(dfx canister id website_frontend)
 
-rm -f init-args.did init-args-index.did
-
-sed -i '/^MINTER_PRINCIPAL_ID=/d' .env 2>/dev/null || true
-sed -i "1iMINTER_PRINCIPAL_ID='$IDENTITY'" .env
+rm -f init-args.did init-args-index.did init-args-nft.did
 
 echo "Backend Canister ID : $CANISTER_BACKEND"
 echo "Frontend Canister ID: $CANISTER_FRONTEND"
 echo "Token Canister ID   : $CANISTER_TOKEN"
+echo "Nft Canister ID     : $CANISTER_NFT"
 echo "Token Index Canister: $CANISTER_TOKEN_INDEX"
 echo "Identity Principal  : $IDENTITY"

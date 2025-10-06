@@ -15,7 +15,9 @@ pub struct Metadata {
     pub name: String,
     pub description: Option<String>,
     pub assets: Assets,
-    pub created_at_time: u64
+    pub created_at_time: u64,
+    pub is_public: bool,
+    pub is_minted: bool,
 }
 #[derive(Debug, Clone,CandidType, Deserialize)]
 pub struct Assets {

@@ -571,9 +571,11 @@ const GeneratePage = () => {
         assets: {
           url: `https://${storachaResult.toString()}.ipfs.w3s.link/`,
           mime: "image/png",
-          purpose: [],
+          purpose: ["icrc97:image"],
         },
         created_at_time: BigInt(Date.now() * 1_000_000),
+        is_public: false,
+        is_minted: false,
       }
       await actor.save_image_to_store(metadata);
 

@@ -1,6 +1,7 @@
 import { Principal } from "@dfinity/principal";
 import { dyahai_token_index } from "../../../declarations/dyahai_token_index";
-export const fetchBalance = async (authclient,retries = 3) => {
+import { nft } from "../../../declarations/nft";
+export const fetchBalance = async (authclient, retries = 3) => {
     const balance = await dyahai_token_index.icrc1_balance_of({
         owner: Principal.fromText(authclient.principal),
         subaccount: []
@@ -44,7 +45,8 @@ export const BurnTokens = async (actorLedger) => {
     })
     return burn;
 }
-export const TransferToken = async (actorLedger,receiver, userAmount) => {
+
+export const TransferToken = async (actorLedger, receiver, userAmount) => {
     const [whole, fraction = ""] = userAmount.toString().split(".");
 
     const fractionPadded = (fraction + "00000000").slice(0, 8);
@@ -66,4 +68,438 @@ export const TransferToken = async (actorLedger,receiver, userAmount) => {
     });
 
     return transfer;
+};
+
+export const MintNft = async (Actor, principal, metadata) => {
+
+    // contoh parameter metadata = {
+    //   name: "",
+    //   description: "",
+    //   url: "",
+    //   mime: ""
+    // }
+    const index = await nft.icrc3_get_blocks([])
+
+    const safeDescription =
+        metadata.description && metadata.description.length > 0
+            ? metadata.description
+            : "No description";
+
+    const mintArgs = [
+        {
+            token_id: index.log_length + 1n,
+            owner: [
+                {
+                    owner: Principal.fromText(principal),
+                    subaccount: [],
+                },
+            ],
+            metadata: {
+                Map: [
+                    [
+                        "icrc97:metadata",
+                        {
+                            Map: [
+                                ["name", { Text: metadata.name || "Untitled" }],
+                                ["description", { Text: safeDescription }],
+                                [
+                                    "assets",
+                                    {
+                                        Array: [
+                                            {
+                                                Map: [
+                                                    ["url", { Text: metadata.url || "" }],
+                                                    ["mime", { Text: metadata.mime || "application/octet-stream" }],
+                                                    ["purpose", { Text: "icrc97:image" }],
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            ],
+                        }
+                    ],
+                ],
+            },
+            memo: [],
+            override: false,
+            created_at_time: [BigInt(Date.now() * 1_000_000)],
+        },
+    ];
+
+    const result = await Actor.mint_nft(mintArgs);
+    return result;
+    // contoh response result = {
+    //     Ok: [
+    //         {
+    //             Ok: 1n //dalam BigInt
+    //         }
+    //     ]
+    // }
+};
+
+export const TransferNft = async (actorNft, receiver, tokenId) => {
+    const transfer = await actorNft.icrc7_transfer([{
+        to: {
+            owner: Principal.fromText(receiver),
+            subaccount: []
+
+        },
+        token_id: BigInt(tokenId),
+        memo: [],
+        from_subaccount: [],
+        created_at_time: [BigInt(Date.now() * 1_000_000)]
+
+    }]);
+
+    return transfer;
+    // contoh response transfer = [
+    //     [
+    //         {
+    //             Ok: 1n //dalam BigInt
+    //         }
+    //     ]
+    // ]
+
+}
+export const BurnNft = async (actorNft, tokenId) => {
+    const message = "Burn NFT ID:" + tokenId;
+    const encoder = new TextEncoder();
+    const memoBlob = message ? [encoder.encode(message)] : [];
+    const burn = await actorNft.icrcX_burn({
+        tokens: [BigInt(tokenId)],
+        memo: memoBlob,
+        created_at_time: [BigInt(Date.now() * 1_000_000)]
+
+    });
+
+    return burn;
+    // contoh response burn =
+    // {
+    //     Ok: [
+    //         {
+    //             result: {
+    //                 Ok: 2n //dalam BigInt
+    //             },
+    //             token_id: 1n //dalam BigInt
+    //         }
+    //     ]
+    // }
+}
+
+export const fetchTrxCollections = async () => {
+    const block = await nft.icrc3_get_blocks([]);
+    if (block.log_length == 0n) {
+        return {
+            status: false
+        }
+    }
+    const trx = await nft.icrc3_get_blocks([
+        {
+            start: BigInt(0),
+            length: block.log_length,
+        }
+    ]);
+    return {
+        status: true,
+        data: trx
+    }
+    // contoh response = {
+    //     status: true,
+    //     data: [
+    //         {
+    //             "id": "1",
+    //             "block": {
+    //                 "Map": [
+    //                     [
+    //                         "phash",
+    //                         {
+    //                             "Blob": {
+    //                                 "0": 155,
+    //                                 "1": 245,
+    //                                 "2": 23,
+    //                                 etc...
+    //         }
+    //                         }
+    //                     ],
+    //                     [
+    //                         "tx",
+    //                         {
+    //                             "Map": [
+    //                                 [
+    //                                     "ts",
+    //                                     {
+    //                                         "Nat": "1759756294192000000"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "tid",
+    //                                     {
+    //                                         "Nat": "1"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "op",
+    //                                     {
+    //                                         "Text": "mint"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "meta",
+    //                                     {
+    //                                         "Map": [
+    //                                             [
+    //                                                 "icrc7:token_metadata",
+    //                                                 {
+    //                                                     "Map": [
+    //                                                         [
+    //                                                             "icrc97:metadata",
+    //                                                             {
+    //                                                                 "Map": [
+    //                                                                     [
+    //                                                                         "name",
+    //                                                                         {
+    //                                                                             "Text": "Dreamworks man"
+    //                                                                         }
+    //                                                                     ],
+    //                                                                     [
+    //                                                                         "description",
+    //                                                                         {
+    //                                                                             "Text": "No description"
+    //                                                                         }
+    //                                                                     ],
+    //                                                                     [
+    //                                                                         "assets",
+    //                                                                         {
+    //                                                                             "Array": [
+    //                                                                                 {
+    //                                                                                     "Map": [
+    //                                                                                         [
+    //                                                                                             "url",
+    //                                                                                             {
+    //                                                                                                 "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
+    //                                                                                             }
+    //                                                                                         ],
+    //                                                                                         [
+    //                                                                                             "mime",
+    //                                                                                             {
+    //                                                                                                 "Text": "image/png"
+    //                                                                                             }
+    //                                                                                         ],
+    //                                                                                         [
+    //                                                                                             "purpose",
+    //                                                                                             {
+    //                                                                                                 "Text": "icrc97:image"
+    //                                                                                             }
+    //                                                                                         ]
+    //                                                                                     ]
+    //                                                                                 }
+    //                                                                             ]
+    //                                                                         }
+    //                                                                     ]
+    //                                                                 ]
+    //                                                             }
+    //                                                         ]
+    //                                                     ]
+    //                                                 }
+    //                                             ]
+    //                                         ]
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "to",
+    //                                     {
+    //                                         "Array": [
+    //                                             {
+    //                                                 "Blob": {
+    //                                                     "0": 17,
+    //                                                     "1": 23,
+    //                                                     etc..
+    //                   }
+    //                                             }
+    //                                         ]
+    //                                     }
+    //                                 ]
+    //                             ]
+    //                         }
+    //                     ],
+    //                     [
+    //                         "ts",
+    //                         {
+    //                             "Nat": "1759756294396241285"
+    //                         }
+    //                     ],
+    //                     [
+    //                         "btype",
+    //                         {
+    //                             "Text": "7mint"
+    //                         }
+    //                     ]
+    //                 ]
+    //             }
+    //         }
+    //     ]
+    // }
+}
+
+export const fetchAllCollections = async () => {
+    const nfts = await nft.icrc7_tokens();
+
+    if (nfts.length == 0) {
+        return {
+            status: false
+        }
+    }
+
+    const metadataList = await Promise.all(
+        nfts.map(async (tokenId) => {
+            const [metadata] = await nft.icrc7_token_metadata([tokenId]);
+            return metadata;
+        })
+    );
+
+    return {
+        status: true,
+        metadata: metadataList
+    }
+    // contoh response = {
+    //     status: true,
+    //     metadata: [
+    //         [
+    //             [
+    //                 [
+    //                     [
+    //                         "icrc97:metadata",
+    //                         {
+    //                             "Map": [
+    //                                 [
+    //                                     "name",
+    //                                     {
+    //                                         "Text": "Dreamworks man"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "description",
+    //                                     {
+    //                                         "Text": "No description"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "assets",
+    //                                     {
+    //                                         "Array": [
+    //                                             {
+    //                                                 "Map": [
+    //                                                     [
+    //                                                         "url",
+    //                                                         {
+    //                                                             "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
+    //                                                         }
+    //                                                     ],
+    //                                                     [
+    //                                                         "mime",
+    //                                                         {
+    //                                                             "Text": "image/png"
+    //                                                         }
+    //                                                     ],
+    //                                                     [
+    //                                                         "purpose",
+    //                                                         {
+    //                                                             "Text": "icrc97:image"
+    //                                                         }
+    //                                                     ]
+    //                                                 ]
+    //                                             }
+    //                                         ]
+    //                                     }
+    //                                 ]
+    //                             ]
+    //                         }
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]
+    //     ]
+    // }
+};
+export const fetchUserCollections = async (authclient) => {
+    const nfts = await nft.icrc7_tokens_of({
+        owner: Principal.fromText(authclient.principal),
+        subaccount: [],
+    });
+    if (nfts.length == 0) {
+        return {
+            status: false
+        }
+    }
+    const metadataList = await Promise.all(
+        nfts.map(async (tokenId) => {
+            const [metadata] = await nft.icrc7_token_metadata([tokenId]);
+            return metadata;
+        })
+    );
+
+    return {
+        status: true,
+        metadata: metadataList
+    };
+    // contoh response = {
+    //     status: true,
+    //     metadata: [
+    //         [
+    //             [
+    //                 [
+    //                     [
+    //                         "icrc97:metadata",
+    //                         {
+    //                             "Map": [
+    //                                 [
+    //                                     "name",
+    //                                     {
+    //                                         "Text": "Dreamworks man"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "description",
+    //                                     {
+    //                                         "Text": "No description"
+    //                                     }
+    //                                 ],
+    //                                 [
+    //                                     "assets",
+    //                                     {
+    //                                         "Array": [
+    //                                             {
+    //                                                 "Map": [
+    //                                                     [
+    //                                                         "url",
+    //                                                         {
+    //                                                             "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
+    //                                                         }
+    //                                                     ],
+    //                                                     [
+    //                                                         "mime",
+    //                                                         {
+    //                                                             "Text": "image/png"
+    //                                                         }
+    //                                                     ],
+    //                                                     [
+    //                                                         "purpose",
+    //                                                         {
+    //                                                             "Text": "icrc97:image"
+    //                                                         }
+    //                                                     ]
+    //                                                 ]
+    //                                             }
+    //                                         ]
+    //                                     }
+    //                                 ]
+    //                             ]
+    //                         }
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]
+    //     ]
+    // }
 };

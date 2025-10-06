@@ -5,7 +5,7 @@ import {
   useState,
   useCallback,
 } from "react";
-import { idlFactory as website_backend_idl, website_backend, canisterId, createActor } from "../../../declarations/website_backend";
+import { idlFactory as website_backend_idl, website_backend, canisterId } from "../../../declarations/website_backend";
 import { idlFactory as ledger_idl } from "../../../declarations/dyahai_token";
 import { idlFactory as ledgerIndex_idl, dyahai_token_index } from "../../../declarations/dyahai_token_index";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
@@ -33,7 +33,11 @@ export const AuthProvider = ({ children }) => {
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
-  const whitelist = [process.env.CANISTER_ID_WEBSITE_BACKEND];
+  const whitelist = [
+    process.env.CANISTER_ID_WEBSITE_BACKEND, 
+    process.env.CANISTER_ID_DYAHAI_TOKEN, 
+    process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX, 
+    process.env.CANISTER_ID_NFT];
   const db = new IdbStorage({ dbName: "dyahai", storeName: "authclient", version: 1 });
   const host =
     process.env.DFX_NETWORK == "ic"
@@ -166,6 +170,7 @@ export const AuthProvider = ({ children }) => {
     const newActorLedger = await CreateActor(authclient.agent, ledger_idl, process.env.CANISTER_ID_DYAHAI_TOKEN);
 
     const newActorIndex = await CreateActor(authclient.agent, ledgerIndex_idl, process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX);
+
     setActor(newActor);
     setActorLedger(newActorLedger);
     setActorIndex(newActorIndex);
