@@ -10,6 +10,11 @@
       "type": "custom",
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     },
+    "nft": {
+      "main": "src/nft/main.mo",
+      "type": "motoko",
+      "gzip": true
+    },
     "website_backend": {
       "candid": "src/website_backend/website_backend.did",
       "package": "website_backend",
@@ -39,7 +44,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "mops sources"
     }
   },
   "output_env_file": ".env.development",

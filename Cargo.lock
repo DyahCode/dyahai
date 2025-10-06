@@ -420,6 +420,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "icrc7-types"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9551b316a5b9c804ab14802a1b3ff0d9f45d7d8cc77c1bcd64911935a20707a6"
+dependencies = [
+ "candid",
+ "ic-stable-structures",
+ "icrc-ledger-types",
+ "serde",
+ "serde_bytes",
+]
+
+[[package]]
 name = "ident_case"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -846,6 +859,7 @@ dependencies = [
  "ic-cdk-macros 0.17.1",
  "ic-ledger-types",
  "icrc-ledger-types",
+ "icrc7-types",
  "num-bigint",
  "num-traits",
  "serde",

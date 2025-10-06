@@ -1,4 +1,16 @@
+type Account = record { owner : principal; subaccount : opt blob };
 type Assets = record { url : text; mime : text; purpose : opt text };
+type CandyShared = variant {
+  Map : vec record {
+            text;
+            CandyShared;
+  };
+  Nat : nat;
+  Blob : blob;
+  Bool : bool;
+  Text : text;
+  Array : vec CandyShared;
+};
 type HttpHeader = record { value : text; name : text };
 type HttpResponse = record {
   status : nat;
@@ -6,17 +18,59 @@ type HttpResponse = record {
   headers : vec HttpHeader;
 };
 type IndexArgs = variant { Upgrade : UpgradeArgs; Init : InitArgs };
-type InitArgs = record { canister_ledger : text };
+type InitArgs = record {
+  canister_ledger_nft : text;
+  canister_ledger_token : text;
+};
 type Metadata = record {
   id : text;
   name : text;
   assets : Assets;
   description : opt text;
   created_at_time : nat64;
+  is_public : bool;
+  is_minted : bool;
 };
+type MintError = variant {
+  GenericError : record { message : text; error_code : nat };
+  SupplyCapReached;
+  TokenIdMinimumLimit;
+  Unauthorized;
+  GenericBatchError : record { message : text; error_code : nat };
+  TokenIdAlreadyExist;
+};
+type MintResult = variant {
+  Ok : opt nat;
+  Err : MintError;
+  GenericError : record { message : text; error_code : nat };
+};
+type NFTInput = variant { Map : vec record { text; CandyShared } };
 type ResponseAPI = record { status : bool; result : text; message : text };
+type Result = variant { Ok : vec MintResult; Err : MintError };
+type SetNFTItemRequest = record {
+  token_id : nat;
+  owner : opt Account;
+  metadata : NFTInput;
+  memo : opt blob;
+  override : bool;
+  created_at_time : opt nat64;
+};
 type TransformArgs = record { context : blob; response : HttpResponse };
-type UpgradeArgs = record { canister_ledger : opt text };
+type UpgradeArgs = record {
+  canister_ledger_nft : opt text;
+  canister_ledger_token : opt text;
+};
+type Vec = vec record {
+  text;
+  variant {
+    Map : Vec;
+    Nat : nat;
+    Blob : blob;
+    Bool : bool;
+    Text : text;
+    Array : vec CandyShared;
+  };
+};
 service : (opt IndexArgs) -> {
   delete_image_by_index : (nat64) -> ();
   get_images_by_principal : (text) -> (vec Metadata) query;
@@ -24,6 +78,7 @@ service : (opt IndexArgs) -> {
   get_tx_summary : (nat64, nat64, text, text, text) -> (text);
   initialize_credit : () -> (bool);
   is_registered : (principal) -> (bool) query;
+  mint_nft : (vec SetNFTItemRequest) -> (Result);
   save_image_to_store : (Metadata) -> ();
   send_http_post : (text, text) -> (ResponseAPI);
   transform : (TransformArgs) -> (HttpResponse) query;

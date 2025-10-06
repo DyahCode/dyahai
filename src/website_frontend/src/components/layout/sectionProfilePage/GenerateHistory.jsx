@@ -4,6 +4,7 @@ import { useAuth } from "../../../provider/authProvider";
 import { removeContentFromStoracha } from "../../../hooks/authStoracha";
 import { IoMdDownload } from "react-icons/io";
 import { usePopup } from "../../../provider/PopupProvider";
+import { MintNft } from "../../../hooks/wallet";
 
 const GenerateHistory = ({ principalId, isLoggedIn }) => {
   const { loading, actor, website_backend } = useAuth();
@@ -56,8 +57,26 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
     }
   }
 
+  async function handleMintingNft(metadata) {
+    const result = await MintNft(actor, principalId, {
+      name: metadata.name,
+      description: metadata.description,
+      url: metadata.assets.url,
+      mime: metadata.assets.mime
+    });
+    console.log("Mint Result", result);
+    if (result.Ok) {
+      showPopup({
+        title: "NFT Minted",
+        message: `The NFT has been minted successfully.<br>Nft ID:${Number(result.Ok[0].Ok)}`,
+        type: "success",
+        leftLabel: "Done",
+        onLeft: async () => { hidePopup() },
+      });
+    }
+  }
 
-  async function handleDownloadImage(image,id) {
+  async function handleDownloadImage(image, id) {
     try {
       const response = await fetch(image, { mode: "cors" });
       const blob = await response.blob();
@@ -82,7 +101,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
     }
   }, [actor, isLoggedIn, principalId]);
 
-    function timeAgo(date) {
+  function timeAgo(date) {
     const now = new Date();
     const dateObj = new Date(date);
     const diffInSeconds = Math.floor((now - dateObj) / 1000);
@@ -161,7 +180,6 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                       1
                     </span>
                   </div>
-
                   {/* Delete Button */}
                   <button onClick={() => handleDeleteImage(image.id, index)}
                     className="flex top-0 right-0 absolute h-6 flex-row pl-1.5 group-hover:pl-2 pr-1 items-center rounded-es-lg bg-red-500 transition transform space-x-1">
@@ -182,6 +200,12 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                   </div>
 
                   <div className="flex h-full w-full flex-row bg-white items-center text-primaryColor">
+                    <button
+                      onClick={() => handleMintingNft(image)}
+                      className="duration-200 transition h-full size-fit bg-transparent aspect-square hover:bg-accentColor3 hover:text-fontPrimaryColor bottom-0 right-0 flex justify-center items-center rounded-ss-lg"
+                    >
+                      <IoMdDownload size={20} />
+                    </button>
                     <div className="m-0.5 ml-1 h-fit overflow-hidden line-clamp-1 md:m-1 md:ml-2 flex flex-1 flex-col">
                       <span className="text-navy-700 text-xs font-medium">
                         Generated Image {index + 1}
@@ -190,7 +214,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
                     </div>
 
                     <button
-                      onClick={() => handleDownloadImage(image.assets.url,image.id)}
+                      onClick={() => handleDownloadImage(image.assets.url, image.id)}
                       className="duration-200 transition h-full size-fit bg-transparent aspect-square hover:bg-accentColor3 hover:text-fontPrimaryColor bottom-0 right-0 flex justify-center items-center rounded-ss-lg"
                     >
                       <IoMdDownload size={20} />
