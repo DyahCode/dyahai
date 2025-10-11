@@ -59,6 +59,7 @@ const GenerateHistory = ({ principalId, isLoggedIn }) => {
 
   async function handleMintingNft(metadata) {
     const result = await MintNft(actor, principalId, {
+      id: metadata.id,
       name: metadata.name,
       description: metadata.description,
       url: metadata.assets.url,

@@ -73,6 +73,7 @@ export const TransferToken = async (actorLedger, receiver, userAmount) => {
 export const MintNft = async (Actor, principal, metadata) => {
 
     // contoh parameter metadata = {
+    //   id: breymcamcalcm,
     //   name: "",
     //   description: "",
     //   url: "",
@@ -95,30 +96,35 @@ export const MintNft = async (Actor, principal, metadata) => {
                 },
             ],
             metadata: {
-                Map: [
-                    [
-                        "icrc97:metadata",
-                        {
-                            Map: [
-                                ["name", { Text: metadata.name || "Untitled" }],
-                                ["description", { Text: safeDescription }],
-                                [
-                                    "assets",
-                                    {
-                                        Array: [
-                                            {
-                                                Map: [
-                                                    ["url", { Text: metadata.url || "" }],
-                                                    ["mime", { Text: metadata.mime || "application/octet-stream" }],
-                                                    ["purpose", { Text: "icrc97:image" }],
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            ],
-                        }
-                    ],
+                Class: [
+                    {
+                        name: "icrc7:metadata:uri:image",
+                        value: {
+                            Text: metadata.url
+                        },
+                        immutable: true
+                    },
+                    {
+                        name: "icrc7:metadata:uri:name",
+                        value: {
+                            Text: metadata.name
+                        },
+                        immutable: false
+                    },
+                    {
+                        name: "icrc7:metadata:uri:description",
+                        value: {
+                            Text: safeDescription
+                        },
+                        immutable: false
+                    },
+                    {
+                        name: "icrc7:metadata:uri:mime",
+                        value: {
+                            Text: metadata.mime
+                        },
+                        immutable: true
+                    },
                 ],
             },
             memo: [],
@@ -127,7 +133,7 @@ export const MintNft = async (Actor, principal, metadata) => {
         },
     ];
 
-    const result = await Actor.mint_nft(mintArgs);
+    const result = await Actor.mint_nft(metadata.id, mintArgs);
     return result;
     // contoh response result = {
     //     Ok: [
@@ -247,64 +253,40 @@ export const fetchTrxCollections = async () => {
     //                                 [
     //                                     "meta",
     //                                     {
-    //                                         "Map": [
-    //                                             [
-    //                                                 "icrc7:token_metadata",
-    //                                                 {
-    //                                                     "Map": [
-    //                                                         [
-    //                                                             "icrc97:metadata",
-    //                                                             {
-    //                                                                 "Map": [
-    //                                                                     [
-    //                                                                         "name",
-    //                                                                         {
-    //                                                                             "Text": "Dreamworks man"
-    //                                                                         }
-    //                                                                     ],
-    //                                                                     [
-    //                                                                         "description",
-    //                                                                         {
-    //                                                                             "Text": "No description"
-    //                                                                         }
-    //                                                                     ],
-    //                                                                     [
-    //                                                                         "assets",
-    //                                                                         {
-    //                                                                             "Array": [
-    //                                                                                 {
-    //                                                                                     "Map": [
-    //                                                                                         [
-    //                                                                                             "url",
-    //                                                                                             {
-    //                                                                                                 "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
-    //                                                                                             }
-    //                                                                                         ],
-    //                                                                                         [
-    //                                                                                             "mime",
-    //                                                                                             {
-    //                                                                                                 "Text": "image/png"
-    //                                                                                             }
-    //                                                                                         ],
-    //                                                                                         [
-    //                                                                                             "purpose",
-    //                                                                                             {
-    //                                                                                                 "Text": "icrc97:image"
-    //                                                                                             }
-    //                                                                                         ]
-    //                                                                                     ]
-    //                                                                                 }
-    //                                                                             ]
-    //                                                                         }
-    //                                                                     ]
-    //                                                                 ]
-    //                                                             }
-    //                                                         ]
-    //                                                     ]
-    //                                                 }
-    //                                             ]
-    //                                         ]
-    //                                     }
+                                        //     "Map": [
+                                        //         [
+                                        //             "icrc7:token_metadata",
+                                        //             {
+                                        //                 "Map": [
+                                        //                     [
+                                        //                         "icrc7:metadata:uri:image",
+                                        //                         {
+                                        //                             "Text": "https://bafkreihaldufzmsv4723xawqqwv6cjjyw3i56ssvlthmaqv4quomsk2owm.ipfs.w3s.link/"
+                                        //                         }
+                                        //                     ],
+                                        //                     [
+                                        //                         "icrc7:metadata:uri:name",
+                                        //                         {
+                                        //                             "Text": "Backpacker man"
+                                        //                         }
+                                        //                     ],
+                                        //                     [
+                                        //                         "icrc7:metadata:uri:description",
+                                        //                         {
+                                        //                             "Text": "No description"
+                                        //                         }
+                                        //                     ],
+                                        //                     [
+                                        //                         "icrc7:metadata:uri:mime",
+                                        //                         {
+                                        //                             "Text": "image/png"
+                                        //                         }
+                                        //                     ]
+                                        //                 ]
+                                        //             }
+                                        //         ]
+                                        //     ]
+                                        // }
     //                                 ],
     //                                 [
     //                                     "to",
@@ -343,7 +325,7 @@ export const fetchTrxCollections = async () => {
 }
 
 export const fetchAllCollections = async () => {
-    const nfts = await nft.icrc7_tokens();
+    const nfts = await nft.icrc7_tokens([], []);
 
     if (nfts.length == 0) {
         return {
@@ -369,52 +351,20 @@ export const fetchAllCollections = async () => {
     //             [
     //                 [
     //                     [
-    //                         "icrc97:metadata",
-    //                         {
-    //                             "Map": [
-    //                                 [
-    //                                     "name",
-    //                                     {
-    //                                         "Text": "Dreamworks man"
-    //                                     }
-    //                                 ],
-    //                                 [
-    //                                     "description",
-    //                                     {
-    //                                         "Text": "No description"
-    //                                     }
-    //                                 ],
-    //                                 [
-    //                                     "assets",
-    //                                     {
-    //                                         "Array": [
-    //                                             {
-    //                                                 "Map": [
-    //                                                     [
-    //                                                         "url",
-    //                                                         {
-    //                                                             "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
-    //                                                         }
-    //                                                     ],
-    //                                                     [
-    //                                                         "mime",
-    //                                                         {
-    //                                                             "Text": "image/png"
-    //                                                         }
-    //                                                     ],
-    //                                                     [
-    //                                                         "purpose",
-    //                                                         {
-    //                                                             "Text": "icrc97:image"
-    //                                                         }
-    //                                                     ]
-    //                                                 ]
-    //                                             }
-    //                                         ]
-    //                                     }
-    //                                 ]
-    //                             ]
-    //                         }
+    //                         "icrc7:metadata:uri:image",
+    //                         { "Text": "https://bafkreihaldufzmsv4723xawqqwv6cjjyw3i56ssvlthmaqv4quomsk2owm.ipfs.w3s.link/" }
+    //                     ],
+    //                     [
+    //                         "icrc7:metadata:uri:name",
+    //                         { "Text": "Backpacker man" }
+    //                     ],
+    //                     [
+    //                         "icrc7:metadata:uri:description",
+    //                         { "Text": "No description" }
+    //                     ],
+    //                     [
+    //                         "icrc7:metadata:uri:mime",
+    //                         { "Text": "image/png" }
     //                     ]
     //                 ]
     //             ]
@@ -426,7 +376,7 @@ export const fetchUserCollections = async (authclient) => {
     const nfts = await nft.icrc7_tokens_of({
         owner: Principal.fromText(authclient.principal),
         subaccount: [],
-    });
+    }, [], []);
     if (nfts.length == 0) {
         return {
             status: false

@@ -11,9 +11,9 @@
       "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     },
     "nft": {
-      "main": "src/nft/main.mo",
-      "type": "motoko",
-      "gzip": true
+      "type": "custom",
+      "candid": "src/nft/nft.did",
+      "wasm": "src/nft/nft.wasm.gz"
     },
     "website_backend": {
       "candid": "src/website_backend/website_backend.did",
@@ -44,7 +44,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": "mops sources"
+      "packtool": ""
     }
   },
   "output_env_file": ".env.development",
