@@ -30,8 +30,9 @@ pub async fn transfer_token(args: TransferArg) -> Result<BlockIndex, TransferErr
 }
 
 #[ic_cdk::update]
-pub async fn mint_nft(metadata: Vec<SetNFTItemRequest>) -> Result<SetResult, MintError> {
-    if !is_registered(ic_cdk::api::caller()) {
+pub async fn mint_nft(id: String, metadata: Vec<SetNFTItemRequest>) -> Result<SetResult, MintError> {
+    let caller = ic_cdk::api::caller();
+    if !is_registered(caller) {
         ic_cdk::trap("No user found for minting NFT");
     }
     ic_cdk::println!("Minting NFT");
@@ -50,6 +51,19 @@ pub async fn mint_nft(metadata: Vec<SetNFTItemRequest>) -> Result<SetResult, Min
         error_code: 500u128,
         message: format!("{:?}", e),
     })?;
+    let minted_success = response.iter().any(|r| matches!(r, MintResult::Ok(_)));
+
+    if minted_success {
+        IMAGE_STORE.with(|store| {
+            let mut map = store.borrow_mut();
+
+            if let Some(list) = map.get_mut(&caller) {
+                if let Some(meta) = list.iter_mut().find(|m| m.id == id) {
+                    meta.is_minted = true;
+                }
+            }
+        });
+    }
     Ok(response)
 
 }

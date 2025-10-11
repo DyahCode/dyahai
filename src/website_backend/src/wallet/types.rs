@@ -1,9 +1,9 @@
-use candid::{CandidType};
-use icrc_ledger_types::{icrc1::{account::Account}};
+use candid::CandidType;
+pub use icrc7_types::icrc7_types::Icrc7TokenMetadata;
+use icrc_ledger_types::icrc1::account::Account;
 use serde::Deserialize;
-use std::cell::RefCell;
-pub use icrc7_types::icrc7_types::{Icrc7TokenMetadata};
 use serde::Serialize;
+use std::cell::RefCell;
 
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub struct SetNFTItemRequest {
@@ -18,18 +18,27 @@ pub struct SetNFTItemRequest {
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub enum NFTInput {
     Map(Vec<(String, CandyShared)>),
+    Class(Vec<PropertyShared>),
 }
 
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub enum CandyShared {
     Array(Vec<CandyShared>),
+    Class(Vec<PropertyShared>),
     Text(String),
     Nat(u128),
     Blob(Vec<u8>),
     Bool(bool),
     Map(Vec<(String, CandyShared)>),
 }
-#[derive(CandidType,Deserialize, Clone)]
+
+#[derive(CandidType, Serialize, Deserialize, Clone)]
+pub struct PropertyShared {
+    name: String,
+    value: CandyShared,
+    immutable: bool,
+}
+#[derive(CandidType, Deserialize, Clone)]
 pub enum MintError {
     SupplyCapReached,
     Unauthorized,

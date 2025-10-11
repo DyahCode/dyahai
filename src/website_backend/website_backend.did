@@ -1,15 +1,13 @@
 type Account = record { owner : principal; subaccount : opt blob };
 type Assets = record { url : text; mime : text; purpose : opt text };
 type CandyShared = variant {
-  Map : vec record {
-            text;
-            CandyShared;
-  };
+  Map : Vec;
   Nat : nat;
   Blob : blob;
   Bool : bool;
   Text : text;
   Array : vec CandyShared;
+  Class : vec record { value : CandyShared; name : text; immutable : bool };
 };
 type HttpHeader = record { value : text; name : text };
 type HttpResponse = record {
@@ -24,11 +22,11 @@ type InitArgs = record {
 };
 type Metadata = record {
   id : text;
+  is_public : bool;
   name : text;
   assets : Assets;
   description : opt text;
   created_at_time : nat64;
-  is_public : bool;
   is_minted : bool;
 };
 type MintError = variant {
@@ -44,7 +42,15 @@ type MintResult = variant {
   Err : MintError;
   GenericError : record { message : text; error_code : nat };
 };
-type NFTInput = variant { Map : vec record { text; CandyShared } };
+type NFTInput = variant {
+  Map : vec record { text; CandyShared };
+  Class : vec PropertyShared;
+};
+type PropertyShared = record {
+  value : CandyShared;
+  name : text;
+  immutable : bool;
+};
 type ResponseAPI = record { status : bool; result : text; message : text };
 type Result = variant { Ok : vec MintResult; Err : MintError };
 type SetNFTItemRequest = record {
@@ -69,6 +75,7 @@ type Vec = vec record {
     Bool : bool;
     Text : text;
     Array : vec CandyShared;
+    Class : vec record { value : CandyShared; name : text; immutable : bool };
   };
 };
 service : (opt IndexArgs) -> {
@@ -78,7 +85,7 @@ service : (opt IndexArgs) -> {
   get_tx_summary : (nat64, nat64, text, text, text) -> (text);
   initialize_credit : () -> (bool);
   is_registered : (principal) -> (bool) query;
-  mint_nft : (vec SetNFTItemRequest) -> (Result);
+  mint_nft : (text, vec SetNFTItemRequest) -> (Result);
   save_image_to_store : (Metadata) -> ();
   send_http_post : (text, text) -> (ResponseAPI);
   transform : (TransformArgs) -> (HttpResponse) query;
