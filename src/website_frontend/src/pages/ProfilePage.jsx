@@ -4,6 +4,7 @@ import Navbar from "../components/layout/Navbar";
 import AccountDetails from "../components/layout/sectionProfilePage/AccountDetails";
 import TransactionHistory from "../components/layout/sectionProfilePage/TransactionHistory";
 import GenerateHistory from "../components/layout/sectionProfilePage/GenerateHistory";
+import UserWallet from "../components/layout/sectionProfilePage/UserWallet";
 import Button from "../components/ui/Button";
 
 import { useNavigate } from "react-router-dom";
@@ -29,7 +30,18 @@ const plans = [
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
+  const {
+    credit,
+    principalId,
+    isLoggedIn,
+    Login,
+    Logout,
+    tier,
+    actor,
+    actorLedger,
+    authClient,
+    refreshCredit,
+  } = useAuth();
   const [selectedMenu, setSelectedMenu] = useState("Account Detail");
   const asideItems = [
     {
@@ -95,8 +107,38 @@ const ProfilePage = () => {
         </svg>
       ),
       component: (
-        <GenerateHistory principalId={principalId} isLoggedIn={isLoggedIn} />
+        <GenerateHistory
+          principalId={principalId}
+          isLoggedIn={isLoggedIn}
+          actor={actor}
+          actorLedger={actorLedger}
+          authClient={authClient}
+          refreshCredit={refreshCredit}
+          credit={credit}
+        />
       ),
+    },
+    {
+      name: "Wallet",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="size-7 stroke-[1.75px]"
+        >
+          <g fill="none" stroke="currentColor">
+            <path d="M19 20H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2Z" />
+            <path
+              fill="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16.5 14a.5.5 0 1 1 0-1a.5.5 0 0 1 0 1"
+            />
+            <path d="M18 7V5.603a2 2 0 0 0-2.515-1.932l-11 2.933A2 2 0 0 0 3 8.537V9" />
+          </g>
+        </svg>
+      ),
+      component: <UserWallet />,
     },
   ];
 

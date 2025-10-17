@@ -10,6 +10,7 @@ import Loader from "../components/layout/Loader";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
 import { IoMdDownload } from "react-icons/io";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 
@@ -21,6 +22,7 @@ import axios from "axios";
 
 import { Principal } from "@dfinity/principal";
 import { BurnTokens } from "../hooks/wallet";
+import MintingSnap from "../components/ui/MintingSnap";
 
 const imageAstronout =
   "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
@@ -89,12 +91,20 @@ const GeneratePage = () => {
     actorLedger,
     authClient,
   } = useAuth();
-  const { showPopup, hidePopup } = usePopup();
+
 
   const navigate = useNavigate();
 
+  // Popup State
+  const { showPopup, hidePopup } = usePopup();
+
+  // Minting State
+  const [showMintingSnap, setShowMintingSnap] = useState(false);
+
+  // Dragging Image State
   const [isDragging, setIsDragging] = useState(false);
 
+  // Image Ganerate State
   const [state, setState] = useState({
     isLoading: false,
     selectedFile: null,
@@ -104,8 +114,28 @@ const GeneratePage = () => {
     selectedGenderCategory: "man",
     balance: 0,
   });
+
+  // Minting Metadata State
+  const [minting, setMinting] = useState({
+    id: null,
+    name: null,
+    description: null,
+    assets: {
+      url: null,
+      mime: null,
+      purpose: null,
+    },
+    created_at_time: null,
+    is_public: null,
+    is_minted: null,
+  });
+
+  // Payment Snap State
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [showInvoice, setShowInvoice] = useState(false);
+
+  const [urlGenerateResult, setUrlGenerateResult] = useState(null);
+
   const itemStyle = [
     {
       id: "1",
@@ -329,6 +359,7 @@ const GeneratePage = () => {
     },
   ];
 
+  // Function For Input Image
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -338,17 +369,14 @@ const GeneratePage = () => {
       reader.readAsDataURL(file);
     }
   };
-
   const handleDragOver = (e, setIsDragging) => {
     e.preventDefault();
     setIsDragging(true);
   };
-
   const handleDragLeave = (e, setIsDragging) => {
     e.preventDefault();
     setIsDragging(false);
   };
-
   const handleDrop = (e, setState, setIsDragging) => {
     e.preventDefault();
     setIsDragging(false);
@@ -361,6 +389,7 @@ const GeneratePage = () => {
     }
   };
 
+  // Function Core Generate
   const convertImageToPngBlob = async (fileOrBase64) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -394,30 +423,31 @@ const GeneratePage = () => {
     });
   };
 
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationData, setNotificationData] = useState({
-    title: "",
-    message: "",
-    description: "",
-    actionUrl: null,
-    actionLabel: "",
-  });
-
   const handleGenerate = async () => {
     const { selectedFile, selectedStyle } = state;
     if (!selectedFile || !selectedStyle) {
-      setNotificationData({
-        title: "Incomplete Input",
-        message: !selectedFile ? "No Image Uploaded" : "No Style Selected",
-        description: !selectedFile
-          ? "Please upload an image first before generating."
-          : "Please select a style first before generating.",
-        actionUrl: () => setShowNotification(false),
-        actionLabel: "OK",
+      showPopup({
+        title:
+          !selectedFile && !selectedStyle
+            ? "No Image and Style Selected"
+            : !selectedFile
+              ? "No Image Uploaded"
+              : "No Style Selected",
+        message:
+          !selectedFile && !selectedStyle
+            ? "Please upload an image and select a style before generating."
+            : !selectedFile
+              ? "Please upload an image first before generating."
+              : "Please select a style first before generating.",
+        type: "warning",
+        leftLabel: "Ok",
+        onLeft: () => {
+          hidePopup();
+        },
       });
-      setShowNotification(true);
       return;
     }
+
     const burning = async () => {
       setShowInvoice(true);
       setPaymentStatus("processing");
@@ -428,17 +458,26 @@ const GeneratePage = () => {
         return new Promise((resolve, reject) => {
           showPopup({
             title: "Confirm Transaction",
-            message: `Type : Burn Token<br>
-              Amount : 1 DYA<br>
-              To : ${process.env.MINTER_PRINCIPAL_ID}<br>
-              Memo : ${message}`,
+            message: `Type : Burn Token
+            Amount : 1 DYA
+            To : ${process.env.MINTER_PRINCIPAL_ID}
+            Memo : ${message}`,
+            extends: "message",
+            extendMessage: [
+              {
+                Amount: "1 DYA",
+                To: `${process.env.MINTER_PRINCIPAL_ID}`,
+                Memo: `${message}`,
+              },
+            ],
             type: "default",
             leftLabel: "REJECT",
-            rightLabel: "APPROVE",
             onLeft: async () => {
               hidePopup();
               resolve(null);
+              setPaymentStatus("failed");
             },
+            rightLabel: "APPROVE",
             onRight: async () => {
               hidePopup();
               try {
@@ -447,6 +486,11 @@ const GeneratePage = () => {
               } catch (err) {
                 reject(err);
               }
+            },
+            onClose: async () => {
+              hidePopup();
+              resolve(null);
+              setPaymentStatus("failed");
             },
           });
         });
@@ -458,10 +502,11 @@ const GeneratePage = () => {
 
     const burn = await burning();
     console.log("Burn: ", burn);
-    if (!burn ||!burn.Ok) {
+    if (!burn || !burn.Ok) {
       setPaymentStatus("failed");
       return;
     }
+
     setPaymentStatus("success");
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
@@ -502,13 +547,12 @@ const GeneratePage = () => {
         upscale: 1,
         codeformer_fidelity: 0.2,
         output_format: "JPEG",
-      }
+      },
     };
 
     const response = await axios.post(url, body, { headers });
     return response.data;
   };
-
 
   const uploadImageToBackend = async (imageUrl, cid) => {
     try {
@@ -518,34 +562,36 @@ const GeneratePage = () => {
       console.log("styleUrl:", selectedStyle.image);
       console.log("cid img:", cid);
       console.log("actor from generate_page:", actor);
-      console.log("function send http post request already to run >>>")
-      const response = await generate(imageUrl, selectedStyle.image)
+      console.log("function send http post request already to run >>>");
+      const response = await generate(imageUrl, selectedStyle.image);
 
       console.log("response from backend >>>>>", response);
 
       if (!response.status == "COMPLETED") {
-        setNotificationData({
-          title: "Oops! Something Went Wrong",
-          message: response.message || "We couldn't generate your image.",
-          description:
+        showPopup({
+          title: response.message || "We couldn't generate your image.",
+          message:
             "Please try again. If it still doesn't work, reach out to our support team.",
-          actionUrl: () => setShowNotification(false),
-          actionLabel: "Got it",
+          type: "warning",
+          leftLabel: "Got it",
+          onLeft: () => {
+            hidePopup();
+          },
         });
-        setShowNotification(true);
         return;
       }
       const base64Image = response.output.image;
       if (!base64Image) {
-        setNotificationData({
-          title: "Oops! Something Went Wrong",
-          message: "No image returned from backend.",
-          description:
+        showPopup({
+          title: "No image returned from backend.",
+          message:
             "Please try again later or contact support if this keeps happening.",
-          actionUrl: () => setShowNotification(false),
-          actionLabel: "Got it",
+          type: "warning",
+          leftLabel: "Got it",
+          onLeft: () => {
+            hidePopup();
+          },
         });
-        setShowNotification(true);
         return;
       }
 
@@ -567,7 +613,7 @@ const GeneratePage = () => {
       const metadata = {
         id: storachaResult.toString(),
         name: `${selectedStyle.label} ${selectedStyle.genderCategory}`,
-        description: [],
+        description: "no description",
         assets: {
           url: `https://${storachaResult.toString()}.ipfs.w3s.link/`,
           mime: "image/png",
@@ -576,59 +622,69 @@ const GeneratePage = () => {
         created_at_time: BigInt(Date.now() * 1_000_000),
         is_public: false,
         is_minted: false,
-      }
+      };
+      setMinting(metadata);
       await actor.save_image_to_store(metadata);
-
+      const finalUrl = `https://${storachaResult.toString()}.ipfs.w3s.link/`;
       setState((prev) => ({ ...prev, imageUrl: dataUrl }));
+      setUrlGenerateResult(finalUrl);
 
       await removeContentFromStoracha(cid.toString());
     } catch (error) {
       console.error("Error in uploadImageToBackend:", error);
       await removeContentFromStoracha(cid.toString());
-      setNotificationData({
-        title: "Oops! Something Went Wrong",
-        message: "We couldn't generate your image.",
-        description:
-          "Please check your connection and try again. If it still doesn't work, reach out to our support team.",
-        actionUrl: () => setShowNotification(false),
-        actionLabel: "Got it",
+      showPopup({
+        title: "We couldn't generate your image.",
+        message:
+          "Please try again. If it still doesn't work, reach out to our support team.",
+        type: "warning",
+        leftLabel: "Got it",
+        onLeft: () => {
+          hidePopup();
+        },
       });
-      setShowNotification(true);
       return;
     }
   };
 
-  const convertImageToBase64 = async (imageUrl) => {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
+  // Funtion FOr Download ang Minting
   const handleDownloadImage = () => {
     if (!state.imageUrl) {
-      setNotificationData({
-        title: "Image Not Found",
-        message: "We couldn't find the image.",
-        description:
+      showPopup({
+        title: "Image Not Found. We couldn't find the image.",
+        message:
           "It looks like the image is missing or unavailable for download. Please generate a new one.",
-        actionUrl: () => setShowNotification(false),
-        actionLabel: "OK",
+        type: "warning",
+        leftLabel: "Got it",
+        onLeft: () => {
+          hidePopup();
+        },
       });
-      setShowNotification(true);
-
       return;
     }
     const link = document.createElement("a");
     link.href = state.imageUrl;
+    console.log(state.imageUrl);
     link.download = "generated-image.png";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+  const handleMintingButton = () => {
+    if (!urlGenerateResult) {
+      showPopup({
+        title: "Image Not Found. We couldn't find the image.",
+        message:
+          "It looks like the image is missing or unavailable for minting. Please generate a new one.",
+        type: "warning",
+        leftLabel: "Got it",
+        onLeft: hidePopup,
+      });
+
+      setShowMintingSnap(false);
+      return;
+    }
+    setShowMintingSnap(true);
   };
 
   return (
@@ -719,10 +775,11 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "man"
-                        ? "text-fontPrimaryColor"
-                        : "text-gray-400"
-                        }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
+                        state.selectedGenderCategory === "man"
+                          ? "text-fontPrimaryColor"
+                          : "text-gray-400"
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -750,10 +807,11 @@ const GeneratePage = () => {
                           selectedStyle: null,
                         }))
                       }
-                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${state.selectedGenderCategory === "woman"
-                        ? "text-fontPrimaryColor"
-                        : "text-gray-400"
-                        }`}
+                      className={`relative z-10 flex items-center gap-1 px-5 py-2 text-sm font-bold rounded-full transition-colors ${
+                        state.selectedGenderCategory === "woman"
+                          ? "text-fontPrimaryColor"
+                          : "text-gray-400"
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -861,24 +919,96 @@ const GeneratePage = () => {
                   )}
                 </div>
               </div>
-              <div className="w-fit h-fit flex my-10">
+              <div className="w-fit h-fit flex my-10 gap-4">
                 <Button
                   variant="primary"
                   size="md"
                   onClick={handleDownloadImage}
-                  className="text-fontPrimaryColor hover:bg-accentColor hover:text-primaryColor flex rounded-full"
+                  className="text-fontPrimaryColor hover:bg-accentColor hover:text-primaryColor flex rounded-full w-40"
                 >
                   <span>Download</span>
                   <IoMdDownload size={30} />
                 </Button>
+                <button
+                  disabled={minting.is_minted}
+                  onClick={handleMintingButton}
+                  className="text-fontPrimaryColor bg:accentColor justify-center items-center text-bold text-lg hover:bg-accentColor hover:text-primaryColor flex rounded-full w-40 disabled:bg-fontPrimaryColor/10 disabled:text-fontPrimaryColor/60 disabled:cursor-not-allowed gap-2"
+                >
+                  <span>Minting</span>
+                  <div className="h-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-full fill-current p-0.5"
+                      viewBox="0 0 512 512"
+                    >
+                      <path d="M512 169.943c-50.296 12.033-91.653 12.632-127.443 7.49c-22.895 27.979-36.901 56.091-48.568 83.737c48.693-13.64 96.583-31.712 136.124-55.34c-42.697 31.493-92.067 53.554-141.817 69.276c-20.269 54.594-39.842 100.591-77.074 129.566c58.39-20.34 160.245-75.81 258.778-234.729m-263.637 219.67c80.103-69.55 48.78-188.267 203.384-290.824c-255.72-50.577-368.809 40.644-388.144 54.746c-103.994 75.841-56.637 198.26-24.04 169.647c53.276-46.09 133.296-158.44 286.56-198.737C186.999 162.294 88.86 295.126 63.094 328.528c-45.598 69.997 89.654 148.643 185.27 61.084" />
+                    </svg>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
         </section>
-        <PaymentSnap paymentStatus={paymentStatus} setPaymentStatus={setPaymentStatus} showInvoice={showInvoice} setShowInvoice={setShowInvoice} authClient={authClient} />
+        <PaymentSnap
+          paymentStatus={paymentStatus}
+          setPaymentStatus={setPaymentStatus}
+          showInvoice={showInvoice}
+          setShowInvoice={setShowInvoice}
+          authClient={authClient}
+        />
+        <MintingSnap
+          showMintingSnap={showMintingSnap}
+          setShowMintingSnap={setShowMintingSnap}
+          actor={actor}
+          principalId={principalId}
+          minting={minting}
+          setMinting={setMinting}
+          setImages={urlGenerateResult}
+          selectedIndex={urlGenerateResult}
+          images={urlGenerateResult}
+          authClient={authClient}
+          actorLedger={actorLedger}
+          credit={credit}
+          refreshCredit={refreshCredit}
+        />
       </main>
     </>
   );
 };
 
 export default GeneratePage;
+
+// async function handleMintingNft(metadata) {
+//   console.log("Metadata received for minting:", metadata);
+//   const result = await MintNft(actor, principalId, {
+//     id: metadata.id,
+//     name: metadata.itemName,
+//     description: metadata.itemDescription,
+//     url: metadata.url,
+//     mime: metadata.mime,
+//   });
+//   console.log("Mint Result", result);
+//   if (result.Ok) {
+//     showPopup({
+//       title: "NFT Minted",
+//       message: `The NFT has been minted successfully.<br>Nft ID:${Number(result.Ok[0].Ok)}`,
+//       type: "success",
+//       leftLabel: "Done",
+//       onLeft: async () => {
+//         hidePopup();
+//       },
+//     });
+//   }
+// }
+
+// const convertImageToBase64 = async (imageUrl) => {
+//   const response = await fetch(imageUrl);
+//   const blob = await response.blob();
+
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onloadend = () => resolve(reader.result);
+//     reader.onerror = reject;
+//     reader.readAsDataURL(blob);
+//   });
+// };

@@ -6,6 +6,7 @@ import { useToggleMenu } from "../../utils/useTogglemenu";
 
 import HumbergerButton from "../ui/HumbergerButton/HumbergerButton";
 import Button from "../ui/Button";
+import ConnectSnap from "../ui/ConnectSnap";
 
 import { LuWallet } from "react-icons/lu";
 import { FaRegUserCircle, FaRegUser } from "react-icons/fa";
@@ -15,7 +16,8 @@ import { useAuth } from "../../provider/authProvider";
 import { usePopup } from "../../provider/PopupProvider";
 import identity from "../../assets/identity.ico";
 
-const plugLogo = "https://bafybeid3aty76qvbd7lgs2xqfozscqncbfl64rzwtuyuaa6s2bmofqiaie.ipfs.w3s.link/plug-wallet-logo.png";
+const plugLogo =
+  "https://bafybeid3aty76qvbd7lgs2xqfozscqncbfl64rzwtuyuaa6s2bmofqiaie.ipfs.w3s.link/plug-wallet-logo.png";
 
 const HeroProfile =
   "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
@@ -41,7 +43,7 @@ const Navbar = ({ navbarStyle }) => {
   const location = useLocation();
   const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } =
     useAuth();
-
+  const [ showConnectSnap, setShowConnectSnap ] = useState(false);
   const { showPopup, hidePopup } = usePopup();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
@@ -79,7 +81,6 @@ const Navbar = ({ navbarStyle }) => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
-
     const handleScroll = () => {
       setIsScrolled(scrollY.get() > 150);
     };
@@ -162,7 +163,10 @@ const Navbar = ({ navbarStyle }) => {
           <div className="logo text-fontPrimaryColor hover:border-borderShade select-none rounded-lg border-transparent px-3 py-2 hover:border-opacity-40">
             {navbarStyle === "primary" ? (
               <div>
-                <a onClick={() => navigate("/")} className="hidden text-2xl font-bold md:block cursor-pointer">
+                <a
+                  onClick={() => navigate("/")}
+                  className="hidden text-2xl font-bold md:block cursor-pointer"
+                >
                   DyahAI.
                 </a>
                 <div onClick={toggleMenu}>
@@ -170,7 +174,10 @@ const Navbar = ({ navbarStyle }) => {
                 </div>
               </div>
             ) : (
-              <a onClick={() => navigate("/")} className="text-2xl font-bold cursor-pointer">
+              <a
+                onClick={() => navigate("/")}
+                className="text-2xl font-bold cursor-pointer"
+              >
                 DyahAI.
               </a>
             )}
@@ -385,7 +392,10 @@ const Navbar = ({ navbarStyle }) => {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={toggleConnect}
+                  // onClick={toggleConnect}
+                  onClick={() => {
+                    setShowConnectSnap(true);
+                  }}
                   className="text-sm hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
                   isMotion
                 >
@@ -399,7 +409,9 @@ const Navbar = ({ navbarStyle }) => {
                         size="icon"
                         onClick={() => handleLogin("Internet Identity")}
                         className="w-max px-2 mb-3 py-[6px] text-sm hover:bg-accentColor/[0.125]"
-                      > <div className="flex items-center gap-2">
+                      >
+                        {" "}
+                        <div className="flex items-center gap-2">
                           <img className="w-6 h-6" src={identity} alt="" />
                           <p className="text-sm">Internet Identity</p>
                         </div>
@@ -445,6 +457,12 @@ const Navbar = ({ navbarStyle }) => {
           ))}
         </ul>
       </motion.div>
+
+      <ConnectSnap
+        showConnectSnap={showConnectSnap}
+        setShowConnectSnap={setShowConnectSnap}
+        handleLogin={handleLogin}
+      ></ConnectSnap>
     </motion.nav>
   );
 };

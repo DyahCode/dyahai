@@ -23,7 +23,7 @@ pub async fn save_user(principal: Principal) {
     USERS_STORE.with(|user| {
         user.borrow_mut().insert(principal.clone(), data);
     });
-    add_credit(principal, 3, "Added 3 DYA token".into()).await;
+    add_credit(principal, 10, "Added 3 DYA token".into()).await;
     ic_cdk::println!("User Stored for principal: {}", principal);
 }
 

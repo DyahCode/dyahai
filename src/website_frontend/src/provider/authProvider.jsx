@@ -7,7 +7,8 @@ import {
 } from "react";
 import { idlFactory as website_backend_idl, website_backend, canisterId } from "../../../declarations/website_backend";
 import { idlFactory as ledger_idl } from "../../../declarations/dyahai_token";
-import { idlFactory as ledgerIndex_idl, dyahai_token_index } from "../../../declarations/dyahai_token_index";
+import { idlFactory as ledgerIndex_idl} from "../../../declarations/dyahai_token_index";
+import { idlFactory as nft_idl } from "../../../declarations/nft";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
 import { usePopup } from "./PopupProvider";
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
+  const [actorNft, setActorNft] = useState(null);
   const whitelist = [
     process.env.CANISTER_ID_WEBSITE_BACKEND, 
     process.env.CANISTER_ID_DYAHAI_TOKEN, 
@@ -171,6 +173,9 @@ export const AuthProvider = ({ children }) => {
 
     const newActorIndex = await CreateActor(authclient.agent, ledgerIndex_idl, process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX);
 
+    const newActorNft = await CreateActor(authclient.agent, nft_idl, process.env.CANISTER_ID_NFT);
+    setActorNft(newActorNft);
+
     setActor(newActor);
     setActorLedger(newActorLedger);
     setActorIndex(newActorIndex);
@@ -199,7 +204,7 @@ export const AuthProvider = ({ children }) => {
       if (!customActor) return;
       const isNewUser = await customActor.initialize_credit();
       if (isNewUser) {
-        setCredit(3);
+        setCredit(10);
       } else {
         const balance = await fetchBalance(authclient);
         setCredit(Number(balance));
@@ -337,7 +342,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         tier,
         website_backend,
-        dyahai_token_index,
+        actorNft,
       }}
     >
       {children}
