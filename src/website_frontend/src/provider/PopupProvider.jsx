@@ -20,6 +20,7 @@ export const usePopup = () => React.useContext(PopupContext);
  * @property {() => void=} onLeft
  * @property {string=} rightLabel
  * @property {() => void=} onRight
+ * @property {() => void=} onClose
  */
 
 export const PopupProvider = ({ children }) => {
@@ -29,7 +30,7 @@ export const PopupProvider = ({ children }) => {
    * @param {PopupOptions & {progress?: number}} param0
    */
 
-  const showPopup = ({ title, message, type = "default", leftLabel = "OK", onLeft, rightLabel, onRight, progress = 0, extend = null, extendMessage = [], }) => {
+  const showPopup = ({ title, message, type = "default", leftLabel = "OK", onLeft, rightLabel, onRight, onClose, progress = 0, extend = null, extendMessage = [], }) => {
     const id = uuidv4();
     setPopups(prev => [...prev, {
       id,
@@ -40,6 +41,7 @@ export const PopupProvider = ({ children }) => {
       rightLabel,
       onLeft,
       onRight,
+      onClose,
       progress,
       extend,
       extendMessage,
@@ -113,6 +115,7 @@ export const PopupProvider = ({ children }) => {
             {/* close button */}
             <div className="absolute top-0 left-0 right-0 w-full flex items-center justify-end px-3 pt-3 z-50">
               <button onClick={() => {
+                if (popupData.onClose) popupData.onClose();
                 if (popupData.type == "loading" && popupData.onLeft) popupData.onLeft();
                 hidePopup(popupData.id);
               }}
@@ -191,8 +194,8 @@ export const PopupProvider = ({ children }) => {
                           key={idx}
                           className="text-left text-[#aaaaaa] text-xs tracking-[0.031rem]"
                         >
-                          {msg.error ? `Error: ${msg.error}` : ""}
-                          {msg.serverMessage ? ` - ${msg.serverMessage}` : ""}
+                          {msg.error ? `Error: ${msg.error}` : msg.amount}
+                          {msg.serverMessage ? ` - ${msg.serverMessage}` : msg.amount}
                         </span>
                       ))}
                     </div>

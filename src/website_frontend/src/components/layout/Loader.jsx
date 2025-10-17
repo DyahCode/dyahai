@@ -49,15 +49,8 @@ const loaderVariants = {
 };
 
 const Loader = () => {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
-
   return (
-    <div className="bg-primaryColor fixed z-[999] flex h-screen w-screen select-none flex-col items-center justify-center bg-opacity-50 text-center top-0 left-0 ">
+    <div className="flex w-full h-full justify-center items-center fixed inset-0 bg-black/20 z-[9999] backdrop-blur-sm text-white">
       <div className="bg-primaryColor flex h-[25rem] w-[35rem] flex-col items-center justify-center rounded-lg border-2  border-borderShade">
         <div className="flex flex-row">
           <motion.div

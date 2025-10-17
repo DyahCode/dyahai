@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvoice,authClient }) => {
+const PaymentSnap = ({ paymentStatus, setPaymentStatus, showInvoice, setShowInvoice, authClient }) => {
     return (
         <>
             {showInvoice && paymentStatus !== "idle" && (

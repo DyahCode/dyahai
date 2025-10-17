@@ -13,6 +13,7 @@ import PricingPage from "./pages/PricingPage";
 import CreditPaymentPage from "./pages/CreditPaymentPage";
 import NotFoundPage from "./pages/404Page";
 import BlockExplorerPage  from "../src/pages/BlockExplorerPage";
+import NftCollection from "./pages/NftCollectionPage";
 
 function App() {
   return (
@@ -51,6 +52,8 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/terms" element={<TermsSerivePage />} />
             <Route path="/dyascan" element={<BlockExplorerPage />} />
+            <Route path="/nft-collection" element={<NftCollection />} />
+
           </Routes>
         </Router>
       </AuthProvider>

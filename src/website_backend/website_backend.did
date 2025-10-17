@@ -25,7 +25,7 @@ type Metadata = record {
   is_public : bool;
   name : text;
   assets : Assets;
-  description : opt text;
+  description : text;
   created_at_time : nat64;
   is_minted : bool;
 };

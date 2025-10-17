@@ -13,7 +13,7 @@ pub type NFTs = BTreeMap<Principal, Vec<Metadata>>;
 pub struct Metadata {
     pub id: String,
     pub name: String,
-    pub description: Option<String>,
+    pub description: String,
     pub assets: Assets,
     pub created_at_time: u64,
     pub is_public: bool,
