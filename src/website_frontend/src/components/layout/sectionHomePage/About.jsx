@@ -68,14 +68,30 @@ const ReviewCarousel = ({ items }) => {
 
   return (
     <div
-      className="container relative p-0 overflow-hidden w-full h-fit items-center"
+      className="relative p-0 overflow-hidden w-full h-fit items-center"
       ref={containerRef}
     >
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-12 md:w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
+      {/* <div className="pointer-events-none absolute left-0 top-0 h-full w-12 md:w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
 
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-12 md:w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" />
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-12 md:w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" /> */}
 
-      <motion.div style={{ x }} className="flex">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 5%, black 15%, black 85%, transparent 5%)",
+          maskImage:
+            "linear-gradient(to right, transparent 5%, black 15%, black 85%, transparent 5%)",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+        }}
+      />
+
+
+      <motion.div className="flex"
+        style={{
+          x
+        }}>
         {duplicatedItems.map((item, idx) => {
           const offset = idx * itemWidth;
 
@@ -97,20 +113,28 @@ const ReviewCarousel = ({ items }) => {
                 opacity,
               }}
             >
-              <div className=" bg-secondaryColor border border-borderShade/35 rounded-xl flex flex-col justify-center h-full p-4">
-                <div className="w-full h-full flex flex-col justify-between space-y-8">
-                  <p className="text-base/5 mt-2 text-fontPrimaryColor/80 text-center italic">
-                    "{item.message}"
-                  </p>
-                  <div className="flex items-center justify-center gap-x-2">
-                    <img
-                      src={item.avatar}
-                      alt={`user-${item.name}`}
-                      className="h-8 w-8 rounded-full"
-                    />
-                    <span className="text-sm font-semibold text-fontPrimaryColor/60">
-                      {item.name}
-                    </span>
+              <div className=" bg-secondaryColor border border-borderShade/35 rounded-xl flex flex-col justify-center h-full">
+                <div className="w-full h-full flex flex-col relative">
+                  <div className="absolute w-[8rem] h-fit right-0 top-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-n-1/5">
+                      <path d="M9 5a2 2 0 0 1 2 2v6c0 3.13-1.65 5.193-4.757 5.97a1 1 0 1 1-.486-1.94C7.984 16.473 9 15.203 9 13v-1H6a2 2 0 0 1-1.995-1.85L4 10V7a2 2 0 0 1 2-2zm9 0a2 2 0 0 1 2 2v6c0 3.13-1.65 5.193-4.757 5.97a1 1 0 1 1-.486-1.94C16.984 16.473 18 15.203 18 13v-1h-3a2 2 0 0 1-1.995-1.85L13 10V7a2 2 0 0 1 2-2z" />
+                    </svg>
+                  </div>
+                  <div className="relative w-full flex flex-col px-6 pt-16 pb-10">
+
+                    <p className="quote mt-2 text-n-1 text-center">
+                      "{item.message}"
+                    </p>
+                    <div className="flex items-center justify-center gap-x-2 mt-6">
+                      <img
+                        src={item.avatar}
+                        alt={`user-${item.name}`}
+                        className="h-8 w-8 rounded-full"
+                      />
+                      <span className="body-3 text-n-1/70">
+                        {item.name}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,28 +170,23 @@ const About = ({ showReviews = false }) => {
 
   return (
     <>
-      <HeadSection distance="short">
-        <span className="text-3xl font-black md:text-7xl">
+      <HeadSection headerName="About">
+        <span className="h2 text-n-1">
           DyahAI Image Generator
+        </span>
+        <span className="header-1 text-n-3/80">
+          DyahAI elevates your imagination, transforming each idea into a
+          striking, creative masterpiece that exceeds your wildest dreams.
+          Powered by cutting-edge AI and secured with blockchain Web 3.0,
+          DyahAI opens a new frontier in visual creation—where your vision
+          comes to life with just a few clicks.
         </span>
       </HeadSection>
 
-      <section className="container text-fontPrimaryColor -scroll-mt-[250px] mb-0">
+      <Container className="text-fontPrimaryColor -scroll-mt-[250px] mb-0">
         {/* body section */}
-        <Container className="space-y-10">
-          <div className="flex h-full w-full flex-col items-center justify-center gap-y-10 text-center">
-            <p className="text-fontPrimaryColor/80 text-center md:text-xl text-base leading-relaxed">
-              DyahAI elevates your imagination, transforming each idea into a
-              striking, creative masterpiece that exceeds your wildest dreams.
-              Powered by cutting-edge AI and secured with blockchain Web 3.0,
-              DyahAI opens a new frontier in visual creation—where your vision
-              comes to life with just a few clicks.
-            </p>
-          </div>
-
-          {showReviews && <ReviewCarousel items={itemTestimony} />}
-        </Container>
-      </section>
+        {showReviews && <ReviewCarousel items={itemTestimony} />}
+      </Container>
     </>
   );
 };

@@ -46,16 +46,16 @@ export const AuthProvider = ({ children }) => {
       ? "https://icp0.io"
       : "http://localhost:5000";
 
-  useEffect(() => {
-    (async () => {
-      const method = await db.get("method");
-      console.log("method", method);
-      if (!method) {
-        return;
-      }
-      await checkConnection(method);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const method = await db.get("method");
+  //     console.log("method", method);
+  //     if (!method) {
+  //       return;
+  //     }
+  //     await checkConnection(method);
+  //   })();
+  // }, []);
 
   const checkConnection = async (method) => {
     let isConnected;
@@ -293,8 +293,9 @@ export const AuthProvider = ({ children }) => {
     }
     return true;
   };
+  
   const Login = useCallback(async (method) => {
-    if (method === "Plug") {
+    if (method === "PlugWallet") {
       const installed = await checkingPlugInstalled(method);
       if (!installed) return;
     }

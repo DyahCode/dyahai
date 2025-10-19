@@ -5,7 +5,7 @@ const Footer = () => {
   const NavigationList = ({ children, href = "" }) => {
     return (
       <a href={href}
-        className="w-fit text-fontPrimaryColor/60 hover:text-white transition-all duration-200 scale-100 hover:scale-105 translate-x-0 hover:translate-x-[0.15rem] border-b border-transparent  hover:border-white pb-1.5">{children}</a>
+        className="w-fit body-2 text-n-1/60 hover:text-n-1 transition-all duration-200 scale-100 hover:scale-105 translate-x-0 hover:translate-x-[0.15rem] border-b border-transparent  hover:border-white pb-1.5">{children}</a>
     )
   }
   return (
@@ -16,15 +16,16 @@ const Footer = () => {
 
         {/* left section */}
         <div className="flex flex-col items-start justify-start rounded-lg w-full md:w-[35%]">
-          <span className="text-[1.5rem] font-semibold">DyahAI.</span>
-          <p className="mt-2 text-fontPrimaryColor/70 tracking-wide">
+
+          <span className="h2 font-semibold select-none pointer-events-none">DyahAI</span>
+          <p className="body-2 mt-2 text-fontPrimaryColor/70">
             AI-powered image generation with secure Web3 integration, enabling limitless creativity and redefining digital asset creation.
           </p>
 
           {/* social media */}
           <div className="mt-8 w-full flex flex-col max-md:items-center">
 
-            <span className="mt-2 text-sm md:text-md font-light text-fontPrimaryColor/70">Don't miss any news and updates</span>
+            <span className="mt-2 body-3 text-n-1/70">Don't miss any news and updates</span>
             <div className="flex flex-row gap-4 mt-4">
 
               {/* telegram */}
@@ -95,7 +96,7 @@ const Footer = () => {
           {/* Col 1 */}
           <div className="flex flex-col items-start justify-start rounded-lg w-full text-fontPrimaryColor/60">
             <div className="w-full mb-4">
-              <span className="font-semibold text-accentColor/50 text-sm uppercase tracking-wider">company</span>
+              <span className="font-semibold text-accentColor/70 text-sm uppercase tracking-wider">company</span>
             </div>
             <div className="w-full space-y-1 md:space-y-2 text-md text-left flex flex-col">
               <NavigationList href="/#about">
@@ -120,7 +121,7 @@ const Footer = () => {
           {/* Col 2 */}
           <div className="flex flex-col items-start justify-start rounded-lg w-full text-fontPrimaryColor/60">
             <div className="w-full mb-4">
-              <span className="font-semibold text-accentColor/50 text-sm uppercase tracking-wider">Products</span>
+              <span className="font-semibold text-accentColor/70 text-sm uppercase tracking-wider">Products</span>
             </div>
             <div className="w-full space-y-1 md:space-y-2 text-md text-left flex flex-col">
               <NavigationList href="/pricing/#plan">
@@ -145,32 +146,9 @@ const Footer = () => {
       <div className="w-full border border-separate rounded-full border-borderShade/50 mt-20 mb-6"></div>
 
       {/* section copyright */}
-      <div className="relative w-full h-fit flex flex-col md:flex-row justify-between text-center items-center">
-        <div className="md:absolute z-0 w-full place-items-center text-center space-y-1">
-          {/* icp logo */}
-          <div className="w-10 h-fit">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 242">
-              <defs>
-                <linearGradient id="SVGv0eJMcLD" x1="26.265%" x2="92.196%" y1="24.011%" y2="77.66%">
-                  <stop offset="21%" stopColor="#f15a24" />
-                  <stop offset="68.41%" stopColor="#fbb03b" />
-                </linearGradient>
-                <linearGradient id="SVGZg73ocNv" x1="73.735%" x2="7.804%" y1="76.013%" y2="22.341%">
-                  <stop offset="21%" stopColor="#ed1e79" />
-                  <stop offset="89.29%" stopColor="#522785" />
-                </linearGradient>
-              </defs>
-              <path fill="url(#SVGv0eJMcLD)" d="M387.644 0c-28.621 0-59.822 14.667-92.8 43.555c-15.644 13.69-29.156 28.356-39.287 40.09l.089.088v-.089s15.998 17.423 33.688 36.09c9.511-11.29 23.2-26.667 38.932-40.534c29.335-25.689 48.444-31.111 59.378-31.111c41.157 0 74.579 32.622 74.579 72.711c0 39.822-33.51 72.444-74.579 72.711c-1.867 0-4.267-.267-7.29-.889c12.001 5.156 24.89 8.89 37.158 8.89c75.376 0 90.132-49.156 91.11-52.712c2.222-8.978 3.378-18.4 3.378-28.089C512 54.222 456.178 0 387.644 0" />
-              <path fill="url(#SVGZg73ocNv)" d="M124.356 241.778c28.622 0 59.822-14.667 92.8-43.556c15.644-13.689 29.156-28.355 39.287-40.088l-.089-.09v.09s-15.998-17.423-33.688-36.09c-9.51 11.29-23.2 26.667-38.933 40.534c-29.333 25.689-48.444 31.11-59.377 31.11c-41.156-.088-74.578-32.71-74.578-72.8c0-39.821 33.51-72.443 74.578-72.71c1.866 0 4.266.267 7.288.889c-12-5.156-24.888-8.89-37.155-8.89c-75.378 0-90.045 49.156-91.111 52.623A117.4 117.4 0 0 0 0 120.89c0 66.667 55.822 120.89 124.356 120.89" />
-              <path fill="#29abe2" d="M417.334 200.444c-38.58-.977-78.667-31.377-86.846-38.933c-21.154-19.555-69.956-72.444-73.776-76.622C220.978 44.8 172.533 0 124.356 0h-.178C65.689.267 16.534 39.911 3.378 92.8c.978-3.467 20.267-53.6 91.022-51.822c38.578.978 78.845 31.822 87.111 39.378c21.156 19.555 69.957 72.444 73.779 76.622c35.732 40 84.177 84.8 132.354 84.8h.178c58.489-.266 107.733-39.911 120.8-92.8c-1.067 3.466-20.445 53.155-91.288 51.466" strokeWidth="6" stroke="#29abe2" />
-            </svg>
-          </div>
-
-          {/* icp projects */}
-          <span className="text-xs font-light text-gray-400/90">Disruptives ICP.Hub Incubator</span>
-        </div>
-        <p className="mt-4 md:mt-0 relative text-sm font-light text-gray-400/70">2024 © All Rights Reserved</p>
-        <p className="relative text-sm font-light text-gray-400/70 group">
+      <div className="w-full h-fit flex flex-col md:flex-row justify-between text-center items-center">
+        <p className="navigation text-n-1/40">2024 © All Rights Reserved</p>
+        <p className="navigation text-n-1/40 group">
           Made with <span className="group-hover:text-[#BA6573] px-1">❤</span> by DyahCode
         </p>
       </div>

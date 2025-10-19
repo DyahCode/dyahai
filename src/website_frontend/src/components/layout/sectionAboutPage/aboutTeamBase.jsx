@@ -5,8 +5,8 @@ import { Box } from '../Container';
 const AboutTeamBase = () => {
   return (
     <>
-      <HeadSection distance="short">
-        <span className="text-2xl md:text-5xl font-semibold text-fontPrimaryColor">
+      <HeadSection headerName="">
+        <span className="h2 text-n-1">
           Who are we
         </span>
       </HeadSection>

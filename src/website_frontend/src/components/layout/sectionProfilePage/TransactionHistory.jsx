@@ -4,8 +4,6 @@ import { useAuth } from "../../../provider/authProvider";
 import { fetchTransaction } from "../../../hooks/wallet";
 import { Principal } from "@dfinity/principal";
 
-import fire from "../../../assets/favicon/fire.svg";
-import dya from "../../../assets/favicon/dya.svg";
 
 const TransactionHistory = () => {
   const { isLoggedIn, principalId, loading, authClient } = useAuth();
@@ -18,7 +16,7 @@ const TransactionHistory = () => {
       const fetchedTrx = result.Ok.transactions;
       console.log("Transaction: ", fetchedTrx);
       setTrx(fetchedTrx);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   const transactionInfo = (trx) => {
@@ -101,12 +99,14 @@ const TransactionHistory = () => {
         // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-full fill-yellow-600">
         //   <path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0m2.75 17.61v1.89a.75.75 0 0 1-1.5 0v-1.38a5.7 5.7 0 0 1-1.25.13h-.25v1.25a.75.75 0 0 1-1.5 0v-1.25H8.5a.75.75 0 0 1-.59-.25a.73.73 0 0 1-.13-.65l2-7.5a.74.74 0 0 1 1.44.38l-1.74 6.52H12a4.75 4.75 0 0 0 0-9.5H6.5a.75.75 0 0 1 0-1.5h3.75V4.5a.75.75 0 0 1 1.5 0v1.25H12a5.7 5.7 0 0 1 1.25.13V4.5a.75.75 0 0 1 1.5 0v1.89a6.25 6.25 0 0 1 0 11.22" />
         // </svg>
-        <img src={dya} alt="" />
+        <img src={OfficialDYACoins} alt="" />
       );
     }
 
     if (message.includes("Burned")) {
-      return <img src={fire} alt="" />;
+      return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-8 fill-color-1">
+        <path d="M143.38 17.85a8 8 0 0 0-12.63 3.41l-22 60.41l-24.16-23.41a8 8 0 0 0-11.93.89C51 87.53 40 116.08 40 144a88 88 0 0 0 176 0c0-59.45-50.79-108-72.62-126.15m40.51 135.49a57.6 57.6 0 0 1-46.56 46.55a7.7 7.7 0 0 1-1.33.11a8 8 0 0 1-1.32-15.89c16.57-2.79 30.63-16.85 33.44-33.45a8 8 0 0 1 15.78 2.68Z" />
+      </svg>;
     }
     if (message.includes("Upgraded")) {
       return (
@@ -214,7 +214,7 @@ const TransactionHistory = () => {
                             </span>
                             <span className="w-fit flex flex-row items-center border border-borderShade border-opacity-20 rounded-md px-1 bg-white/[0.025] text-accentColor/70 font-bold">
                               {transactionInfo(trx).amount}
-                              <img className="size-5 ml-1" src={dya} alt="" />
+                              <img className="size-6 ml-1" src={OfficialDYACoins} alt="" />
                             </span>
                           </div>
                         </div>

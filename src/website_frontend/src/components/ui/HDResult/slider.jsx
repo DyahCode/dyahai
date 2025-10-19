@@ -1,148 +1,125 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-
-import { FaArrowsLeftRight } from "react-icons/fa6";
-
+import { motion, useMotionValue, useTransform, useMotionValueEvent, animate } from "framer-motion";
 
 const HdAfter = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/after.webp"
 const HdBefore = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/before.webp"
 
 const BeforeAfterSlider = () => {
-  const [rangeValue, setRangeValue] = useState(25);
-  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
   const x = useMotionValue(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [range, setRange] = useState(25);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const springX = useSpring(x, { stiffness: 100, damping: 25 });
-
-  const [constraints, setConstraints] = useState({ left: 0, right: 0 });
 
   useEffect(() => {
-    if (containerRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      setConstraints({ left: 0, right: containerWidth });
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  // transform posisi x ke persen (0–100)
+  const rangeValue = useTransform(x, [0, containerWidth], [0, 100]);
+
+  useMotionValueEvent(rangeValue, "change", (latest) => {
+    setRange(Math.min(Math.max(latest, 0), 100)); // clamp 0–100
+  });
+
+  useEffect(() => {
+    if (containerRef.current && containerWidth > 0) {
+      x.set(containerWidth * 0.40);
     }
-  }, [containerRef.current]);
+  }, [containerWidth, x]);
 
-  const handleChange = (event) => {
-    const value = Number(event.target.value);
-    setRangeValue(value);
-    springX.set(value);
-  };
-
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (event) => {
-    if (isDragging) {
-      const value =
-        ((event.clientX - containerRef.current.getBoundingClientRect().left) /
-          containerRef.current.offsetWidth) *
-        100;
-      setRangeValue(Math.min(Math.max(value, 0), 100));
-      springX.set(rangeValue);
-    }
-  };
+  const labelOpacity = isDragging ? 1 : 0;
 
   return (
-    <div className="flex w-full items-center justify-center">
-      {isDragging && (
-        <div className="h-1/12 absolute bottom-4 z-20 flex w-10/12 justify-between px-2 text-center font-semibold">
-          <span className="text-primaryColor bg-fontPrimaryColor left-0 z-40 rounded-full px-3 py-1 text-xs md:text-base">
-            Before
-          </span>
-          <span className="text-primaryColor bg-fontPrimaryColor right-0 z-40 rounded-full px-3 py-1 text-xs md:text-base">
-            After
-          </span>
-        </div>
-      )}
+    <div className="relative flex w-full items-center justify-center group">
       <div
         ref={containerRef}
-        className="relative w-full"
-        style={{
-          paddingBottom: "56.25%",
-          position: "relative",
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        className="relative w-full max-w-5xl overflow-hidden"
+        style={{ paddingBottom: "56.25%" }}
       >
+        {/* BEFORE */}
         <motion.div
-          className="absolute left-0 top-0 h-full w-full select-none"
+          className="absolute inset-0 select-none pointer-events-none"
           style={{
-            clipPath: `inset(0 ${100 - rangeValue}% 0 0)`,
-            overflow: "hidden",
+            clipPath: `inset(0 ${100 - range}% 0 0)`,
           }}
         >
           <img
             src={HdBefore}
             alt="Before"
-            className="h-full w-full rounded-lg object-cover"
+            className="h-full w-full object-cover"
           />
         </motion.div>
 
+        {/* AFTER */}
         <motion.div
-          className="absolute left-0 top-0 h-full w-full select-none"
+          className="absolute inset-0 select-none pointer-events-none"
           style={{
-            clipPath: `inset(0 0 0 ${rangeValue}%)`,
-            overflow: "hidden",
+            clipPath: `inset(0 0 0 ${range}%)`,
           }}
         >
           <img
             src={HdAfter}
             alt="After"
-            className="h-full w-full rounded-lg object-cover"
+            className="h-full w-full object-cover"
           />
         </motion.div>
 
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={rangeValue}
-          onChange={handleChange}
-          className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 transform"
-          style={{
-            appearance: "none",
-            backgroundColor: "transparent",
-            cursor: "ew-resize",
+        {/* HANDLE / PEMBATAS */}
+        <motion.div
+          drag="x"
+          dragConstraints={containerRef}
+          dragElastic={false}
+          dragMomentum={false}
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={() => {
+            setIsDragging(false);
+            if (range < 5) x.set(containerWidth * 0.01);
+            if (range > 95) x.set(containerWidth * 0.98);
           }}
-        />
-        <div
-          style={{
-            backgroundColor: "#fff",
-            position: "absolute",
-            top: 0,
-            left: `${rangeValue}%`,
-            width: 4,
-            height: "100%",
-          }}
-        />
-        <div
-          style={{
-            backgroundColor: "#fff",
-            pointerEvents: "none",
-            position: "absolute",
-            top: "50%",
-            left: `${rangeValue}%`,
-            transform: "translate(-50%, -50%)",
-            borderRadius: "50%",
-            width: 40,
-            height: 40,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          style={{ x }}
+          className="absolute top-0 z-10 h-full w-2 cursor-ew-resize justify-center px-1"
         >
-          <FaArrowsLeftRight className="text-primaryColor" />
-        </div>
+          {/* TOMBOL BULAT */}
+          <div className="absolute z-1 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-n-1 shadow-md transition-opacity duration-200">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="w-6 h-6 stroke-n-5/85 group-hover:stroke-n-5 stroke-[2.5px] fill-none"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 12h15m0 0l-5.625-6m5.625 6l-5.625 6"
+              />
+            </svg>
+          </div>
+          <div className="absolute z-0 bg-n-1/85 group-hover:bg-n-1 h-full w-2 left-1/2 -translate-x-1/2 transition-all duration-200">
+
+          </div>
+        </motion.div>
       </div>
+
+      {/* Label (optional visible) */}
+      <motion.div
+        animate={{ opacity: labelOpacity }}
+        transition={{ duration: 0.3 }}
+        className="absolute bottom-4 flex w-10/12 justify-between px-2 font-semibold">
+        <span className="rounded-full bg-fontPrimaryColor px-3 py-1 text-xs md:text-base text-primaryColor">
+          Before
+        </span>
+        <span className="rounded-full bg-fontPrimaryColor px-3 py-1 text-xs md:text-base text-primaryColor">
+          After
+        </span>
+      </motion.div>
     </div>
   );
 };

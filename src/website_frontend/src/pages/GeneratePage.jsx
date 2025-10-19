@@ -859,15 +859,7 @@ const GeneratePage = () => {
     <>
       {state.isLoading && <Loader />}
       <main className="bg-primaryColor h-full md:h-dvh w-full flex flex-col justify-between md:flex-row md:overflow-hidden">
-        <Navbar
-          navbarStyle="secondary"
-          principalId={principalId}
-          isLoggedIn={isLoggedIn}
-          credit={credit}
-          Login={Login}
-          Logout={Logout}
-          tier={tier}
-        />
+        <Navbar navbarStyle="secondary" />
 
         <section className="pt-[8dvh] relative w-full h-full flex flex-col items-center md:flex-row">
           <div className="border-borderShade flex h-full w-full flex-col border-r-2 border-opacity-40 md:w-1/3 bg-secondaryColor">

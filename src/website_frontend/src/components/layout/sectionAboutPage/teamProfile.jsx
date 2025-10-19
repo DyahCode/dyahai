@@ -58,15 +58,13 @@ const TeamProfile = () => {
 
   return (
     <>
-      <HeadSection distance="short">
-        <span className="text-2xl md:text-5xl font-semibold text-fontPrimaryColor">
+      <HeadSection headerName="Teams">
+        <span className="h2 text-n-1">
           Meet DyahCode Team
         </span>
-        <div className="w-full flex flex-col items-center">
-          <span className="w-[70%] text-lg md:text-xl text-fontPrimaryColor/70">
-            Our team is customer-obsessed, agile, growth-oriented, and multifaceted. We like to work hard, but we have a lot of fun too.
-          </span>
-        </div>
+        <span className="header-1 text-n-3/80">
+          Our team is customer-obsessed, agile, growth-oriented, and multifaceted. We like to work hard, but we have a lot of fun too.
+        </span>
       </HeadSection>
 
       <section className="container">
@@ -119,7 +117,7 @@ const TeamProfile = () => {
               </div>
             </div>
           ))}
-          
+
         </div>
       </section >
     </>

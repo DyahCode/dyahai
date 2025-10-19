@@ -16,6 +16,7 @@
     "@dfinity/auth-client": "^2.2.0",
     "@dfinity/candid": "^1.4.0",
     "@dfinity/principal": "^1.4.0",
+    "@hookform/resolvers": "^5.2.2",
     "@storacha/client": "^1.4.2",
     "axios": "^1.12.2",
     "clsx": "^2.1.1",
@@ -23,12 +24,15 @@
     "framer-motion": "^11.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.65.0",
     "react-icons": "5.5.0",
+    "react-just-parallax": "^3.1.16",
     "react-router-dom": "^6.30.1",
     "react-scroll": "^1.9.3",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/react": "18.3.23",

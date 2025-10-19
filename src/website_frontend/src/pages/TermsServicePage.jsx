@@ -117,14 +117,7 @@ const TermsServicePage = () => {
   return (
     <div className="bg-primaryColor min-h-screen w-full flex flex-col justify-center">
       <Navbar
-        navbarStyle="secondary"
-        principalId={principalId}
-        isLoggedIn={isLoggedIn}
-        credit={credit}
-        Login={Login}
-        Logout={Logout}
-        tier={tier}
-      />
+        navbarStyle="secondary" />
       <section className="relative w-full h-full flex flex-col items-center">
 
         {/* Box */}

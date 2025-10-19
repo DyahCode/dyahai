@@ -6,7 +6,6 @@ import { useToggleMenu } from "../../utils/useTogglemenu";
 
 import HumbergerButton from "../ui/HumbergerButton/HumbergerButton";
 import Button from "../ui/Button";
-import ConnectSnap from "../ui/ConnectSnap";
 
 import { LuWallet } from "react-icons/lu";
 import { FaRegUserCircle, FaRegUser } from "react-icons/fa";
@@ -14,39 +13,20 @@ import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
 import { useAuth } from "../../provider/authProvider";
 import { usePopup } from "../../provider/PopupProvider";
-import identity from "../../assets/identity.ico";
 
-const plugLogo =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icon/plug-wallet-logo.webp";
+const HeroProfile = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
 
-const HeroProfile =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
-
-const plans = [
-  {
-    name: "Premium",
-    features: ["Full access to our models", "Includes 100 coin for generating"],
-  },
-  {
-    name: "Ultimate",
-    features: [
-      "Full access to our models",
-      "Includes 100 coin for generating",
-      "Custom API integration",
-      "Full model customization",
-    ],
-  },
-];
 
 const Navbar = ({ navbarStyle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { loading, credit, principalId, isLoggedIn, Login, Logout, tier } =
     useAuth();
-  const [ showConnectSnap, setShowConnectSnap ] = useState(false);
   const { showPopup, hidePopup } = usePopup();
   const { isOpen, toggleMenu } = useToggleMenu();
   const { dropdownRef } = useDropdown();
+  const mobileMenuRef = React.useRef(null);
+
   const {
     isDropdownOpen: isCreditOpen,
     toggleDropdown: toggleCredit,
@@ -61,15 +41,28 @@ const Navbar = ({ navbarStyle }) => {
 
   const {
     isDropdownOpen: isConnectOpen,
-    toggleDropdown: toggleConnect,
+    // toggleDropdown: toggleConnect,
     dropdownRef: ConnectRef,
   } = useDropdown();
 
   const menuItems = [
-    { name: "HOME", href: "/#" },
-    { name: "PRICING", href: "/pricing" },
-    { name: "ABOUT", href: "/about" },
-    { name: "LEDGER", href: "/dyascan" },
+    { name: "Home", href: "/" },
+    {
+      name: "Services", submenu: [
+        // { name: "AI Models", details: "Learn Our Models Works", href: "/" },
+        { name: "Generate Images", details: "Learn Our Models Works", href: "/generate" },
+        { name: "Buy Coin", details: "Buy some coin for generate Images", href: "/topup" },
+        { name: "Pricing Plan", details: "Upgrade your plan with advanced features", href: "/pricing" },
+        { name: "Mint", details: "Publish your generate images with NFT Minting", href: "/nft-collection" },
+      ]
+    },
+    {
+      name: "Company", submenu: [
+        { name: "About", details: "Redefining AI Image Generative Seamless", href: "/about" },
+        { name: "White Paper", details: "Understand Our Concept", href: "/" },
+      ]
+    },
+    { name: "Ledger", href: "/block-explorer" },
   ];
 
   const menuContainerVariants = {
@@ -90,9 +83,9 @@ const Navbar = ({ navbarStyle }) => {
 
   const getNavbarBackground = () => {
     if (navbarStyle === "primary") {
-      return isScrolled ? "rgba(22, 27, 36, 1)" : "rgba(22, 27, 36, 0)";
+      return isScrolled ? "rgba(13, 20, 24, 1)" : "rgba(13, 20, 24, 0)";
     }
-    return "rgba(22, 27, 36, 1)";
+    return "rgba(16, 23, 26, 1)";
   };
 
   const handleNavigation = (href) => {
@@ -122,32 +115,57 @@ const Navbar = ({ navbarStyle }) => {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        if (isOpen) toggleMenu();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, toggleMenu]);
+
+  const handleConnect = (onConnectType) => {
+    switch (onConnectType) {
+      case "PlugWallet":
+        if (!window.ic?.plug) {
+          showPopup({
+            title: "Plug Wallet Not Detected",
+            message:
+              "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+            type: "default",
+            extend: "plugInstruction",
+            leftLabel: "Login",
+            onLeft: () => {
+              Login(onConnectType);
+            },
+          });
+          return;
+        }
+        console.log('onConnectType :>> ', onConnectType);
+        Login(onConnectType);
+        break;
+      case "InternetIdentity":
+        console.log(">> Connecting via Internet Identity...");
+        console.log('onConnectType :>> ', onConnectType);
+        Login(onConnectType);
+        break;
+      default:
+        console.warn("Unknown connect type");
+    }
+  };
+
+  const toggleConnect = () => {
+    showPopup({
+      ConnectButtonPopup: true,
+      props: { onConnect: handleConnect },
+    })
+  }
+
   const navbarBackground = getNavbarBackground();
 
   const handleLogin = (method) => {
-    if (method === "Plug") {
-      if (!window.ic?.plug) {
-        showPopup({
-          title: "Plug Wallet Not Detected",
-          message:
-            "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
-          type: "default",
-          extend: "message",
-          extendMessage: [
-            {
-              error: 200,
-              "server message": "error code",
-            },
-          ],
-          leftLabel: "Login",
-          onLeft: () => {
-            Login(method);
-          },
-        });
-        return;
-      }
-    }
-    Login(method);
   };
 
   return (
@@ -159,8 +177,8 @@ const Navbar = ({ navbarStyle }) => {
       className="navbar fixed top-0 start-0 h-[8dvh] w-full z-[999] transition-all"
     >
       <div className="flex h-full w-full justify-center px-5 md:px-10">
-        <div className="navbar-box flex w-full items-center justify-between">
-          <div className="logo text-fontPrimaryColor hover:border-borderShade select-none rounded-lg border-transparent px-3 py-2 hover:border-opacity-40">
+        <div className="flex w-full items-center justify-between">
+          <div className="text-fontPrimaryColor hover:border-borderShade select-none rounded-lg border-transparent px-3 py-2 hover:border-opacity-40">
             {navbarStyle === "primary" ? (
               <div>
                 <a
@@ -169,9 +187,7 @@ const Navbar = ({ navbarStyle }) => {
                 >
                   DyahAI.
                 </a>
-                <div onClick={toggleMenu}>
-                  <HumbergerButton />
-                </div>
+                <HumbergerButton isOpen={isOpen} toggleMenu={toggleMenu} />
               </div>
             ) : (
               <a
@@ -182,20 +198,49 @@ const Navbar = ({ navbarStyle }) => {
               </a>
             )}
           </div>
-          <ul className="w-[45vh] lg:w-[50vh] bg-secondaryColor border-borderShade hidden rounded-lg border border-opacity-50 px-8 py-2.5 justify-between font-semibold tracking-tight md:flex">
+          {/* w-[45vh] lg:w-[50vh] */}
+          <div className="w-fit h-fit bg-secondaryColor border-borderShade hidden rounded-lg border border-opacity-50 gap-x-8 px-8 md:flex relative">
             {menuItems.map((item, index) => (
-              <li key={index}>
-                <a
-                  onClick={() => handleNavigation(item.href)}
-                  className="cursor-pointer"
+              <div key={index} className="group py-2.5">
+                <div
+                  onClick={() => item.href && handleNavigation(item.href)}
+                  className="flex items-center space-x-1 cursor-pointer"
                 >
-                  <span className="text-sm text-fontPrimaryColor hover:text-accentColor2 duration-150 transition-all">
+                  <span className="navigation text-fontPrimaryColor group-hover:text-accentColor duration-300 transition-all">
                     {item.name}
                   </span>
-                </a>
-              </li>
+
+                  {item.submenu && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 stroke-[2px] stroke-fontPrimaryColor/70 group-hover:stroke-accentColor group-hover:rotate-180 duration-300 transition-all"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+                    </svg>
+                  )}
+                </div>
+
+                {item.submenu && (
+                  <div className="absolute left-0 top-full invisible group-hover:visible z-30 w-full pt-6 duration-300 transition-all">
+                    <div className="invisible group-hover:visible duration-150 bg-secondaryColor border border-borderShade border-opacity-40 text-fontPrimaryColor rounded-lg shadow-lg p-2.5 grid grid-cols-2 gap-x-2.5 gap-y-5">
+                      {item.submenu.map((sub, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => handleNavigation(sub.href)}
+                          className="py-1 px-2 cursor-pointer hover:bg-accentColor/[0.1] rounded-md transition-all"
+                        >
+                          <span className="navigation font-light">{sub.name}</span>
+                          <p className="sub-navigation text-fontPrimaryColor/70">{sub.details}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
-          </ul>
+          </div>
 
           <div className="flex items-center space-x-4">
             {!loading && isLoggedIn ? (
@@ -203,11 +248,8 @@ const Navbar = ({ navbarStyle }) => {
                 <div className="flex items-center justify-center gap-3">
                   <div className="relative space-y-3" ref={creditRef}>
                     <Button
+                      type="outline"
                       onClick={toggleCredit}
-                      variant="outline"
-                      size="icon"
-                      className="hover:bg-accentColor hover:border-accentColor"
-                      isMotion
                     >
                       <LuWallet size={24} />
                       <span>{credit}</span>
@@ -379,92 +421,92 @@ const Navbar = ({ navbarStyle }) => {
                 </div>
               </div>
             ) : (
-              // <Button
-              //   variant="outline"
-              //   size="icon"
-              //   onClick={handleLogin}
-              //   className="hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
-              //   isMotion
-              // >
-              //   Connect
-              // </Button>
+
               <div className="relative space-y-3" ref={ConnectRef}>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  // onClick={toggleConnect}
-                  onClick={() => {
-                    setShowConnectSnap(true);
-                  }}
-                  className="text-sm hover:bg-accentColor hover:border-accentColor hover:shadow-[0px_5px_30px_5px_rgba(32,_119,_116,_.75)]"
-                  isMotion
+                <Button type="outline"
+                  onClick={toggleConnect}
                 >
                   Connect
                 </Button>
-                {isConnectOpen && (
-                  <div className="absolute right-0">
-                    <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-full h-full rounded-lg border z-20 px-4 py-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleLogin("Internet Identity")}
-                        className="w-max px-2 mb-3 py-[6px] text-sm hover:bg-accentColor/[0.125]"
-                      >
-                        {" "}
-                        <div className="flex items-center gap-2">
-                          <img className="w-6 h-6" src={identity} alt="" />
-                          <p className="text-sm">Internet Identity</p>
-                        </div>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleLogin("Plug")}
-                        className="w-[176.38px] px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
-                      >
-                        <div className="flex items-center gap-2">
-                          <img className="w-6 h-6" src={plugLogo} alt="" />
-                          <p className="text-sm">Plug Wallet</p>
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* mobile dropdown menu */}
       <motion.div
+        ref={mobileMenuRef}
         initial="hidden"
         animate={isOpen ? "visible" : "hidden"}
         variants={menuContainerVariants}
-        className={`border-borderShade absolute w-full overflow-hidden ${isOpen ? "block" : "hidden"} md:hidden`}
+        className="border border-borderShade absolute w-full h-fit overflow-hidden md:hidden z-5 bg-secondaryColor items-start justify-start px-6 py-4 pb-10"
       >
-        <ul className="bg-secondaryColor text-fontPrimaryColor flex w-full flex-col items-center justify-center gap-y-5 p-4 text-lg font-semibold">
+        <div className="w-full flex items-center space-x-1 mb-4">
+          <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/logo/DyahAI-logo.svg" alt="" className="w-6 h-6" />
+          <span className="mt-1.5 text-lg font-bold">DyahAI</span>
+        </div>
+        <ul className="text-fontPrimaryColor flex w-full flex-col space-y-4 text-base font-semibold">
           {menuItems.map((item, index) => (
-            <li key={index}>
-              <a
-                onClick={() => {
-                  handleNavigation(item.href);
-                  toggleMenu();
-                }}
-                className="text-fontPrimaryColor hover:text-accentColor"
-              >
-                {item.name}
-              </a>
+            <li key={index} className="w-full border-b border-borderShade body-1 font-normal space-y-4">
+              {item.submenu ? (
+                <details className="w-full group pb-2">
+                  <summary className="flex justify-between items-center cursor-pointer text-fontPrimaryColor group-open:text-accentColor transition-all duration-300">
+                    <span>{item.name}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                      className="w-5 h-5 stroke-fontPrimaryColor/70 group-open:rotate-180 group-open:stroke-accentColor transition-transform duration-300 fill-none stroke-[2px]">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+                    </svg>
+                  </summary>
+                  <ul className="pl-4 mt-4 space-y-2">
+                    {item.submenu.map((sub, idx) => (
+                      <li
+                        key={idx}
+                        onClick={() => {
+                          handleNavigation(sub.href);
+                          toggleMenu();
+                        }}
+                        className="py-2 cursor-pointer text-fontPrimaryColor/80 hover:text-accentColor transition-all"
+                      >
+                        {sub.name}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a
+                  onClick={() => {
+                    handleNavigation(item.href);
+                    toggleMenu();
+                  }}
+                  className="block py-2 text-fontPrimaryColor hover:text-accentColor transition-all"
+                >
+                  {item.name}
+                </a>
+              )}
             </li>
           ))}
         </ul>
       </motion.div>
-
-      <ConnectSnap
-        showConnectSnap={showConnectSnap}
-        setShowConnectSnap={setShowConnectSnap}
-        handleLogin={handleLogin}
-      ></ConnectSnap>
     </motion.nav>
   );
 };
 
 export default Navbar;
+
+const plans = [
+  {
+    name: "Premium",
+    features: ["Full access to our models", "Includes 100 coin for generating"],
+  },
+  {
+    name: "Ultimate",
+    features: [
+      "Full access to our models",
+      "Includes 100 coin for generating",
+      "Custom API integration",
+      "Full model customization",
+    ],
+  },
+];

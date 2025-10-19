@@ -1,6 +1,7 @@
 import React from "react";
 import ContainerBox, { Box, Container } from "../Container";
 import HeadSection from "../HeadSection";
+import Button from "../../ui/Button";
 
 const imageSquare1 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/1.webp"
 const imageSquare2 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/2.webp"
@@ -24,36 +25,34 @@ const imagePortrait8 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main
 const imagePortrait9 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/9.webp"
 const imagePortrait10 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/10.webp"
 
-const Gallery = () => {
+const Collections = () => {
   return (
     <>
       {/* head section */}
-      <HeadSection backgroundMotion>
-        <span className="text-4xl font-bold md:text-7xl text-fontPrimaryColor">
-          Our Gallery
+
+      <HeadSection headerName="Collections">
+        <h1 className="h1 text-n-1">
+          Where AI<br />meets imagination
+        </h1>
+        <h2 className="h3 text-n-1">
+          Explore stunning collections minted by Creators.
+        </h2>
+        <span className="header-1 text-n-3/80">
+          Explore unique collections crafted by our community — each image minted and owned by its creator.
+          From hyper-realistic portraits to surreal digital art, every piece reflects the limitless creativity of DyahAI.
+          Dive into the gallery and see how imagination meets innovation.
         </span>
+        <Button>
+          Explore NFTs Collection
+        </Button>
       </HeadSection>
 
       {/* body section */}
-      <section
-        id="gallery"
+      <section id="collections"
         className="scroll-mt-[650px]">
-        <ContainerBox boxClass="space-y-10 text-center">
-          <span className="text-fontPrimaryColor/95 text-3xl font-bold md:text-7xl">
-            Creatifully Generate Image
-          </span>
-          <Container className="md:px-10">
-            <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
-              Discover the creative possibilities of DyahAI in our Gallery
-              Generate Image, where you can explore a wide variety of stunning
-              AI-generated artwork. This gallery showcases the powerful
-              capabilities of our platform, turning everyday images into
-              extraordinary creations. From whimsical cartoons to futuristic
-              cyberpunk, our AI model can transform any image into a beautiful
-              piece of art, all rendered in high resolution.
-            </p>
-          </Container>
-          <div className="grid h-full w-full grid-cols-2 items-center justify-center overflow-hidden md:grid-cols-4 lg:grid-cols-5">
+
+        <ContainerBox boxClass="">
+          <div className="px-10 py-20 grid h-full w-full grid-cols-2 items-center justify-center overflow-hidden md:grid-cols-4 lg:grid-cols-5">
             <div className="space-y-2 p-1">
               <div className="size-full h-2/5">
                 <img
@@ -232,4 +231,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Collections;

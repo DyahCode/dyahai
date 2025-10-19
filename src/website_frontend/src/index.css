@@ -1,12 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-sora: "Sora", sans-serif;
+  --font-code: "Source Code Pro", monospace;
+  --font-grotesk: "Space Grotesk", sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  scroll-behavior: smooth
+}
+
 @layer base {
   body {
-    @apply font-sans bg-primaryColor min-h-screen w-full antialiased;
+    @apply font-sans text-base bg-primaryColor min-h-screen w-full antialiased;
   }
 }
 
@@ -24,10 +39,22 @@
 }
 
 .bg-grid {
+  background-color: white;
   background-image:
-    linear-gradient(to right, rgba(0,255,255,0.2) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,255,255,0.2) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 50px 50px; /* jarak grid lebih rapat */
+}
+
+.mesh-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
 }
 
 @media (min-width: 768px) {

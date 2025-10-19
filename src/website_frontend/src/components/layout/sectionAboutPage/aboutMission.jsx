@@ -5,15 +5,13 @@ import { Box } from '../Container';
 const AboutMission = () => {
   return (
     <>
-      <HeadSection distance="short">
-        <span className="text-2xl md:text-5xl font-semibold text-fontPrimaryColor">
+      <HeadSection headerName="Mission">
+        <span className="h2 text-n-1">
           Our Mission
         </span>
-        <div className="w-full flex flex-col items-center">
-          <span className="w-[70%] text-lg md:text-xl text-fontPrimaryColor/70">
-            We believe that creativity should be open, accessible, and enjoyable for everyone
-          </span>
-        </div>
+        <span className="header-1 text-n-3/80">
+          We believe that creativity should be open, accessible, and enjoyable for everyone
+        </span>
       </HeadSection>
 
       <section className="container">

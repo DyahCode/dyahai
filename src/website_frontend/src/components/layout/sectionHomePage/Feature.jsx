@@ -1,46 +1,45 @@
-import { React, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import React, { useState } from "react";
+import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import BeforeAfterSlider from "../../ui/HDResult/slider";
 import FTUImages from "../../ui/FreeToUse/FTUImages";
 import { useAuth } from "../../../provider/authProvider";
-import ContainerBox, { Box, Container } from "../Container";
+import ContainerBox, { BackdropBox, Box, ClearBox, Container } from "../Container";
 import { usePopup } from "../../../provider/PopupProvider";
+import HeadSection from "../HeadSection";
+import HowItWorks from "../../ui/HIW/HowItWorks";
+import ArtStylesSlider from "../../ui/ArtStyles";
 
-const AiImage1 =
+const AISectionImage1 =
   "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-1.webp";
-const AiImage2 =
+const AISectionImage2 =
   "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-2.webp";
-const AiImage3 =
+const AISectionImage3 =
   "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-3.webp";
-const AiImage4 =
+const AISectionImage4 =
   "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-4.webp";
-const AiImage5 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-5.webp";
 
-const ImageAstronout =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/astronout.webp";
-const ImageBaroque =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
-const ImageCyberpunk =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/cyberpunk.webp";
-const ImageFormal =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
-const ImageJoker =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
-const ImageOilPainting =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
-const ImageShrek =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
-const ImageZombie =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 
 const Feature = () => {
+  const ref = React.useRef(null);
   const navigate = useNavigate();
   const { isLoggedIn, Login } = useAuth();
   const { showPopup, hidePopup } = usePopup();
   const { scrollY } = useScroll();
+
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const transition = { duration: 1.2, ease: "easeOut" };
+
+  const leftVariant = {
+    hidden: { scale: 1, rotate: 0, opacity: 0.8 },
+    visible: { scale: 1.25, rotate: -5, opacity: 1, transition },
+  };
+
+  const rightVariant = {
+    hidden: { scale: 1, rotate: 0, opacity: 0.8 },
+    visible: { scale: 1.25, rotate: 5, opacity: 1, transition },
+  };
 
   const handleNavigationGenerate = () => {
     if (isLoggedIn) {
@@ -58,187 +57,177 @@ const Feature = () => {
     }
   };
 
-  const StyleArts = [
-    ImageAstronout,
-    ImageBaroque,
-    ImageCyberpunk,
-    ImageFormal,
-    ImageJoker,
-    ImageOilPainting,
-    ImageShrek,
-    ImageZombie,
-  ];
-
   return (
     <>
       <section
         id="feature"
-        className="bg-primaryColor z-[20] w-full space-y-10 scroll-mt-[250px]"
+        className="z-[20] w-full space-y-10 scroll-mt-[250px]"
       >
-        {/* <div className="absolute md:h-[50dvh] lg:h-[70dvh] w-full select-none">
-          <div className="-z-4 relative left-0 top-0 h-full w-full translate-y-[-100%] bg-gradient-to-t from-primaryColor to-transparent"></div>
-        </div> */}
-
         {/* section 1 */}
-        <div className=" text-fontPrimaryColor z-10 w-full mx-auto justify-items-center space-y-10">
-          {/* Feature Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-              transition: { type: "Spring", bounce: 0.8 },
-            }}
-            viewport={{ once: true, amount: 0.8 }}
-            className="pb-10 text-center items-center justify-center flex"
-          >
-            <h1 className="text-3xl font-bold md:text-7xl">Our Features</h1>
-          </motion.div>
+        <HeadSection >
+          <div className="relative w-full flex flex-col items-center ">
+            <span className="absolute -top-12 w-full text-center text-[4rem] md:text-[12rem]  font-semibold leading-[16rem] bg-gradient-to-b from-n-1/10 via-n-1/[7.5%] to-n-1/[0.5%]  bg-clip-text text-transparent">
+              DyahAI
+            </span>
+            <span className="relative h2 text-n-2 drop-shadow-[0px_0px_25px_rgba(29,93,77,0.6)]">
+              We’re DyahAI. <br />Transforming complex digital creation into instant artistic expression.
+            </span>
+          </div>
+        </HeadSection>
 
-          {/* Model Features */}
-          <ContainerBox boxClass="space-y-20">
-            <div className="relative flex w-full items-center justify-center overflow-hidden">
-              <div className="absolute right-[7.5%] hidden h-3/5 w-auto md:flex">
-                <img src={AiImage5} className="rounded-lg object-fill" />
+        <ContainerBox g boxClass="relative">
+          <div ref={ref} className="w-full flex flex-col relative">
+
+            {/* image */}
+            <div className="absolute w-full h-full flex justify-between top-[0%] overflow-hidden">
+              {/* left */}
+              <div className="relative flex w-[30%] h-full justify-start"
+                style={{
+                  maskImage:
+                    "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 35%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0) 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 35%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0) 100%)",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskSize: "cover",
+                  WebkitMaskSize: "cover",
+                }}>
+                <motion.div
+                  className="absolute flex w-[50%] top-[10%] left-[45%]"
+                  variants={leftVariant}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}>
+                  <img src={AISectionImage1} className="z-2 rounded-lg object-fill" />
+                </motion.div>
+                <motion.div
+                  className="absolute flex w-[60%] top-[5%] left-[0%] rounded-lg overflow-hidden"
+                  variants={leftVariant}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                >
+                  <img src={AISectionImage2} className="z-3 object-fill" />
+                </motion.div>
               </div>
-              <div className="absolute left-[7.5%] hidden h-3/5 w-auto md:flex">
-                <img src={AiImage4} className="rounded-lg object-fill" />
-              </div>
-              <div className="absolute right-[7.5%] flex h-4/5 w-auto md:right-[20%]">
-                <img src={AiImage3} className="z-6 rounded-lg object-fill" />
-              </div>
-              <div className="absolute left-[7.5%] flex h-4/5 w-auto md:left-[20%]">
-                <img src={AiImage2} className="z-6 rounded-lg object-fill" />
-              </div>
-              <div className="relative inset-0 flex size-[45%] md:size-[27.5%]">
-                <img src={AiImage1} className="z-5 rounded-lg object-fill" />
+              {/* right */}
+              <div className="relative flex w-[30%] h-full justify-end"
+                style={{
+                  maskImage:
+                    "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.95) 55%, rgba(0,0,0,1) 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.95) 55%, rgba(0,0,0,1) 100%)",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskSize: "cover",
+                  WebkitMaskSize: "cover",
+                }}>
+                <motion.div
+                  className="absolute flex w-[50%] top-[10%] right-[45%]"
+                  variants={rightVariant}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}>
+                  <img src={AISectionImage3} className="z-2 rounded-lg object-fill" />
+                </motion.div>
+                <motion.div
+                  className="absolute flex w-[60%] top-[5%] right-[0%]"
+                  variants={rightVariant}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}>
+                  <img src={AISectionImage4} className="z-3 rounded-lg object-fill" />
+                </motion.div>
               </div>
             </div>
-            <div className="flex h-2/5 flex-col gap-y-8 text-center">
-              <h1 className="text-2xl font-bold md:text-5xl">
-                DyahAI-Model Newest Version
-              </h1>
-              <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
-                DyahAI utilizes a state-of-the-art AI model designed to
-                transform your ordinary images into vibrant, imaginative
-                artworks. Whether you're looking to convert your photos into
-                captivating cartoons, futuristic cyberpunk aesthetics, or
-                surreal fantasy scenes, our AI model understands the nuances
-                of your image and adapts to create stunning visuals that go
-                beyond expectations. Powered by advanced algorithms, DyahAI
-                delivers a seamless and intuitive experience for anyone
-                wanting to see their creations in a completely new light.
+
+            {/* text center */}
+            <div className="relative z-5 left-0 w-full px-10 md:px-20 lg:px-40 flex flex-col items-center text-center mt-[7.5rem] mb-[6rem] ">
+              <h2 className="h2 mb-12 w-[80%] text-n-1">
+                A New Journey<br />of AI Image Generation<br />in the Web 3.0 Era
+              </h2>
+              <h5 className="h5 text-n-3">
+                DyahAI’s generative model solves the complexity of digital art creation by allowing users to transform images into artistic styles instantly — without expensive tools, long processing times, or high-end hardware.
+              </h5>
+            </div>
+          </div>
+
+          <HowItWorks />
+
+        </ContainerBox>
+
+        {/* section 3 benefits */}
+        <Container className="flex flex-col justify-center space-y-10 md:space-y-10">
+          {/* HD Image features */}
+          <div className="w-full h-fit flex my-10 px-10">
+            <div className="mt-16 pr-10 flex h-fit w-[40%] flex-col text-left">
+              <h3 className="h3 font-medium text-n-1 mb-8">
+                HD Resolution Image
+              </h3>
+              <p className="body-1 text-n-1/60 text-balance">
+                DyahAI brings your vision to life in stunning HD clarity — every pixel crafted with precision and every detail brought to life. Experience ultra-sharp, vibrant results perfect for sharing, printing, or showcasing.
               </p>
             </div>
-          </ContainerBox>
-          {/* </div> */}
-          {/* </div> */}
 
-        </div>
+            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+              </div>
 
-        {/* section HD Images & Free To Use */}
+              <div className="w-full flex pt-20 px-16">
 
-        <Container className="flex flex-col md:flex-row justify-center gap-x-8 space-y-10 md:space-y-0 mx-auto">
-          {/* HD Image features */}
-          <Box className="w-full md:w-3/5">
-            <div className="w-full max-h-fit flex flex-col justify-start items-center">
-              <div className="flex h-full w-full flex-col items-center justify-items-center gap-y-10 text-center">
-                <h1 className="text-2xl font-bold md:text-4xl text-white/90">
-                  HD Resolution Image
-                </h1>
-                <div className="relative w-full overflow-hidden">
+                <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
                   <BeforeAfterSlider />
                 </div>
-                <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
-                  Quality is our top priority at DyahAI. We understand that
-                  generated images should not only be visually stunning but also
-                  sharp and clear. Every image created using DyahAI is generated
-                  in high resolution, ensuring that your creations are of
-                  exceptional quality and ready to be shared, printed, or
-                  showcased in their finest form. Whether you plan to use the
-                  artwork digitally, for professional presentations, or for
-                  personal projects, the clarity and precision of each image are
-                  never compromised. Our high-resolution images guarantee the
-                  best visual quality and a superior user experience when
-                  viewing or enlarging your artwork.
-                </p>
               </div>
             </div>
-          </Box>
-
+          </div>
 
           {/* Free To Use */}
-          <Box className="w-full md:w-2/5">
-            <div className="w-full max-h-fit flex flex-col justify-start items-center">
-              <div className="flex h-full w-full flex-col items-center justify-items-center gap-y-10 text-center">
-                <h1 className="text-2xl font-bold md:text-4xl text-white/90">Free-To-Use</h1>
-                <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
-                  The realistic AI is provided for free as a trial, and the
-                  AI-generated results are available exclusively for you during
-                  the trial period.
-                </p>
-                <div className="flex w-full rounded-lg p-2 md:w-[95%] lg:w-[85%]">
-                  <FTUImages />
+          <div className="w-full h-fit flex my-10 px-10">
+            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+              </div>
+              <div className="relative w-full flex pt-20 px-16">
+                <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
+                  <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/generation-process-animation.gif" alt="AI Generation Process" className="object-fill" />
                 </div>
-
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={handleNavigationGenerate}
-                  className="w-2/3"
-                  isMotion
-                >
-                  Try it now !
-                </Button>
               </div>
             </div>
-          </Box>
-        </Container>
 
-        <div className=" text-fontPrimaryColor z-10 w-full mx-auto justify-items-center space-y-10">
-
-          {/* section Various Style */}
-          <ContainerBox boxClass="space-y-20">
-            <h1 className="text-fontPrimaryColor/90 text-2xl font-bold md:text-4xl text-center">
-              Generate AI Images in Various Art Styles
-            </h1>
-            <p className="text-fontPrimaryColor/80 text-center text-base leading-relaxed md:text-xl">
-              DyahAI offers not only beautiful images but also complete freedom
-              to tailor your creations to your style. We provide a wide range of
-              customizable art styles, including astronaut for a space adventure
-              look, cyberpunk with futuristic neon effects, and joker with
-              vibrant colors and quirky expressions. Classic options like
-              baroque, with intricate details, formal for an elegant touch, and
-              painting for a hand-painted feel are also available. For something
-              whimsical or eerie, you can choose shrek, a playful cartoon style,
-              or zombie, with a horror theme. With these diverse styles, you can
-              create a unique image that truly reflects your vision.
-            </p>
-            <div className="border-borderShade w-full overflow-hidden rounded-lg border-2 border-opacity-40">
-              <motion.div
-                className="flex gap-4"
-                style={{
-                  x: useTransform(
-                    useSpring(scrollY, { stiffness: 120, damping: 20 }),
-                    [2200, 3800],
-                    [20, -500]
-                  ),
-                }}
-              >
-                {StyleArts.map((StyleArts, index) => (
-                  <div key={index} className="w-1/3 flex-shrink-0 md:w-1/5">
-                    <img
-                      src={StyleArts}
-                      alt={`Gallery ${index + 1}`}
-                      className="h-full w-full rounded-lg object-cover"
-                    />
-                  </div>
-                ))}
-              </motion.div>
+            <div className="mt-16 pl-10 flex h-fit w-[40%] flex-col text-left">
+              <h3 className="h3 font-medium text-n-1 mb-8">
+                Free-To-Use
+              </h3>
+              <p className="body-1 text-n-1/60 text-balance">
+                Experience our AI realism — free to use, fully yours during the trial. Dive in, explore limitless creativity, and see how real your imagination can become.
+              </p>
             </div>
-          </ContainerBox>
-        </div>
-      </section>
+          </div>
+
+          {/* Various Artworks Style */}
+          <div className="w-full h-fit flex my-10 px-10">
+            <div className="mt-16 pr-10 flex h-fit w-[40%] flex-col text-left">
+              <h3 className="h3 font-medium text-n-1 mb-8">
+                Art Style Fusion
+              </h3>
+              <p className="body-1 text-n-1/60 text-balance">
+                Turn your ideas into art across limitless styles.
+                Whether it’s surreal, classic, or futuristic, DyahAI lets you craft, enhance, and refine every pixel. With tools for cropping and image-to-image enhancement, your creativity knows no limits.
+              </p>
+            </div>
+
+            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+              </div>
+
+              <div className="w-full flex pt-20 px-16">
+                <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
+                  <ArtStylesSlider />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section >
     </>
   );
 };

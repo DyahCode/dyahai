@@ -4,9 +4,11 @@ import { useAuth } from "../provider/authProvider";
 import { usePopup } from "../provider/PopupProvider";
 import PaymentSnap from "../components/ui/PaymentSnap";
 import { LuArrowDownUp } from "react-icons/lu";
-import dya from "../assets/favicon/dya.svg";
+const OfficialDYACoins = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/coins/DYA-coins-gold.svg"
+
+
 const CreditPaymentPage = () => {
-  const { TopupCredit, clientId, accountId,authClient } = useAuth();
+  const { TopupCredit, clientId, accountId, authClient } = useAuth();
   const { showPopup, hidePopup } = usePopup();
 
   const [inputCredit, setInputCredit] = useState(0);
@@ -18,8 +20,8 @@ const CreditPaymentPage = () => {
   const [txStatus, setTxStatus] = useState(null);
 
   const presetValues = [1, 3, 5, 10, 20, 50, 100, 200, 500, 1000];
-  
-  
+
+
   const creditCalculate = (value) => {
     const ONE_CREDIT_IS = 0.0187;
     const numValue = Number(value);
@@ -71,9 +73,7 @@ const CreditPaymentPage = () => {
   return (
     <>
       <main className="bg-primaryColor font-Poppins w-dvh min-h-screen flex flex-col ">
-        <Navbar
-          navbarStyle="secondary"
-        />
+        <Navbar navbarStyle="secondary" />
 
         <section className="pt-[8dvh] w-full h-full flex flex-col items-center justify-start md:justify-center md:pt-[8dvh] overflow-y-auto">
           <div className="container">
@@ -87,7 +87,7 @@ const CreditPaymentPage = () => {
                       Total DYA Want
                     </label>
                     <div className="mt-1 flex gap-x-4 items-center">
-                      <img className="size-10" src={dya} alt="" />
+                      <img className="size-10" src={OfficialDYACoins} alt="" />
                       <div className="flex flex-1 flex-col space-y-2">
                         <input
                           type="text"
@@ -111,7 +111,7 @@ const CreditPaymentPage = () => {
                               : "bg-white text-gray-700 border-gray-300"
                               } hover:bg-blue-100`}
                           >
-                            <img className="size-4" src={dya} alt="" />
+                            <img className="size-4" src={OfficialDYACoins} alt="" />
                             {/* <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
@@ -141,7 +141,11 @@ const CreditPaymentPage = () => {
                       ICP
                     </p>
                   </div>
-                  <div className="flex items-center justify-center py-2"><LuArrowDownUp size={30} color="black" /></div>
+                  <div className="flex items-center justify-center py-2 w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-none stroke-accentColor stroke-[2px]">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M7 10h14l-4-4m0 8H3l4 4" />
+                    </svg>
+                  </div>
                   <div className="flex items-center gap-x-2 tracking-tight text-black bg-borderShade/10 border border-borderShade/10 rounded-lg px-4 py-2">
                     <span className="text-1xl font-medium">
                       {Number(inputCredit)}
@@ -151,7 +155,7 @@ const CreditPaymentPage = () => {
                     </p>
                   </div>
                   <div className="flex flex-col gap-y-2 mt-4">
-                  
+
                     <div className="flex w-full h-full gap-x-2">
 
                       <div className="flex overflow-hidden  flex-col flex-1 border rounded-lg text-black text-xs md:text-sm justify-start gap-x-1 gap-y-2 p-1">
