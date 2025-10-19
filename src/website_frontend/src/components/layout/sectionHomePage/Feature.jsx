@@ -9,38 +9,32 @@ import ContainerBox, { Box, Container } from "../Container";
 import { usePopup } from "../../../provider/PopupProvider";
 
 const AiImage1 =
-  "https://bafkreicqclc24yrtmjkrjo5bkhrnu2gfaehmmiy46hnzn4fvpzpsep5sze.ipfs.w3s.link/?filename=AI-image-1.png";
-// const AiImage1 =
-//   "https://bafybeihviddhik4llwiuvakpaqeduextfm6l2qrsncroyqsbin6veto2we.ipfs.w3s.link/AI-image-1.png"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-1.webp";
 const AiImage2 =
-  "https://bafybeibkm4j4wtwsgh2devwchtrxvuhrwyoagm5223b4mqtyl55maejkuq.ipfs.w3s.link/AI-image-2.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-2.webp";
 const AiImage3 =
-  "https://bafybeiexyfzpp3wfjxirmvfynxujiakoa3sz5t2vl3mrdqypkvr4u3agqi.ipfs.w3s.link/AI-image-3.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-3.webp";
 const AiImage4 =
-  "https://bafkreibrisihlu5sefwr5yqqiwsb3fla5lk4w3scpp4rm2jckgftjkzjx4.ipfs.w3s.link/?filename=AI-image-4.png";
-// const AiImage4 =
-//   "https://bafybeicakq52sj5ne6bwtmotfmoega2gh3raqhyg3lwzk6475qu32hrkiq.ipfs.w3s.link/AI-image-4.png"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-4.webp";
 const AiImage5 =
-  "https://bafybeihsbbnqzyflfy3gckrj2vr7xsqram56l2o4j5xbst3zjl46c2ysmm.ipfs.w3s.link/AI-image-5.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-5.webp";
 
 const ImageAstronout =
-  "https://bafybeib7eoqznxsg4dpzjvsv25u2b4dsn7uemr7mfpbvfawi3ut2ydv3g4.ipfs.w3s.link/astronout.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/astronout.webp";
 const ImageBaroque =
-  "https://bafybeib56vwpymqe6zrdtq2htk5jvnycjkm7y7fgpc6c6q2tcefcsrbcfu.ipfs.w3s.link/baroque.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 const ImageCyberpunk =
-  "https://bafybeifgrdxz2tjmg2thbnstkbnwpp4baxpmtfq2zxnxzmzbn3mvu4jtfa.ipfs.w3s.link/cyberpunk.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/cyberpunk.webp";
 const ImageFormal =
-  "https://bafybeididesgtyzutdwuqcwixgso444q6r33q5w7qdr55mboaiho4tehwy.ipfs.w3s.link/formal.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 const ImageJoker =
-  "https://bafybeiasrj5bkd754nhlwaxypkm23ftoltkpqyozeymrmrlfr6abi542wq.ipfs.w3s.link/joker.png";
-// const ImageOilPainting =
-//   "https://bafybeieisbzgxd5yset3duucheemslv243deeszanadozc7o3gwwwe5gz4.ipfs.w3s.link/oil-painting.png"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 const ImageOilPainting =
-  "https://bafybeibliftdx3q4qtagi3n6mpf63vpazydfpf24sze4wgzsowyurr7dau.ipfs.w3s.link";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 const ImageShrek =
-  "https://bafybeiemhgtr44b7h7z5ez33g3tlmmpqhzf6nj2mg246vzb427xbu7yoyq.ipfs.w3s.link/shrek.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 const ImageZombie =
-  "https://bafybeif36hbrahuczmxqxlwvi3fcd7obb2qyf5eewyew4yco4dza4pzp3a.ipfs.w3s.link/zombie.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp";
 
 const Feature = () => {
   const navigate = useNavigate();

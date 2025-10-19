@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../components/ui/Button';
 import { v4 as uuidv4 } from 'uuid';
 
-const PlugWalletLogo = "https://bafybeid3aty76qvbd7lgs2xqfozscqncbfl64rzwtuyuaa6s2bmofqiaie.ipfs.w3s.link/plug-wallet-logo.png";
+const PlugWalletLogo = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icon/plug-wallet-logo.webp";
 
 const PopupContext = React.createContext();
 export const usePopup = () => React.useContext(PopupContext);

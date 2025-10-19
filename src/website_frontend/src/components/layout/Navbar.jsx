@@ -17,10 +17,10 @@ import { usePopup } from "../../provider/PopupProvider";
 import identity from "../../assets/identity.ico";
 
 const plugLogo =
-  "https://bafybeid3aty76qvbd7lgs2xqfozscqncbfl64rzwtuyuaa6s2bmofqiaie.ipfs.w3s.link/plug-wallet-logo.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icon/plug-wallet-logo.webp";
 
 const HeroProfile =
-  "https://bafybeifd7wtlh57fd7sfynkpupg625gp6cbno3kplxiardb5i7aa5zxp6y.ipfs.w3s.link/image-gallery-1.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
 
 const plans = [
   {

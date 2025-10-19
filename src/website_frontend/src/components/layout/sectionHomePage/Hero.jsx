@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const HeroImage =
-  "https://bafybeifce6nvn6iimmpuptc4irh5erb4u6um5u2jhhzhjsuizey4vfyhq4.ipfs.w3s.link/hero-image.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/hero-image.webp";
 
 const Hero = () => {
   const navigate = useNavigate();

@@ -3,15 +3,12 @@ import { motion } from "framer-motion";
 import ContainerBox, { Box, Container } from "../Container";
 import HeadSection from "../HeadSection";
 
-// import Web3Image from "../../../assets/images/advantages/web-3.0.png";
-// import dAppImage from "../../../assets/images/advantages/d-app.png";
-// import SmartContractImage from "../../../assets/images/advantages/smart-contract.png";
 const Web3iImage =
-  "https://bafybeidis4yoohxc7qbc7l7tbqmkoqnbaukrdv7uknxguqrx6b6y4yppti.ipfs.w3s.link/web-3.0.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/advantages/web-3.0.webp";
 const dAppImage =
-  "https://bafybeigjedzgypcqbfoc5kfhh3k6dktvhuex5ssotqtvpzponyyygjhjye.ipfs.w3s.link/d-app.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/advantages/d-app.webp";
 const SmartContractImage =
-  "https://bafybeih75nevush7jfjmri6hh76x4m6cdx5xtcvlanr2qqfj2j6iuzqq5u.ipfs.w3s.link/smart-contract.png";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/advantages/smart-contract.webp";
 
 const Advantages = () => {
   return (

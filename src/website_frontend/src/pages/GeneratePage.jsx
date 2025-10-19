@@ -25,58 +25,76 @@ import { BurnTokens } from "../hooks/wallet";
 import MintingSnap from "../components/ui/MintingSnap";
 
 const imageAstronout =
-  "https://bafybeieyzmxnhikq4ncpn45dkzfi25n23lgvnyacfh5lkfwlqo4l5cbpt4.ipfs.w3s.link/Astronout.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Astronout.webp";
 const imageBackpacker =
-  "https://bafybeicbpqiiibishqfergji5w2rpinbrwxg3lidshak4kpylwivdymuku.ipfs.w3s.link/Backpacker.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Backpacker.webp";
 const imageCyberpunk =
-  "https://bafybeidwtzzsf7pbrhfocvsckg6ic6bslvgnbwclrbveh4m2gnccdwl5bi.ipfs.w3s.link/Cyberpunk.jpg";
-const imageDetective =
-  "https://bafybeidbim4pl7hd23xojeq725nuld5kercevmkrv3ujdqoe35q7z64k3y.ipfs.w3s.link/Detective.jpg";
-// const imageDreamworks =
-//   "https://bafybeifeyskurvgchu64idrhs3bksjil5moze5pnbto33uj3b3kwcpqise.ipfs.w3s.link/Dreamworks.jpg"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Cyberpunk.webp";
 const imageDreamworks =
-  "https://bafkreibm7xqvntxrfw7zzrqj6e4jxxror37g6h2qw2skoq6qh53l4unubu.ipfs.w3s.link";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Dreamworks.webp";
 const imageRenaissance =
-  "https://bafybeihpeu2aznlixb4dmuuyakyd6zfkywvicja3gzzfuzztwpo4uo64bu.ipfs.w3s.link/Renaissance.jpg";
-const imageRetro =
-  "https://bafybeid5xc6pzdkdul44uloo2n3s4fy67qx3q3uqh4civ4ay7rwrihwti4.ipfs.w3s.link/Retro.jpg";
-// const imageSteampunk =
-//   "https://bafybeiejbuctvdoongnkvspb7dhm5b6z7abdf2cq3vnk2oif5yppe6thbq.ipfs.w3s.link/Steampunk.jpg"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Renaissance.webp";
 const imageSteampunk =
-  "https://bafkreihoojn34ebcs74awsrvcxjtqvwd2lr2icqabbwsdgcpo2wq4djef4.ipfs.w3s.link";
-// const imageStreetwear =
-//   "https://bafybeiezxel763ndqzb6lf2s6v7p6bm2nra4xyjdavhr6ktyl366qkilnu.ipfs.w3s.link/Streetwear.jpg"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Steampunk.webp";
 const imageStreetwear =
-  "https://bafkreihjukmlckruk2aihl42rvd5o2qf3ft3prnrukqaj4pac5wcwlio6y.ipfs.w3s.link/?filename=Streetwear.jpg";
-const imageSuperhero =
-  "https://bafybeih4yqiuaelvdpvfe6hkdggxsbotq7uyzvrmzyx7espfizv3blye4e.ipfs.w3s.link/Superhero.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Streetwear.webp";
 const imageWasteland =
-  "https://bafybeihterx5pdlv4yecxpfouyabl3sdswmgocycnqkii4aevshvlg74iu.ipfs.w3s.link/Wasteland.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Wasteland.webp";
+const imageComic =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Comic.webp";
+const imageAsian =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Asian.webp";
+const imagePixel =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Pixel.webp ";
+const imageCartoon =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Cartoon.webp";
+const imageRenaissance2 =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Renaissance2.webp";
+const imageManga =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Manga.webp";
+const imagePhoto =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Photo.webp";
+const imageDenim =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Denim.webp";
+const imageTshirt =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/T-Shirt.webp";
+const imageWhitedress =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/White Dress.webp";
+const imageHoodie =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Hoodie.webp";
 
 const imageArtisticW =
-  "https://bafybeighc4i47mpv43e7grqb25a32tfbmodvujml6ab3nieklkamjejxyq.ipfs.w3s.link/Artistic.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Artistic.webp";
 const imageCyberpunkW =
-  "https://bafybeigszelbvuyn5cc7dacxxgq2e4eoql2cdn37ixy3cz73lcq34zvaum.ipfs.w3s.link/Cyberpunk.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Cyberpunk.webp";
 const imageDreamy =
-  "https://bafybeia2i7aok5tdtrojxdwlsykkzbg7fj7a5lkj3uafelbtb5jptlfmmq.ipfs.w3s.link/Dreamy.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Dreamy.webp";
 const imageFashion =
-  "https://bafybeiewlwtaavsx2wr6gmvixmfdrpuh2w7hako2sj3a5kj442z6gee4z4.ipfs.w3s.link/Fashion.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Fashion.webp";
 const imageKorean =
-  "https://bafybeihzldu2nmz6vktsdus36dkior2smf5jti5jrfpdrdjk3qdkkxvqwa.ipfs.w3s.link/Korean.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Korean.webp";
 const imageNature =
-  "https://bafybeiby3zppnjdfuuyo2wcghv7g2dvgwsqgsbzlbwadpedvak6sqaux4m.ipfs.w3s.link/Nature.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Nature.webp";
 const imageRenaissanceW =
-  "https://bafybeiesv7d6veak3wcfxfz4zrdxarvkkljcyzrdxlzw6f3rpvkwkpelui.ipfs.w3s.link/Renaissance.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Renaissance.webp";
 const imageRetroW =
-  "https://bafybeie2yzo3rwvgsmognxbt5x3g6c4qmz5t5vx2qinfywhbkiuil3q6pa.ipfs.w3s.link/Retro.jpg";
-// const imageSchool =
-//   "https://bafybeicd6jt4wldzr5x27p2gey2xczkavam5wynmhjgx6v2kz37inixhre.ipfs.w3s.link/School.jpg"; //error
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Retro.webp";
 const imageSchool =
-  "https://bafkreiblejhvlolnax7h43fe2cvstyhgqvsfkkocycrrswisgb7ibmhbm4.ipfs.w3s.link/?filename=School.jpg";
-const imageSoft =
-  "https://bafybeigsa4lcv3mvemlnocgerre34w7lcfblcdmy5rh6oswbpbhnli4umm.ipfs.w3s.link/Soft.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/School.webp";
 const imageSunset =
-  "https://bafybeifw4mg2mx5y4zxoc5oeauidsknuzpo3327aqma5n5yqj2zwwumzz4.ipfs.w3s.link/Sunset.jpg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Sunset.webp";
+const imagePixelW =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Pixel.webp";
+const imageAsianW =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Asian.webp";
+const imageCartoonW =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Cartoon.webp";
+const imageMangaW =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Manga.webp";
+const imageRenaissanceW2 =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Renaissance2.webp";
+const imagePhotoW =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Photo.webp";
 
 const GeneratePage = () => {
   const {
@@ -91,7 +109,6 @@ const GeneratePage = () => {
     actorLedger,
     authClient,
   } = useAuth();
-
 
   const navigate = useNavigate();
 
@@ -169,16 +186,6 @@ const GeneratePage = () => {
     },
     {
       id: "4",
-      label: "Detective",
-      image: imageDetective,
-      genderCategory: "man",
-      getFile: async () => {
-        const response = await fetch(imageDetective);
-        return await response.blob();
-      },
-    },
-    {
-      id: "5",
       label: "Dreamworks",
       image: imageDreamworks,
       genderCategory: "man",
@@ -188,7 +195,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "6",
+      id: "5",
       label: "Renaissance",
       image: imageRenaissance,
       genderCategory: "man",
@@ -198,17 +205,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "7",
-      label: "Retro",
-      image: imageRetro,
-      genderCategory: "man",
-      getFile: async () => {
-        const response = await fetch(imageRetro);
-        return await response.blob();
-      },
-    },
-    {
-      id: "8",
+      id: "6",
       label: "Steampunk",
       image: imageSteampunk,
       genderCategory: "man",
@@ -218,7 +215,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "9",
+      id: "7",
       label: "Streetwear",
       image: imageStreetwear,
       genderCategory: "man",
@@ -228,17 +225,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "10",
-      label: "Superhero",
-      image: imageSuperhero,
-      genderCategory: "man",
-      getFile: async () => {
-        const response = await fetch(imageSuperhero);
-        return await response.blob();
-      },
-    },
-    {
-      id: "11",
+      id: "8",
       label: "Wasteland",
       image: imageWasteland,
       genderCategory: "man",
@@ -248,7 +235,117 @@ const GeneratePage = () => {
       },
     },
     {
+      id: "9",
+      label: "Comic",
+      image: imageComic,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageComic);
+        return await response.blob();
+      },
+    },
+    {
+      id: "10",
+      label: "Asian",
+      image: imageAsian,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageAsian);
+        return await response.blob();
+      },
+    },
+    {
+      id: "11",
+      label: "Pixel",
+      image: imagePixel,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imagePixel);
+        return await response.blob();
+      },
+    },
+    {
       id: "12",
+      label: "Cartoon",
+      image: imageCartoon,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageCartoon);
+        return await response.blob();
+      },
+    },
+    {
+      id: "13",
+      label: "Manga",
+      image: imageManga,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageManga);
+        return await response.blob();
+      },
+    },
+    {
+      id: "14",
+      label: "Renaissance 2",
+      image: imageRenaissance2,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageRenaissance2);
+        return await response.blob();
+      },
+    },
+    {
+      id: "15",
+      label: "Photo",
+      image: imagePhoto,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imagePhoto);
+        return await response.blob();
+      },
+    },
+    {
+      id: "16",
+      label: "T-Shirt",
+      image: imageTshirt,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageTshirt);
+        return await response.blob();
+      },
+    },
+    {
+      id: "17",
+      label: "Hoodie",
+      image: imageHoodie,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageHoodie);
+        return await response.blob();
+      },
+    },
+    {
+      id: "18",
+      label: "White Dress",
+      image: imageWhitedress,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageWhitedress);
+        return await response.blob();
+      },
+    },
+    {
+      id: "19",
+      label: "Denim",
+      image: imageDenim,
+      genderCategory: "man",
+      getFile: async () => {
+        const response = await fetch(imageDenim);
+        return await response.blob();
+      },
+    },
+    {
+      id: "20",
       label: "Artistic",
       image: imageArtisticW,
       genderCategory: "woman",
@@ -258,7 +355,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "13",
+      id: "21",
       label: "Cyberpunk",
       image: imageCyberpunkW,
       genderCategory: "woman",
@@ -268,7 +365,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "14",
+      id: "22",
       label: "Dreamy",
       image: imageDreamy,
       genderCategory: "woman",
@@ -278,7 +375,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "15",
+      id: "23",
       label: "Fashion",
       image: imageFashion,
       genderCategory: "woman",
@@ -288,7 +385,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "16",
+      id: "24",
       label: "Korean",
       image: imageKorean,
       genderCategory: "woman",
@@ -298,7 +395,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "17",
+      id: "25",
       label: "Nature",
       image: imageNature,
       genderCategory: "woman",
@@ -308,7 +405,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "18",
+      id: "26",
       label: "Renaissance",
       image: imageRenaissanceW,
       genderCategory: "woman",
@@ -318,7 +415,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "19",
+      id: "27",
       label: "Retro",
       image: imageRetroW,
       genderCategory: "woman",
@@ -328,7 +425,7 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "20",
+      id: "28",
       label: "School",
       image: imageSchool,
       genderCategory: "woman",
@@ -338,22 +435,72 @@ const GeneratePage = () => {
       },
     },
     {
-      id: "21",
-      label: "Soft",
-      image: imageSoft,
-      genderCategory: "woman",
-      getFile: async () => {
-        const response = await fetch(imageSoft);
-        return await response.blob();
-      },
-    },
-    {
-      id: "22",
+      id: "29",
       label: "Sunset",
       image: imageSunset,
       genderCategory: "woman",
       getFile: async () => {
         const response = await fetch(imageSunset);
+        return await response.blob();
+      },
+    },
+    {
+      id: "30",
+      label: "Asian",
+      image: imageAsianW,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imageAsianW);
+        return await response.blob();
+      },
+    },
+    {
+      id: "31",
+      label: "Pixel",
+      image: imagePixelW,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imagePixelW);
+        return await response.blob();
+      },
+    },
+    {
+      id: "32",
+      label: "Cartoon",
+      image: imageCartoonW,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imageCartoonW);
+        return await response.blob();
+      },
+    },
+    {
+      id: "33 ",
+      label: "Manga",
+      image: imageMangaW,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imageMangaW);
+        return await response.blob();
+      },
+    },
+    {
+      id: "34",
+      label: "Renaissance 2",
+      image: imageRenaissanceW2,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imageRenaissanceW2);
+        return await response.blob();
+      },
+    },
+    {
+      id: "35",
+      label: "Photo",
+      image: imagePhotoW,
+      genderCategory: "woman",
+      getFile: async () => {
+        const response = await fetch(imagePhotoW);
         return await response.blob();
       },
     },
@@ -530,29 +677,43 @@ const GeneratePage = () => {
   };
 
   const generate = async (source, target) => {
+
     const url = "https://dyahai-proxy.vercel.app/style/run";
     const headers = {
       "Content-Type": "application/json",
       "X-Idempotency-Key": `${principalId}-${Date.now()}`,
     };
+
     const body = {
       input: {
-        source_image: source,
-        target_image: target,
-        source_indexes: "-1",
-        target_indexes: "-1",
-        background_enhance: true,
-        face_restore: true,
-        face_upsample: true,
-        upscale: 1,
-        codeformer_fidelity: 0.2,
-        output_format: "JPEG",
+        prompt: "a portrait of a human, looking directly at the camera",
+        negative_prompt: "(deformed, blurry, long neck, bad collar, cgi, bad anatomy, big body)",
+        face_image: source, 
+        style_image: target, 
+        num_inference_steps: 100,
+        guidance_scale: 1.0,
+        width: 512,
+        height: 512,
       },
     };
 
+    try {
+      console.log("Sending request to RunPod API...");
     const response = await axios.post(url, body, { headers });
+
     return response.data;
+    } catch (error) {
+      console.error("RunPod API Error:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      throw error;
+    }
   };
+
 
   const uploadImageToBackend = async (imageUrl, cid) => {
     try {
@@ -580,7 +741,9 @@ const GeneratePage = () => {
         });
         return;
       }
-      const base64Image = response.output.image;
+      const base64Image =   response.output.image;
+
+
       if (!base64Image) {
         showPopup({
           title: "No image returned from backend.",
@@ -610,6 +773,8 @@ const GeneratePage = () => {
         reader.readAsDataURL(blob);
       });
       const storachaResult = await uploadBlobToStoracha(blob);
+      console.log("ini result", storachaResult.toString())
+      console.log(`https://${storachaResult.toString()}.ipfs.w3s.link/`)
       const metadata = {
         id: storachaResult.toString(),
         name: `${selectedStyle.label} ${selectedStyle.genderCategory}`,
@@ -623,8 +788,10 @@ const GeneratePage = () => {
         is_public: false,
         is_minted: false,
       };
+
       setMinting(metadata);
       await actor.save_image_to_store(metadata);
+
       const finalUrl = `https://${storachaResult.toString()}.ipfs.w3s.link/`;
       setState((prev) => ({ ...prev, imageUrl: dataUrl }));
       setUrlGenerateResult(finalUrl);
@@ -684,6 +851,7 @@ const GeneratePage = () => {
       setShowMintingSnap(false);
       return;
     }
+
     setShowMintingSnap(true);
   };
 

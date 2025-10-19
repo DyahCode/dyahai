@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 
 
-// const BeforeFreeToUse = "https://bafybeig7whlap6a7w5277tmlatfyaazkjejd5gsi2bdupjf7t5ynks56ly.ipfs.w3s.link/before.png" //error
-const BeforeFreeToUse = "https://bafkreicsu4crctuj72y3jcwrjm6uts2kd5jnnkxwpk4p5wkgn6yxx6hiwe.ipfs.w3s.link/?filename=before.png"
-const AfterFreeToUse = "https://bafybeieqxbgazloh6wpptgdt7uzdwdkuf4fsfeo3eb5wz4tyq22wfifimq.ipfs.w3s.link/after.png"
+const BeforeFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/free-to-use/before.webp"
+const AfterFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/free-to-use/after.webp"
 
 const animationVariantOne = {
   hidden: { scale: 1, opacity: 0, y: 0 },
