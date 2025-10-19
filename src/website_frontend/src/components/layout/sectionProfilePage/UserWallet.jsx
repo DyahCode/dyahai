@@ -164,7 +164,7 @@ const WalletPage = () => {
 
             {/* === NFT List === */}
             <div className="w-full bg-primaryColor p-4 rounded-md border border-borderShade">
-              <div className="overflow-y-auto max-h-[400px] pr-2">
+              <div className="overflow-y-auto max-h-[320px] pr-2">
                 {userNFT.length === 0 ? (
                   <p className="text-gray-500 text-center py-4">
                     No NFTs found.

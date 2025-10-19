@@ -4,8 +4,8 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FaArrowsLeftRight } from "react-icons/fa6";
 
 
-const HdAfter = "https://bafybeifg4grodncflcjhocb3eo4jxhly2co7gtio4apo4mil2tw42ypixq.ipfs.w3s.link" //error
-const HdBefore = "https://bafybeiegirbbarj7kp3purg34dfm7nl44fpagejrpcxj5lfqie25jdmidu.ipfs.w3s.link/before.png"
+const HdAfter = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/after.webp"
+const HdBefore = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/before.webp"
 
 const BeforeAfterSlider = () => {
   const [rangeValue, setRangeValue] = useState(25);
