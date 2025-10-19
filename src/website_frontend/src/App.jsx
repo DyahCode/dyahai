@@ -12,8 +12,10 @@ import ProfilePage from "./pages/ProfilePage";
 import PricingPage from "./pages/PricingPage";
 import CreditPaymentPage from "./pages/CreditPaymentPage";
 import NotFoundPage from "./pages/404Page";
-import BlockExplorerPage  from "../src/pages/BlockExplorerPage";
 import NftCollection from "./pages/NftCollectionPage";
+import BlockExplorerPage from "../src/pages/BlockExplorerPage";
+import BlockExplore from "./components/layout/sectionBlockExplorer/BlockExplore";
+import BlockDetail from "./components/layout/sectionBlockExplorer/BlockDetail";
 
 function App() {
   return (
@@ -51,9 +53,11 @@ function App() {
             <Route path="/*" element={<NotFoundPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/terms" element={<TermsSerivePage />} />
-            <Route path="/dyascan" element={<BlockExplorerPage />} />
+            <Route path="/block-explorer" element={<BlockExplorerPage />}>
+              <Route index element={<BlockExplore />} />
+              <Route path=":hash" element={<BlockDetail />} />
+            </Route>
             <Route path="/nft-collection" element={<NftCollection />} />
-
           </Routes>
         </Router>
       </AuthProvider>

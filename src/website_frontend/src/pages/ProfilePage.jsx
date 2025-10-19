@@ -145,15 +145,7 @@ const ProfilePage = () => {
   return (
     <>
       <main className="bg-primaryColor h-full md:h-dvh w-full flex flex-col justify-between md:flex-row md:overflow-hidden">
-        <Navbar
-          navbarStyle={"secondary"}
-          principalId={principalId}
-          isLoggedIn={isLoggedIn}
-          credit={credit}
-          Login={Login}
-          Logout={Logout}
-          tier={tier}
-        />
+        <Navbar navbarStyle={"secondary"} />
         <section className="pt-[8dvh] w-full flex justify-end flex-row h-dvh">
           {/* right side */}
           <section className="bg-secondaryColor border-borderShade text-fontPrimaryColor right-0 w-fit lg:min-w-[25rem] lg:w-[25rem] border-l-2 border-opacity-50 order-last flex flex-col justify-between p-2 lg:py-8 lg:px-10">
@@ -165,18 +157,16 @@ const ProfilePage = () => {
                   <li
                     key={index}
                     onClick={() => setSelectedMenu(item.name)}
-                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${
-                      selectedMenu === item.name
-                        ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
-                        : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                    }`}
+                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${selectedMenu === item.name
+                      ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
+                      : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                      }`}
                   >
                     <div
-                      className={`text-2xl items-center justify-center flex aspect-square ${
-                        selectedMenu === item.name
-                          ? "text-accentColor"
-                          : "text-fontPrimaryColor/70"
-                      }`}
+                      className={`text-2xl items-center justify-center flex aspect-square ${selectedMenu === item.name
+                        ? "text-accentColor"
+                        : "text-fontPrimaryColor/70"
+                        }`}
                     >
                       {item.icon}
                     </div>

@@ -245,14 +245,7 @@ const PricingPage = () => {
   return (
     <div className="flex mflex h-full w-full flex-col items-center justify-center">
       <Navbar
-        navbarStyle="secondary"
-        principalId={principalId}
-        isLoggedIn={isLoggedIn}
-        credit={credit}
-        Login={Login}
-        Logout={Logout}
-        tier={tier}
-      />
+        navbarStyle="secondary" />
 
       <Container id="plan" className="flex flex-col items-center mt-[40dvh] space-y-60">
         <section>
