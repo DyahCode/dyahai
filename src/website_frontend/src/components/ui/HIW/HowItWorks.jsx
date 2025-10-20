@@ -7,9 +7,9 @@ const HowItWorks = () => {
   const [stepWidth, setStepWidth] = React.useState(getStepWidth());
 
   function getStepWidth() {
-    if (window.innerWidth >= 1024) return 22 * 16; 
-    if (window.innerWidth >= 768) return 20 * 16; 
-    return 18 * 16; 
+    if (window.innerWidth >= 1024) return 22 * 16;
+    if (window.innerWidth >= 768) return 20 * 16;
+    return 18 * 16;
   }
 
   React.useEffect(() => {
@@ -76,11 +76,11 @@ const HowItWorks = () => {
               className="h-fit my-10 space-y-8 justify-start shrink-0"
             >
               {/* head image */}
-              <div className="w-[90%] h-[12rem] flex items-end my-4 bg-n-1/5 border border-n-1/10 rounded-xl overflow-hidden">
+              <div className="w-[90%] h-[12rem] flex items-end my-4 rounded-xl overflow-hidden">
                 <img
                   src={step.img}
                   alt={step.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
 
@@ -166,31 +166,31 @@ const steps = [
   {
     title: "Upload",
     desc: "Upload your photo to start the magic. DyahAI gets it ready in seconds.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/upload.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-1.webp",
   },
   {
     title: "Choose Style",
     desc: "Pick the vibe you like — realistic, anime, cinematic, or something totally unique.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/choose-style.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-2.webp",
   },
   {
     title: "AI Processing",
     desc: "Our AI takes over, crafting your image with the style you’ve chosen.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/ai-process.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-3.webp",
   },
   {
     title: "Generate",
     desc: "Watch your idea turn into a brand-new artwork, right before your eyes.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/generate.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-4.webp",
   },
   {
     title: "Enhance",
     desc: "Customize your look! Try different moods or explore more variations.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/enhance.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-5.webp",
   },
   {
     title: "Download",
     desc: "Securely stored on IPFS — download or revisit anytime you want.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/howitworks/download.png",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/howitworks/HowItWorks-6.webp",
   },
 ];
