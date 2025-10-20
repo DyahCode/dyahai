@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useTransform, useMotionValueEvent, animate } from "framer-motion";
 
-const HdAfter = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/after.webp"
-const HdBefore = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/hd/before.webp"
+const HdAfter = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/hd-after.webp"
+const HdBefore = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/hd-before.webp"
 
 const BeforeAfterSlider = () => {
   const containerRef = useRef(null);

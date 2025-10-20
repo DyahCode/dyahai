@@ -15,7 +15,7 @@ import { useAuth } from "../../provider/authProvider";
 import { usePopup } from "../../provider/PopupProvider";
 
 const HeroProfile =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/about/image-gallery-1.webp";
 
 const Navbar = ({ navbarStyle }) => {
   const navigate = useNavigate();
@@ -44,32 +44,32 @@ const Navbar = ({ navbarStyle }) => {
     dropdownRef: ConnectRef,
   } = useDropdown();
 
+  const plans = [
+    {
+      name: "Premium",
+      features: ["Full access to our models", "Includes 25 DYA Token"],
+    },
+    {
+      name: "Ultimate",
+      features: [
+        "Full access to our models",
+        "Includes 50 DYA Token",
+        "Custom API integration",
+        "Full model customization",
+      ],
+    },
+  ];
+
   const menuItems = [
     { name: "Home", href: "/" },
     {
-      name: "Services",
-      submenu: [
-        {
-          name: "Generate Images",
-          details: "Learn Our Models Works",
-          href: "/generate",
-        },
-        {
-          name: "Buy Coin",
-          details: "Buy some coin for generate Images",
-          href: "/topup",
-        },
-        {
-          name: "Pricing Plan",
-          details: "Upgrade your plan with advanced features",
-          href: "/pricing",
-        },
-        {
-          name: "Mint",
-          details: "Publish your generate images with NFT Minting",
-          href: "/nft-collection",
-        },
-      ],
+      name: "Services", submenu: [
+        // { name: "AI Models", details: "Learn Our Models Works", href: "/" },
+        { name: "Generate Images", details: "Learn Our Models Works", href: "/generate" },
+        { name: "Buy Tokens", details: "Buy DYA Token for Generate Images", href: "/topup" },
+        { name: "Pricing Plan", details: "Upgrade Your Plan With Advanced Features", href: "/pricing" },
+        { name: "Mint NFT", details: "Publish Your Generate Images With NFT Minting", href: "/nft-collection" },
+      ]
     },
     {
       name: "Company",
@@ -174,7 +174,7 @@ const Navbar = ({ navbarStyle }) => {
         console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
         break;
-      case "InternetIdentity":
+      case "Internet Identity":
         console.log(">> Connecting via Internet Identity...");
         console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
@@ -289,12 +289,11 @@ const Navbar = ({ navbarStyle }) => {
                       <div className="absolute right-0">
                         <div className="bg-secondaryColor border-borderShade border-opacity-40 text-fontPrimaryColor w-full h-full rounded-lg border z-20 px-4 py-2">
                           <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => navigate("/topup")}
+                            type="outline"
+                            onClick={() => navigate("/profile/wallet")}
                             className="w-max px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                           >
-                            <p className="text-sm">Mint Token</p>
+                            <p className="text-sm">Go to wallet</p>
                           </Button>
                         </div>
                       </div>
@@ -303,8 +302,8 @@ const Navbar = ({ navbarStyle }) => {
 
                   <div className="relative space-y-3" ref={userRef}>
                     <Button
-                      variant="outline"
-                      size="icon"
+                      type="outline"
+                      withIcon
                       onClick={toggleUser}
                       className="hover:bg-accentColor hover:border-accentColor"
                       isMotion
@@ -390,9 +389,9 @@ const Navbar = ({ navbarStyle }) => {
                                 </span>
                                 <span className="text-primaryColor font-semibold absolute right-0 top-0 py-1 px-4 text-sm bg-red-400 rounded-es-xl">
                                   {tier === "Basic"
-                                    ? "2.02  ICP / Mo"
+                                    ? "$12.1  USD / Mo"
                                     : tier === "Premium"
-                                      ? "5.04 ICP / Mo"
+                                      ? "$18.14  USD / Mo"
                                       : "Free"}
                                 </span>
                                 <div className="mt-2 text-sm flex flex-col items-start">
@@ -413,7 +412,7 @@ const Navbar = ({ navbarStyle }) => {
                                     navigate("/pricing");
                                   }}
                                 >
-                                  <span>Next step</span>
+                                  <span onClick={() => navigate("/pricing")}>Next step</span>
                                   <FiArrowRightCircle size={16} />
                                 </button>
                               </div>
@@ -472,7 +471,7 @@ const Navbar = ({ navbarStyle }) => {
       >
         <div className="w-full flex items-center space-x-1 mb-4">
           <img
-            src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/logo/DyahAI-logo.svg"
+            src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/logo/DyahAI-logo.svg"
             alt=""
             className="w-6 h-6"
           />
@@ -535,19 +534,3 @@ const Navbar = ({ navbarStyle }) => {
 };
 
 export default Navbar;
-
-const plans = [
-  {
-    name: "Premium",
-    features: ["Full access to our models", "Includes 100 coin for generating"],
-  },
-  {
-    name: "Ultimate",
-    features: [
-      "Full access to our models",
-      "Includes 100 coin for generating",
-      "Custom API integration",
-      "Full model customization",
-    ],
-  },
-];

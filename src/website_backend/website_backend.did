@@ -86,6 +86,7 @@ service : (opt IndexArgs) -> {
   initialize_credit : () -> (bool);
   is_registered : (principal) -> (bool) query;
   mint_nft : (text, vec SetNFTItemRequest) -> (Result);
+  refund_balance : () -> ();
   save_image_to_store : (Metadata) -> ();
   send_http_post : (text, text) -> (ResponseAPI);
   transform : (TransformArgs) -> (HttpResponse) query;

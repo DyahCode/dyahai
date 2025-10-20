@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
+import { HttpAgent, Actor } from "@dfinity/agent";
+import { idlFactory, canisterId } from "../../../declarations/dyahai_token_index";
+import { Principal } from "@dfinity/principal";
 
 
 const BlockExplorerPage = () => {
@@ -23,58 +26,6 @@ const BlockExplorerPage = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     return allTransactions.slice(startIndex, startIndex + itemsPerPage);
   }, [currentPage, allTransactions]);
-
-  let hashCounter = 0;
-  const randomHash = () => {
-    hashCounter++;
-    return hashCounter.toString(16).padStart(64, "0");
-  };
-
-
-  const randomAddress = () => {
-    const charset = "abcdefghijklmnopqrstuvwxyz234567";
-    let str = "";
-    for (let i = 0; i < 55; i++) {
-      str += charset[Math.floor(Math.random() * charset.length)];
-    }
-    return str.match(/.{1,5}/g).join("-");
-  };
-
-  React.useEffect(() => {
-    GenerateDummy();
-  }, []);
-
-  const GenerateDummy = () => {
-    const dummyData = [];
-    for (let i = 300; i >= 1; i--) {
-      dummyData.push({
-        blockIndex: i,
-        parentHash: randomHash(),
-        operation: i % 3 === 0 ? "burn" : i % 3 === 1 ? "transfer" : "mint",
-        from: i % 3 === 0 ? randomAddress() : "Minting Account",
-        to: i % 3 === 0 ? "Minting Account" : randomAddress(),
-        amount: `${Math.floor(Math.random() * 10) + 1} DYA`,
-        fee: i % 3 === 1 ? "0.0001 DYA" : "0 DYA",
-        memo:
-          i % 3 === 0
-            ? `Burned token #${i}`
-            : i % 3 === 1
-              ? `Transfer token #${i}`
-              : `Minted reward token #${i}`,
-        txTimestamp: new Date(
-          Date.now() - i * 60000
-        ).toString(),
-      });
-    }
-    setAllTransactions(dummyData);
-    return dummyData;
-  }
-
-  useEffect(() => {
-    if (allTransactions !== null) {
-      console.log('allTransactions :>> ', allTransactions);
-    }
-  }, [allTransactions])
 
   const timeAgo = (date) => {
     const now = new Date();
@@ -114,14 +65,13 @@ const BlockExplorerPage = () => {
 
       let currentData = allTransactions;
       if (currentData.length === 0) {
-        console.error("allTransactions = 0");
-        currentData = await GenerateDummy(); 
+        currentData = await fetchTransactions();
+        setAllTransactions(currentData);
       }
 
       const found = currentData.find(
         (tx) => String(tx.parentHash) === String(transactionHash)
       );
-      console.log('Data ada :>> ', found);
       setSelectedTransaction(found);
     };
 
@@ -134,8 +84,92 @@ const BlockExplorerPage = () => {
     }
   }, [transactionHash, location.state, allTransactions]);
 
+  async function CreateAnonAgent(host) {
+  const agent = HttpAgent.create({
+    host: host,
+    shouldFetchRootKey: process.env.DFX_NETWORK !== "ic",
 
+  });
+  return agent;
+}
 
+  async function fetchTransactions() {
+    const host =
+      process.env.DFX_NETWORK === "ic"
+        ? "https://icp0.io"
+        : "http://localhost:5000";
+
+    const anonimAgent = await CreateAnonAgent(host);
+    const actor = Actor.createActor(idlFactory, { agent: anonimAgent, canisterId: canisterId });
+    const length = await numBlocks(actor);
+    const trx = await fetchBlockData(actor, 0, length);
+    return trx;
+  }
+
+  async function numBlocks(actor) {
+    const length = await actor.status();
+    const result = Number(length.num_blocks_synced);
+    return result;
+  }
+
+  async function fetchBlockData(actor, block, length) {
+    let args = {
+      start: BigInt(block),
+      length: BigInt(length),
+    };
+    const data = await actor.get_blocks(args);
+    return parseLedgerBlocks(data);
+  }
+
+  function parseLedgerBlocks(data) {
+    const decoder = new TextDecoder();
+
+    const opMap = {
+      xfer: "transfer",
+      mint: "mint",
+      burn: "burn",
+    };
+
+    function decodeHash(blobObj) {
+      if (!blobObj || !blobObj.Blob) return null;
+      const bytes = Object.values(blobObj.Blob);
+      return bytes.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+    function decodeBlob(blobObj) {
+      if (!blobObj || !blobObj.Blob) return null;
+      const bytes = Object.values(blobObj.Blob);
+      return decoder.decode(new Uint8Array(bytes));
+    }
+
+    function decodeAddress(arr) {
+      if (!arr || !Array.isArray(arr)) return null;
+      const blob = arr[0]?.Blob;
+      if (!blob) return null;
+      return Principal.fromUint8Array(blob).toString();
+    }
+    return (data.blocks || []).map((block, index) => {
+      const map = Object.fromEntries(block.Map);
+
+      const tx = Object.fromEntries(map.tx.Map);
+      const txType = opMap[tx.op?.Text] || tx.op?.Text;
+      const feeValue = map.fee?.Nat64 ?? tx.fee?.Nat64 ?? 0;
+      return {
+        blockIndex: index,
+        fee: Number(feeValue) / 100_000_000,
+        timestamp: new Date(Number(map.ts?.Nat64 || 0) / 1_000_000),
+        parentHash: decodeHash(map.phash),
+        amount: Number(tx.amt?.Nat64 || 0) / 100_000_000,
+        from:
+          txType == "mint" ? "Minting Account" : decodeAddress(tx.from?.Array),
+        to: txType == "burn" ? "Minting Account" : decodeAddress(tx.to?.Array),
+        memo: decodeBlob(tx.memo),
+        operation: txType,
+        txTimestamp: tx.ts?.Nat64
+          ? new Date(Number(tx.ts?.Nat64) / 1_000_000).toString()
+          : null,
+      };
+    }).reverse();
+  }
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">

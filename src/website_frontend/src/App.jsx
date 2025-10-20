@@ -43,6 +43,14 @@ function App() {
               }
             />
             <Route
+              path="/profile/:section"
+              element={
+                <RequireAuth>
+                  <ProfilePage />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="/topup"
               element={
                 <RequireAuth>

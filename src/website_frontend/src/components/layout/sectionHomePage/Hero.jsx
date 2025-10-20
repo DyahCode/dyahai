@@ -9,15 +9,15 @@ import Button from "../../ui/Button";
 import EcosystemSupport from "./EcosystemSupport";
 
 const BgHeroImage =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/background-hero.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/background-hero.webp";
 const HeroImage =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/hero.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/hero.webp";
 
 const PickStyle = [
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/pick-styles/hero-pick-styles-1.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/pick-styles/hero-pick-styles-2.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/pick-styles/hero-pick-styles-3.webp",
-];
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/pick-styles/hero-pick-styles-1.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/pick-styles/hero-pick-styles-2.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/pick-styles/hero-pick-styles-3.webp",
+]
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -36,7 +36,6 @@ const Hero = () => {
         leftLabel: "Login",
         onLeft: () => {
           toggleConnect();
-
         },
         rightLabel: "Cancel",
         onRight: () => {
@@ -46,7 +45,7 @@ const Hero = () => {
     }
   };
 
-  const handleConnect = (onConnectType, popupId) => {
+  const handleConnect = (onConnectType) => {
     switch (onConnectType) {
       case "Plug":
         if (!window.ic?.plug) {
@@ -65,13 +64,11 @@ const Hero = () => {
         }
         console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
-        hidePopup(popupId)
         break;
-      case "InternetIdentity":
+      case "Internet Identity":
         console.log(">> Connecting via Internet Identity...");
         console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
-        hidePopup(popupId)
         break;
       default:
         console.warn("Unknown connect type");
@@ -132,7 +129,7 @@ const Hero = () => {
                     <div className="hidden md:flex absolute md:-left-[1.5rem] lg:-left-[3rem] xl:-left-[5.5rem] bottom-[12rem] px-2 py-2 bg-n-3/10 backdrop-blur border border-n-1/10 space-x-2 rounded-2xl">
                       <div className="p-1 bg-n-3/10 rounded-xl">
                         <img
-                          src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/hero/uploaded-images.webp"
+                          src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/hero/uploaded-images.webp"
                           width={60}
                           alt="User Image Upload"
                           className="rounded-lg"

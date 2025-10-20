@@ -84,25 +84,25 @@ const GenerateHistory = ({
     });
   }
 
-  async function handleMintingNft(metadata) {
-    const result = await MintNft(actor, principalId, {
-      id: metadata.id,
-      name: metadata.name,
-      description: metadata.description,
-      url: metadata.assets.url,
-      mime: metadata.assets.mime,
-    });
+  // async function handleMintingNft(metadata) {
+  //   const result = await MintNft(actor, principalId, {
+  //     id: metadata.id,
+  //     name: metadata.name,
+  //     description: metadata.description,
+  //     url: metadata.assets.url,
+  //     mime: metadata.assets.mime,
+  //   });
 
-    if (result.Ok) {
-      showPopup({
-        title: "NFT Minted",
-        message: `The NFT has been minted successfully.<br>Nft ID:${Number(result.Ok[0].Ok)}`,
-        type: "success",
-        leftLabel: "Done",
-        onLeft: () => hidePopup(),
-      });
-    }
-  }
+  //   if (result.Ok) {
+  //     showPopup({
+  //       title: "NFT Minted",
+  //       message: `The NFT has been minted successfully.<br>Nft ID:${Number(result.Ok[0].Ok)}`,
+  //       type: "success",
+  //       leftLabel: "Done",
+  //       onLeft: () => hidePopup(),
+  //     });
+  //   }
+  // }
 
   async function handleDownloadImage(image, id) {
     try {

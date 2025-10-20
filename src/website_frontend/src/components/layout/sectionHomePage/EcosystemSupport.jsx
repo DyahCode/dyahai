@@ -42,10 +42,10 @@ const EcosystemSupport = ({ className }) => {
 export default EcosystemSupport;
 
 const supportLogos = [
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/internet-computer.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/dfinity.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/disruptives-icphubs.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/internet-computer.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/dfinity.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/disruptives-icphubs.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/partners-logo/WCHL-2025.webp",
 ];

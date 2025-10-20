@@ -10,13 +10,13 @@ import HowItWorks from "../../ui/HIW/HowItWorks";
 import ArtStylesSlider from "../../ui/ArtStyles";
 
 const AISectionImage1 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-1.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/AI-image-1.webp";
 const AISectionImage2 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-2.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/AI-image-2.webp";
 const AISectionImage3 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-3.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/AI-image-3.webp";
 const AISectionImage4 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/AI-image-4.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/AI-image-4.webp";
 
 
 const Feature = () => {
@@ -165,7 +165,7 @@ const Feature = () => {
 
             <div className="lg:w-[45em] w-full h-full items-center justify-center overflow-hidden border border-n-1/10 rounded-3xl relative">
               <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
-                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
 
               <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">
@@ -181,11 +181,11 @@ const Feature = () => {
           <div className="w-full h-fit flex flex-col lg:flex-row my-10 px-10 max-lg:gap-y-8">
             <div className="lg:w-[45em] w-full h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
               <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
-                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
               <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">
                 <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
-                  <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/generation-process-animation.gif" alt="AI Generation Process" className="object-fill" />
+                  <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/generation-process-animation.gif" alt="AI Generation Process" className="object-fill" />
                 </div>
               </div>
             </div>
@@ -214,7 +214,7 @@ const Feature = () => {
 
             <div className="lg:w-[45em] w-full h-full items-center justify-center overflow-hidden border border-n-1/10 rounded-3xl relative">
               <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
-                <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
+                <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
 
               <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">

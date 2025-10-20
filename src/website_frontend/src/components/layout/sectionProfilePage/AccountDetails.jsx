@@ -1,5 +1,5 @@
 import React from "react";
-const HeroProfile = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp"
+const HeroProfile = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/about/image-gallery-1.webp"
 
 const AccountDetails = ({ principalId }) => {
   const currentDate = new Date();

@@ -1,10 +1,11 @@
 import { Principal } from "@dfinity/principal";
 import { dyahai_token_index } from "../../../declarations/dyahai_token_index";
+import { dyahai_token } from "../../../declarations/dyahai_token";
 import { nft } from "../../../declarations/nft";
-export const fetchBalance = async (authclient, retries = 3) => {
-  const balance = await dyahai_token_index.icrc1_balance_of({
+export const fetchBalance = async (authclient) => {
+  const balance = await dyahai_token.icrc1_balance_of({
     owner: Principal.fromText(authclient.principal),
-    subaccount: [],
+    subaccount: []
   });
   if (balance > 0) {
     const amountStr = balance.toString();
@@ -13,12 +14,10 @@ export const fetchBalance = async (authclient, retries = 3) => {
     const fraction = padded.slice(-8);
     const fractionTrimmed = fraction.replace(/0+$/, "");
     return fractionTrimmed ? `${whole}.${fractionTrimmed}` : whole;
-  } else if (retries > 0) {
-    return fetchBalance(authclient, retries - 1);
   } else {
     return 0;
   }
-};
+}
 export const fetchTransaction = async (authclient) => {
   const transaction = await dyahai_token_index.get_account_transactions({
     account: {
@@ -31,8 +30,7 @@ export const fetchTransaction = async (authclient) => {
   return transaction;
 };
 
-export const BurnTokens = async (actorLedger) => {
-  const message = "Burned 1 DYA to generate image";
+export const BurnTokens = async (actorLedger,message) => {
   const encoder = new TextEncoder();
   const memoBlob = message ? [encoder.encode(message)] : [];
   const burn = await actorLedger.icrc1_transfer({
@@ -58,15 +56,12 @@ export const TransferToken = async (actorLedger, receiver, userAmount) => {
 
   console.log("User input:", userAmount, "=> e8s:", amountE8s.toString());
 
-  const encoder = new TextEncoder();
-  const memoBlob = message ? [encoder.encode(message)] : [];
-
   const transfer = await actorLedger.icrc1_transfer({
     from_subaccount: [],
     to: { owner: Principal.fromText(receiver), subaccount: [] },
     fee: [],
     created_at_time: [BigInt(Date.now() * 1_000_000)],
-    memo: memoBlob,
+    memo: [],
     amount: amountE8s,
   });
 
@@ -74,13 +69,6 @@ export const TransferToken = async (actorLedger, receiver, userAmount) => {
 };
 
 export const MintNft = async (Actor, principal, metadata) => {
-  // contoh parameter metadata = {
-  //   id: breymcamcalcm,
-  //   name: "",
-  //   description: "",
-  //   url: "",
-  //   mime: ""
-  // }
   const index = await nft.icrc7_tokens([], []);
   const id = index.length ? BigInt(index[index.length - 1]) + 1n : 1n;
 
@@ -137,7 +125,10 @@ export const MintNft = async (Actor, principal, metadata) => {
   ];
 
   const result = await Actor.mint_nft(metadata.id, mintArgs);
-  return result;
+  return { 
+    id: id,
+    result 
+  };
 };
 
 export const TransferNft = async (actorNft, receiver, tokenId) => {
@@ -155,6 +146,7 @@ export const TransferNft = async (actorNft, receiver, tokenId) => {
   ]);
 
   return transfer;
+
 };
 export const BurnNft = async (actorNft, tokenId) => {
   const message = "Burn NFT ID:" + tokenId;
@@ -169,14 +161,14 @@ export const BurnNft = async (actorNft, tokenId) => {
   return burn;
 };
 
-export const fetchTrxCollections = async () => {
-  const block = await nft.icrc3_get_blocks([]);
+export const fetchTrxCollections = async (anonimAgent) => {
+  const block = await anonimAgent.icrc3_get_blocks([]);
   if (block.log_length == 0n) {
     return {
       status: false,
     };
   }
-  const trx = await nft.icrc3_get_blocks([
+  const trx = await anonimAgent.icrc3_get_blocks([
     {
       start: BigInt(0),
       length: block.log_length,
@@ -186,11 +178,10 @@ export const fetchTrxCollections = async () => {
     status: true,
     data: trx,
   };
-  
 };
 
-export const fetchAllCollections = async () => {
-  const nfts = await nft.icrc7_tokens([], []);
+export const fetchAllCollections = async (anonimAgent) => {
+  const nfts = await anonimAgent.icrc7_tokens([], []);
 
   if (nfts.length == 0) {
     return {
@@ -200,7 +191,7 @@ export const fetchAllCollections = async () => {
 
   const metadataList = await Promise.all(
     nfts.map(async (tokenId) => {
-      const [metadata] = await nft.icrc7_token_metadata([tokenId]);
+      const [metadata] = await anonimAgent.icrc7_token_metadata([tokenId]);
       return {
         id: Number(tokenId),
         metadata,

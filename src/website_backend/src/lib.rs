@@ -45,6 +45,16 @@ pub use wallet::types::*;
 //     }
 // }
 
+#[ic_cdk::update]
+pub async fn refund_balance() {
+    let principal = ic_cdk::caller();
+    if principal == Principal::anonymous() && !users::is_registered(principal) {
+        ic_cdk::trap("Anonymous principal not allowed or user not registered");
+    }
+    add_credit(principal, 1, "Refunded 1 DYA token".into()).await;
+}
+
+
 #[update]
 pub async fn get_tx_summary(
     block_height: u64,

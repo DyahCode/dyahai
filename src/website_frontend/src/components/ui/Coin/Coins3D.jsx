@@ -51,11 +51,11 @@ export default function Coins3DScrollTrigger({
           className="absolute inset-0 w-full h-full flex"
           style={{ transformStyle: "preserve-3d" }}
         >
-          <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/advantages/introduce-dya-tokenomics.svg" alt="" />
+          <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/advantages/introduce-dya-tokenomics.svg" alt="" />
         </motion.div>
       </motion.div>
       <div className="relative z-1 pointer-events-none select-none md:w-[28rem] -translate-y-8">
-        <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/abstract-coins.webp" alt="" className="object-fill" />
+        <img src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/abstract-coins.webp" alt="" className="object-fill" />
       </div>
     </section >
   );

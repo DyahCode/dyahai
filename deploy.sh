@@ -44,7 +44,7 @@ cat > init-args-nft.did <<EOF
       tx_window = null;
       burn_account = null;
       default_take_value = opt (1_000 : nat);
-      logo = opt "https://hvfji-caaaa-aaaau-abx7q-cai.icp0.io/assets/dya-18e7c22d.svg";
+      logo = opt "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/logo/DyahAI-logo.svg";
       permitted_drift = null;
       name = opt "DyahAI NFT";
       description = opt "A Collection of Generative Image by DyahAI";

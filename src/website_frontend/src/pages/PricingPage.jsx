@@ -19,7 +19,7 @@ const plans = [
     features: [
       "Mint Token",
       "Limited access to basic AI models",
-      "Includes 3 DYA Token for generating",
+      "Includes 3 DYA Token",
       "Maximum 3 Generate History Saved",
     ],
     buttonText: "Free",
@@ -33,7 +33,7 @@ const plans = [
     features: [
       "Mint Token",
       "Full access to basic and advanced AI models",
-      "Includes 25 DYA Token for generating",
+      "Includes 25 DYA Token",
       "Unlimited Generate history saved",
       "Priority customer support",
     ],
@@ -46,14 +46,14 @@ const plans = [
     credit: 50,
     description: "A complete solution for organizations, and teams.",
     features: [
+      "Mint Token",
       "All Premium features included",
       "Full access to basic and advanced AI models",
-      "Includes 50 DYA Token for generating",
+      "Includes 50 DYA Token",
       "Unlimited Generate history saved",
       "Priority customer support",
       "Custom API integration",
       "Full model customization",
-      "Mint Token"
     ],
     buttonText: "Upgrade",
   },

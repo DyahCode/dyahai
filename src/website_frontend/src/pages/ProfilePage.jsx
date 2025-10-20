@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Navbar from "../components/layout/Navbar";
 import AccountDetails from "../components/layout/sectionProfilePage/AccountDetails";
@@ -8,7 +8,7 @@ import UserWallet from "../components/layout/sectionProfilePage/UserWallet";
 import Button from "../components/ui/Button";
 
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { TbLogout } from "react-icons/tb";
@@ -16,13 +16,13 @@ import { TbLogout } from "react-icons/tb";
 const plans = [
   {
     name: "Premium",
-    features: ["Full access to our models", "Includes 100 coin for generating"],
+    features: ["Full access to our models", "Includes 25 DYA"],
   },
   {
     name: "Ultimate",
     features: [
       "Full access to our models",
-      "Includes 100 coin for generating",
+      "Includes 50 DYA",
       "Custom API integration",
       "Full model customization",
     ],
@@ -43,7 +43,30 @@ const ProfilePage = () => {
     authClient,
     refreshCredit,
   } = useAuth();
-  const [selectedMenu, setSelectedMenu] = useState("Account Detail");
+  const { section } = useParams();
+
+  const sectionMap = {
+    account: "Account Detail",
+    history: "Transaction History",
+    generate: "Generate History",
+    wallet: "Wallet",
+  };
+
+  const [selectedMenu, setSelectedMenu] = useState(
+    sectionMap[section] || "Account Detail"
+  );
+  useEffect(() => {
+    if (!section) {
+      navigate("/profile/account", { replace: true });
+    }
+  }, [section]);
+
+  useEffect(() => {
+    if (sectionMap[section]) {
+      setSelectedMenu(sectionMap[section]);
+    }
+  }, [section]);
+
   const asideItems = [
     {
       name: "Account Detail",
@@ -157,12 +180,16 @@ const ProfilePage = () => {
                 {asideItems.map((item, index) => (
                   <li
                     key={index}
-                    onClick={() => setSelectedMenu(item.name)}
-                    className={`flex max-lg:w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${
-                      selectedMenu === item.name
-                        ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
-                        : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                    }`}
+                    onClick={() => {
+                      const path = Object.keys(sectionMap).find(
+                        (key) => sectionMap[key] === item.name
+                      );
+                      navigate(`/profile/${path || ""}`);
+                    }}
+                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${selectedMenu === item.name
+                      ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
+                      : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                      }`}
                   >
                     <div
                       className={`text-2xl items-center justify-center flex aspect-square ${
@@ -196,9 +223,9 @@ const ProfilePage = () => {
                   </span>
                   <span className="text-primaryColor font-semibold absolute right-0 top-0 py-1 px-4 text-sm bg-red-400 rounded-es-xl">
                     {tier === "Basic"
-                      ? "2.02  ICP / Mo"
+                      ? "$12.1  USD / Mo"
                       : tier === "Premium"
-                        ? "5.04 ICP / Mo"
+                        ? "$18.14 USD / Mo"
                         : "Free"}
                   </span>
                   <div className="mt-2 text-sm flex flex-col items-start">
@@ -219,7 +246,7 @@ const ProfilePage = () => {
                     }}
                     className="mt-4 bg-fontPrimaryColor flex items-center justify-center gap-x-4 rounded-full px-4 py-2 text-xs font-medium text-black"
                   >
-                    <span>Next step</span>
+                    <span onClick={() => navigate("/pricing")}>Next step</span>
                     <FiArrowRightCircle size={16} />
                   </button>
                 </div>

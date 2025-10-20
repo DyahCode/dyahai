@@ -22,7 +22,7 @@ const nftSchema = Yup.object().shape({
 });
 
 const WalletPage = () => {
-  const { credit, actorLedger, actorNft, authClient, principalId } = useAuth();
+  const { credit,actor, actorLedger, actorNft, authClient, principalId, refreshCredit } = useAuth();
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,11 +69,37 @@ const WalletPage = () => {
     try {
       setLoading(true);
       const trx = await TransferToken(actorLedger, receiver, Number(amount));
+      if (trx.Ok) {
+        await refreshCredit(actor,authClient);
+        
+      showPopup({
+        title: "Transfer Success!",
+        message: "Token send successfully.",
+        type: "success",
+        leftLabel: "Ok",
+        onLeft: () => {
+          hidePopup();
+        },
+      });
+
+      } else {
+        
+      showPopup({
+        title: "Transfer Failed!",
+        message: "Token send failed.",
+        type: "warning",
+        leftLabel: "Ok",
+        onLeft: () => {
+          hidePopup();
+        },
+      });
+
+      }
       console.log("Transaction result:", trx);
 
       showPopup({
         title: "Transfer Success!",
-        message: "Token sent successfully.",
+        message: "Token send successfully.",
         type: "warning",
         leftLabel: "Ok",
         onLeft: () => {
@@ -330,7 +356,7 @@ const WalletPage = () => {
 
 
                       <div className="flex flex-col justify-center items-start w-full gap-1">
-                        <label htmlFor="principal">Recievel Principal</label>
+                        <label htmlFor="principal">Receival Principal</label>
                         <input
                           id="principal"
                           type="text"
@@ -377,7 +403,7 @@ const WalletPage = () => {
                     </div>
 
                     <div className="flex flex-col justify-center items-start w-full gap-1">
-                      <label htmlFor="principal">Recievel Principal</label>
+                      <label htmlFor="principal">Receival Principal</label>
                       <input
                         type="text"
                         id="principal"

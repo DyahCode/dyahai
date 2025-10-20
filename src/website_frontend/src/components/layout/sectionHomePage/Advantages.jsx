@@ -4,7 +4,7 @@ import HeadSection from "../HeadSection";
 import Coins3D from "../../ui/Coin/Coins3D";
 
 const IntroduceWeb3 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/introduce-web-3.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/introduce-web-3.webp";
 
 
 const Advantages = () => {
@@ -104,7 +104,7 @@ const Advantages = () => {
                         </svg>
                       </div>
                     </div>
-                    <h6 className="h6 text-left">NTFs Minting</h6>
+                    <h6 className="h6 text-left">NFTs Minting</h6>
                   </div>
                   <div className="w-full flex text-left">
                     <span className="body-2 text-n-3/80 ml-1 text-pretty">
@@ -142,7 +142,7 @@ const Advantages = () => {
                 <div className="w-full flex max-md:flex-col">
                   <div className="lg:flex-none lg:w-[60%] md:w-1/2 w-full h-fit flex items-center justify-center ">
                     <Coins3D
-                      logo="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/generation-process-animation.gif"
+                      logo="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/generation-process-animation.gif"
                       containerRef={advantagesRef}
                     />
                   </div>
@@ -201,7 +201,7 @@ const Advantages = () => {
                   {/* supply */}
                   <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5 lining-nums">{">"}100B</h5>
-                    <span className="body-2 text-n-3">supply Distribution</span>
+                    <span className="body-2 text-n-3">Supply Distribution</span>
                   </div>
 
                   {/* Blocks */}
@@ -213,13 +213,13 @@ const Advantages = () => {
                   {/* Burn Cycles */}
                   <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5">+70K</h5>
-                    <span className="body-2 text-n-3">Burn Cycles</span>
+                    <span className="body-2 text-n-3">Token Burned</span>
                   </div>
 
                   {/* Burn Cycles */}
                   <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
-                    <h5 className="h5">null</h5>
-                    <span className="body-2 text-n-3">null</span>
+                    <h5 className="h5">200%</h5>
+                    <span className="body-2 text-n-3">Ecosystem Growth</span>
                   </div>
                 </div>
 

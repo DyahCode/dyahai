@@ -43,7 +43,7 @@ const GettingStarted = () => {
       </div>
 
       <motion.img
-        src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/end-gradient.webp"
+        src="https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/background/end-gradient.webp"
         alt=""
         className="absolute bottom-0 left-0 z-0 w-full h-full object-cover pointer-events-none select-none"
         initial={{ opacity: 0 }}
