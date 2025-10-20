@@ -176,21 +176,21 @@ const steps = [
   {
     title: "AI Processing",
     desc: "Our AI takes over, crafting your image with the style you’ve chosen.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-2.webp",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-3.webp",
   },
   {
     title: "Generate",
     desc: "Watch your idea turn into a brand-new artwork, right before your eyes.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-2.webp",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-4.webp",
   },
   {
     title: "Enhance",
     desc: "Customize your look! Try different moods or explore more variations.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-2.webp",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-5.webp",
   },
   {
     title: "Download",
     desc: "Securely stored on IPFS — download or revisit anytime you want.",
-    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-2.webp",
+    img: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/howitworks/HowItWorks-6.webp",
   },
 ];
