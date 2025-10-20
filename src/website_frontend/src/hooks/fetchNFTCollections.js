@@ -1,8 +1,5 @@
 import { fetchAllCollections, fetchUserCollections } from "./wallet";
 
-/**
- * Helper untuk parsing metadata NFT
- */
 const parseNFTMetadata = (nftMeta) => {
   const obj = {};
   const fields = nftMeta;
@@ -19,8 +16,8 @@ const parseNFTMetadata = (nftMeta) => {
 };
 
 /**
- * Fetch semua NFT dari wallet js
- * @returns {Promise<Array>} Daftar semua NFT
+ * Fetch NFT 
+ * @returns {Promise<Array>} 
  */
 export const fetchAllNFT = async () => {
   try {
@@ -37,9 +34,9 @@ export const fetchAllNFT = async () => {
 };
 
 /**
- * Fetch NFT milik user yang sedang login
- * @param {Object} userNFT - client autentikasi pengguna
- * @returns {Promise<Array>} Daftar NFT milik user
+ * Fetch NFT user 
+ * @param {Object} userNFT 
+ * @returns {Promise<Array>} 
  */
 export const fetchUserNFT = async (userNFT) => {
   try {

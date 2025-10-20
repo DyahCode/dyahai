@@ -8,7 +8,6 @@ const EcosystemSupport = ({ className }) => {
         Grows together with
       </h5>
 
-      {/* Wrapper animasi */}
       <div className="relative w-full overflow-hidden">
         <motion.ul
           className="flex gap-16 min-w-max"
@@ -35,9 +34,6 @@ const EcosystemSupport = ({ className }) => {
             </li>
           ))}
         </motion.ul>
-
-        {/* <div className="pointer-events-none absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-primaryColor to-transparent z-10" />
-        <div className="pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-primaryColor to-transparent z-10" /> */}
       </div>
     </div>
   );
@@ -46,10 +42,10 @@ const EcosystemSupport = ({ className }) => {
 export default EcosystemSupport;
 
 const supportLogos = [
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/internet-computer.png",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/WCHL-2025.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/dfinity.png",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/WCHL-2025.webp",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/disruptives-icphubs.png",
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/assets/images/icon/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/internet-computer.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/dfinity.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/disruptives-icphubs.webp",
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/partners-logo/WCHL-2025.webp",
 ];

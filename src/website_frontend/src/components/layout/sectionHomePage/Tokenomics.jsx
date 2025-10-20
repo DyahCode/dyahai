@@ -13,7 +13,6 @@ const Tokenomics = () => {
         </span>
       </HeadSection>
 
-      {/* <div className="h-96"></div> */}
 
       {/* body section */}
       <section id="advantages" className="scroll-mt-[700px]">

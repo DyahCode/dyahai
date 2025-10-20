@@ -6,7 +6,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     let pages = [];
 
     if (totalPages <= maxVisible) {
-      // kalau total halaman <= 5, tampilkan semua
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }

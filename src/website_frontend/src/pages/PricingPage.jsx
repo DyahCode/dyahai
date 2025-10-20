@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "../provider/authProvider";
 import Navbar from "../components/layout/Navbar";
-import { useNavigate } from "react-router-dom";
 import { Box, Container } from "../components/layout/Container";
 import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
 import { usePopup } from "../provider/PopupProvider";
@@ -535,8 +534,6 @@ const PricingPage = () => {
             </div>
           </div>
         </section>
-        {/* </div> */}
-        {/* </div> */}
       </Container>
 
       <GettingStarted />

@@ -3,13 +3,11 @@ import React from 'react'
 const aboutSupport = () => {
   return (
     <div className="flex flex-col mt-8" >
-      {/* support section */}
       <span className="text-fontPrimaryColor/70 tracking-wide">
         Our Support
       </span>
 
       <div className="flex flex-row gap-4 mt-2">
-        {/* plug wallet official */}
         <a href="https://plugwallet.ooo/"
           target="_blank"
           className="size-12 flex items-center justify-center rounded-full bg-neutral-700/30 fill-fontPrimaryColor/75 p-1.5 hover:fill-white transition-all duration-100 overflow-hidden group scale-100 hover:scale-110"
@@ -21,7 +19,6 @@ const aboutSupport = () => {
             loading="lazy" />
         </a>
 
-        {/* storacha logo official */}
         <a href="https://storacha.network/"
           target="_blank"
           className="size-12 flex items-center justify-center rounded-full bg-neutral-700/30 text-fontPrimaryColor/75 p-2.5 hover:text-white transition-all duration-100 overflow-hidden group scale-100 hover:scale-110"

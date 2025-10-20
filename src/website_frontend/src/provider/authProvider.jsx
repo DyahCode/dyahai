@@ -5,9 +5,13 @@ import {
   useState,
   useCallback,
 } from "react";
-import { idlFactory as website_backend_idl, website_backend, canisterId } from "../../../declarations/website_backend";
+import {
+  idlFactory as website_backend_idl,
+  website_backend,
+  canisterId,
+} from "../../../declarations/website_backend";
 import { idlFactory as ledger_idl } from "../../../declarations/dyahai_token";
-import { idlFactory as ledgerIndex_idl} from "../../../declarations/dyahai_token_index";
+import { idlFactory as ledgerIndex_idl } from "../../../declarations/dyahai_token_index";
 import { idlFactory as nft_idl } from "../../../declarations/nft";
 import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
@@ -36,27 +40,32 @@ export const AuthProvider = ({ children }) => {
   const [tier, setTier] = useState(null);
   const [actorNft, setActorNft] = useState(null);
   const whitelist = [
-    process.env.CANISTER_ID_WEBSITE_BACKEND, 
-    process.env.CANISTER_ID_DYAHAI_TOKEN, 
-    process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX, 
-    process.env.CANISTER_ID_NFT];
-  const db = new IdbStorage({ dbName: "dyahai", storeName: "authclient", version: 1 });
+    process.env.CANISTER_ID_WEBSITE_BACKEND,
+    process.env.CANISTER_ID_DYAHAI_TOKEN,
+    process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX,
+    process.env.CANISTER_ID_NFT,
+  ];
+  const db = new IdbStorage({
+    dbName: "dyahai",
+    storeName: "authclient",
+    version: 1,
+  });
   const host =
     process.env.DFX_NETWORK == "ic"
       ? "https://icp0.io"
       : "http://localhost:5000";
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const method = await db.get("method");
-  //     console.log("method", method);
-  //     if (!method) {
-  //       return;
-  //     }
-  //     await checkConnection(method);
-  //   })();
-  // }, []);
-
+  useEffect(() => {
+    (async () => {
+      const method = await db.get("method");
+      console.log("method", method);
+      if (!method) {
+        return;
+      }
+      await checkConnection(method);
+    })();
+  }, []);
+  
   const checkConnection = async (method) => {
     let isConnected;
     if (method === "Plug") {
@@ -66,7 +75,7 @@ export const AuthProvider = ({ children }) => {
       }
       isConnected = await window.ic?.plug?.isConnected();
     } else {
-      const client = await AuthClient.create()
+      const client = await AuthClient.create();
       isConnected = await client.isAuthenticated();
     }
     console.log("isConnected", isConnected);
@@ -112,7 +121,6 @@ export const AuthProvider = ({ children }) => {
         const agent = new HttpAgent({
           identity: identity,
           host: host,
-
         });
         if (process.env.DFX_NETWORK != "ic") {
           await agent.fetchRootKey();
@@ -167,13 +175,29 @@ export const AuthProvider = ({ children }) => {
   };
 
   const buildActor = async (authclient = authClient) => {
-    const newActor = await CreateActor(authclient.agent, website_backend_idl, process.env.CANISTER_ID_WEBSITE_BACKEND);
+    const newActor = await CreateActor(
+      authclient.agent,
+      website_backend_idl,
+      process.env.CANISTER_ID_WEBSITE_BACKEND
+    );
 
-    const newActorLedger = await CreateActor(authclient.agent, ledger_idl, process.env.CANISTER_ID_DYAHAI_TOKEN);
+    const newActorLedger = await CreateActor(
+      authclient.agent,
+      ledger_idl,
+      process.env.CANISTER_ID_DYAHAI_TOKEN
+    );
 
-    const newActorIndex = await CreateActor(authclient.agent, ledgerIndex_idl, process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX);
+    const newActorIndex = await CreateActor(
+      authclient.agent,
+      ledgerIndex_idl,
+      process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX
+    );
 
-    const newActorNft = await CreateActor(authclient.agent, nft_idl, process.env.CANISTER_ID_NFT);
+    const newActorNft = await CreateActor(
+      authclient.agent,
+      nft_idl,
+      process.env.CANISTER_ID_NFT
+    );
     setActorNft(newActorNft);
 
     setActor(newActor);
@@ -198,8 +222,10 @@ export const AuthProvider = ({ children }) => {
     setAccountId(canisterAccountId.toHex());
   };
 
-
-  const refreshCredit = async (customActor = actor, authclient = authClient) => {
+  const refreshCredit = async (
+    customActor = actor,
+    authclient = authClient
+  ) => {
     try {
       if (!customActor) return;
       const isNewUser = await customActor.initialize_credit();
@@ -216,7 +242,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const TopupCredit = async (amount, type = "credit", credit = 0, plan = "") => {
+  const TopupCredit = async (
+    amount,
+    type = "credit",
+    credit = 0,
+    plan = ""
+  ) => {
     let result;
     if (authClient.provider === "Plug") {
       if (!actor || !window.ic?.plug) {
@@ -231,11 +262,10 @@ export const AuthProvider = ({ children }) => {
         return { status: "failed", error: "Transfer failed" };
       }
     } else {
-      const ledger = LedgerCanister.create(
-        {
-          agent: authClient.agent,
-          canisterId: "ryjl3-tyaaa-aaaaa-aaaba-cai"
-        });
+      const ledger = LedgerCanister.create({
+        agent: authClient.agent,
+        canisterId: "ryjl3-tyaaa-aaaaa-aaaba-cai",
+      });
       result = await ledger.transfer({
         to: AccountIdentifier.fromPrincipal({
           principal: Principal.fromText(canisterId),
@@ -282,20 +312,23 @@ export const AuthProvider = ({ children }) => {
       setTimeout(() => {
         showPopup({
           title: "Plug Wallet Not Detected",
-          message: "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
+          message:
+            "To continue, you need to install Plug Wallet. Please download and install it from the Chrome Web Store, then refresh this page to connect your wallet.",
           type: "default",
           extend: "plugInstruction",
           leftLabel: "Login",
-          onLeft: () => { Login(method) },
+          onLeft: () => {
+            Login(method);
+          },
         });
       }, 100);
       return false;
     }
     return true;
   };
-  
+
   const Login = useCallback(async (method) => {
-    if (method === "PlugWallet") {
+    if (method === "Plug") {
       const installed = await checkingPlugInstalled(method);
       if (!installed) return;
     }
@@ -303,11 +336,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const Logout = useCallback(async () => {
-    if (await db.get("method") === "Plug") {
+    if ((await db.get("method")) === "Plug") {
       await window.ic.plug.disconnect();
-
     } else {
-      const client = await AuthClient.create()
+      const client = await AuthClient.create();
       await client.logout();
     }
     await db.remove("method");

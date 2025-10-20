@@ -71,9 +71,6 @@ const ReviewCarousel = ({ items }) => {
       className="relative p-0 overflow-hidden w-full h-fit items-center"
       ref={containerRef}
     >
-      {/* <div className="pointer-events-none absolute left-0 top-0 h-full w-12 md:w-24 bg-gradient-to-r from-primaryColor to-transparent z-10" />
-
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-12 md:w-24 bg-gradient-to-l from-primaryColor to-transparent z-10" /> */}
 
       <div
         className="absolute inset-0 pointer-events-none"

@@ -2,18 +2,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
 const artStyles = [
-  { name: "Artistic", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/artistic.webp" },
-  { name: "Astronaut", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/astronout.webp" },
-  { name: "Baroque", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/baroque.webp" },
-  { name: "Cyberpunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/cyberpunk.webp" },
-  { name: "Detective", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/detective.webp" },
-  { name: "Dreamy", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/dreamy.webp" },
-  { name: "Indigenous", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/indigenous.webp" },
-  { name: "Renaissance", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/renaissance.webp" },
-  { name: "School", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/school.webp" },
-  { name: "Soldier", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/soldier.webp" },
-  { name: "Steampunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/steampunk.webp" },
-  { name: "Wasteland", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles/wasteland.webp" },
+  { name: "Artistic", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/artistic.webp" },
+  { name: "Astronaut", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/astronout.webp" },
+  { name: "Baroque", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/baroque.webp" },
+  { name: "Cyberpunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/cyberpunk.webp" },
+  { name: "Detective", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/detective.webp" },
+  { name: "Dreamy", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/dreamy.webp" },
+  { name: "Indigenous", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/indigenous.webp" },
+  { name: "Renaissance", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/renaissance.webp" },
+  { name: "School", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/school.webp" },
+  { name: "Soldier", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/soldier.webp" },
+  { name: "Steampunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/steampunk.webp" },
+  { name: "Wasteland", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/wasteland.webp" },
 ];
 
 const ArtStylesSlider = () => {
@@ -46,7 +46,6 @@ const ArtStylesSlider = () => {
         </AnimatePresence>
       </div>
 
-      {/* Box Nama Style */}
       <div className="absolute flex bottom-6 left-6 z-20 bg-n-1/10 backdrop-blur-md px-4 py-3 rounded-xl h-fit items-center space-x-2">
         <div className="w-5 h-fit">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-full">
@@ -66,7 +65,6 @@ const ArtStylesSlider = () => {
       </div>
 
 
-      {/* Indikator Bulat */}
       <div className="absolute bottom-5 right-6 flex gap-2 z-20">
         {artStyles.map((_, index) => (
           <div

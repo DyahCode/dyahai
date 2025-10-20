@@ -160,7 +160,7 @@ const GenerateHistory = ({
   };
 
   return (
-    <div className="max-h-[100%]">
+    <div className="max-h-[100%] overflow-y-auto">
       <div className="flex flex-col border border-borderShade border-opacity-40 rounded-xl bg-secondaryColor min-w-fit px-6 py-8 gap-4">
         <p className="pb-2 pl-1 md:text-lg md:font-semibold text-neutral-300">
           Generate History
@@ -168,7 +168,7 @@ const GenerateHistory = ({
 
         {/* Image Generate */}
         <div className="w-full bg-primaryColor p-4 rounded-md border border-borderShade">
-          <div className="overflow-y-auto max-h-[480px] pr-2">
+          <div className="overflow-y-auto max-h-[550px] md:max-h-[450px] pr-2">
             {loading ? (
               <div className="flex h-full w-full flex-col items-start justify-between rounded-lg border border-borderShade/40 overflow-hidden animate-pulse">
                 <div className="flex h-[55px] w-full bg-white/10 items-center">
@@ -282,10 +282,9 @@ const GenerateHistory = ({
                       <button
                         onClick={() => {
                           setMinting(image);
-                          setSelectedOptionIndex(index); // simpan index yang aktif
+                          setSelectedOptionIndex(index); 
                           setShowMintingSnap(true);
                         }}
-                        // onClick={() => handleMintingNft(image)}
                         disabled={image.is_minted || minting.is_minted}
                         className="duration-200 transition w-full bg-transparent hover:bg-accentColor/20 disabled:bg-fontPrimaryColor/10 disabled:text-fontPrimaryColor/60 disabled:cursor-not-allowed hover:text-fontPrimaryColor hover:fill-fontPrimaryColor disabled:fill-fontPrimaryColor/60 flex justify-start items-center p-0.5 rounded-sm  gap-2"
                       >

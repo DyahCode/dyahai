@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Box } from "../layout/Container";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -53,61 +53,6 @@ const MintingSnap = ({
     },
   });
 
-  // ✅ handle minting langsung di dalam MintingSnap
-  // const handleMintingNft = async (metadata) => {
-  //   const result = await MintNft(actor, principalId, {
-  //     id: minting.id,
-  //     name: metadata.itemName,
-  //     description: metadata.itemDescription,
-  //     url: minting.assets.url,
-  //     mime: minting.assets.mime,
-  //   });
-
-  //   if (result.Ok) {
-  //     showPopup({
-  //       title: "NFT Minted",
-  //       message: `The NFT has been minted successfully.<br>Nft ID: ${Number(result.Ok[0].Ok)}`,
-  //       type: "success",
-  //       leftLabel: "Done",
-  //       onLeft: () => hidePopup(),
-  //     });
-
-  //     // ✅ update state minting jadi minted
-  //     setMinting((prev) => ({ ...prev, is_minted: true }));
-  //   }
-  // };
-
-  // const handleFormSubmit = async (data) => {
-  //   const result = await MintNft(actor, principalId, {
-  //     id: minting.id,
-  //     name: data.itemName,
-  //     description: data.itemDescription,
-  //     url: minting.assets.url,
-  //     mime: minting.assets.mime,
-  //   });
-
-  //   if (result.Ok) {
-  //     // update state di GenerateHistory
-  //     setMinting((prev) => ({
-  //       ...prev,
-  //       is_minted: true,
-  //       is_public: true,
-  //       name: data.itemName,
-  //       description: data.itemDescription,
-  //     }));
-
-  //     // Tutup popup setelah minting sukses
-  //     setShowMintingSnap(false);
-
-  //     showPopup({
-  //       title: "NFT Minted",
-  //       message: `The NFT has been minted successfully.<br>Nft ID: ${Number(result.Ok[0].Ok)}`,
-  //       type: "success",
-  //       leftLabel: "Done",
-  //       onLeft: () => hidePopup(),
-  //     });
-  //   }
-  // };
 
   const burning = async () => {
     setShowInvoice(true);
@@ -161,31 +106,18 @@ const MintingSnap = ({
     }
   };
 
-  // const handleBurn = async () => {
-  //   const burn = await burning();
-  //   console.log("Burn: ", burn);
-  //   if (!burn || !burn.Ok) {
-  //     setPaymentStatus("failed");
-  //     return;
-  //   }
-
-  //   setPaymentStatus("success");
-  // };
-
   const handleFormSubmit = async (data) => {
     setShowMintingSnap(false);
-    // 1️⃣ Lakukan proses burning token dulu
     const burn = await burning();
     console.log("Burn: ", burn);
 
     if (!burn || !burn.Ok) {
       setPaymentStatus("failed");
-      return; // stop proses minting kalau burn gagal
+      return; 
     }
 
     setPaymentStatus("success");
     
-    // 2️⃣ Setelah burning sukses → lanjut minting NFT
     const result = await MintNft(actor, principalId, {
       id: minting.id,
       name: data.itemName,
@@ -194,7 +126,6 @@ const MintingSnap = ({
       mime: minting.assets.mime,
     });
 
-    // 3️⃣ Jika minting sukses → update state + tampilkan popup
     if (result.Ok) {
       setMinting((prev) => ({
         ...prev,
@@ -223,13 +154,24 @@ const MintingSnap = ({
         <section className="flex w-full h-full justify-center items-center fixed inset-0 bg-black/20 z-[999] backdrop-blur-sm text-white">
           <div className="relative max-w-[55rem] min-h-[16rem] w-[90%] flex flex-col justify-center items-center text-center rounded-xl opacity-95 hover:opacity-100 transition-opacity duration-200 bg-primaryColor overflow-hidden shadow-[0.063em_0.75em_1.563em_rgba(0,0,0,0.78)]">
             {/* Close Button */}
-            <div className="flex w-full justify-end items-center">
+            <div className="flex w-full justify-end items-center p-4">
               <button
-                onClick={() => setShowMintingSnap(false)}
-                className="p-4 text-xl"
-              >
-                x
-              </button>
+                  onClick={() => setShowMintingSnap(false)}
+                  className="p-1 rounded-full aspect-square bg-transparent group hover:bg-neutral-800/10"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 cursor-pointer text-white/50 group-hover:text-white/80 stroke-[2px] fill-none"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
             </div>
 
             <div className="w-full flex flex-col">
@@ -243,7 +185,7 @@ const MintingSnap = ({
                 </div>
 
                 {/* Form */}
-                <Box className="md:w-2/3 w-full gap-4">
+                <Box className="md:w-2/3 w-full gap-4" padding>
                   <form
                     onSubmit={handleSubmit(handleFormSubmit)}
                     className="flex flex-col gap-4 w-full"
@@ -292,7 +234,7 @@ const MintingSnap = ({
                     </div>
 
                     {/* Submit Button */}
-                    <Button type="submit" className="w-full">
+                    <Button type="primary" centering className="w-full">
                       Minting
                     </Button>
                   </form>

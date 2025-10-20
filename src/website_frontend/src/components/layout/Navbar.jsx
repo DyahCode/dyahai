@@ -14,8 +14,8 @@ import { TbLogout } from "react-icons/tb";
 import { useAuth } from "../../provider/authProvider";
 import { usePopup } from "../../provider/PopupProvider";
 
-const HeroProfile = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
-
+const HeroProfile =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
 
 const Navbar = ({ navbarStyle }) => {
   const navigate = useNavigate();
@@ -41,26 +41,51 @@ const Navbar = ({ navbarStyle }) => {
 
   const {
     isDropdownOpen: isConnectOpen,
-    // toggleDropdown: toggleConnect,
     dropdownRef: ConnectRef,
   } = useDropdown();
 
   const menuItems = [
     { name: "Home", href: "/" },
     {
-      name: "Services", submenu: [
-        // { name: "AI Models", details: "Learn Our Models Works", href: "/" },
-        { name: "Generate Images", details: "Learn Our Models Works", href: "/generate" },
-        { name: "Buy Coin", details: "Buy some coin for generate Images", href: "/topup" },
-        { name: "Pricing Plan", details: "Upgrade your plan with advanced features", href: "/pricing" },
-        { name: "Mint", details: "Publish your generate images with NFT Minting", href: "/nft-collection" },
-      ]
+      name: "Services",
+      submenu: [
+        {
+          name: "Generate Images",
+          details: "Learn Our Models Works",
+          href: "/generate",
+        },
+        {
+          name: "Buy Coin",
+          details: "Buy some coin for generate Images",
+          href: "/topup",
+        },
+        {
+          name: "Pricing Plan",
+          details: "Upgrade your plan with advanced features",
+          href: "/pricing",
+        },
+        {
+          name: "Mint",
+          details: "Publish your generate images with NFT Minting",
+          href: "/nft-collection",
+        },
+      ],
     },
     {
-      name: "Company", submenu: [
-        { name: "About", details: "Redefining AI Image Generative Seamless", href: "/about" },
+      name: "Company",
+      submenu: [
+        {
+          name: "About",
+          details: "Redefining AI Image Generative Seamless",
+          href: "/about",
+        },
         { name: "White Paper", details: "Understand Our Concept", href: "/" },
-      ]
+        {
+          name: "Terms of Services",
+          details: "Using our service means you agree to these terms.",
+          href: "/terms",
+        },
+      ],
     },
     { name: "Ledger", href: "/block-explorer" },
   ];
@@ -117,7 +142,10 @@ const Navbar = ({ navbarStyle }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         if (isOpen) toggleMenu();
       }
     };
@@ -128,7 +156,7 @@ const Navbar = ({ navbarStyle }) => {
 
   const handleConnect = (onConnectType) => {
     switch (onConnectType) {
-      case "PlugWallet":
+      case "Plug":
         if (!window.ic?.plug) {
           showPopup({
             title: "Plug Wallet Not Detected",
@@ -143,12 +171,12 @@ const Navbar = ({ navbarStyle }) => {
           });
           return;
         }
-        console.log('onConnectType :>> ', onConnectType);
+        console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
         break;
       case "InternetIdentity":
         console.log(">> Connecting via Internet Identity...");
-        console.log('onConnectType :>> ', onConnectType);
+        console.log("onConnectType :>> ", onConnectType);
         Login(onConnectType);
         break;
       default:
@@ -160,13 +188,11 @@ const Navbar = ({ navbarStyle }) => {
     showPopup({
       ConnectButtonPopup: true,
       props: { onConnect: handleConnect },
-    })
-  }
+    });
+  };
 
   const navbarBackground = getNavbarBackground();
 
-  const handleLogin = (method) => {
-  };
 
   return (
     <motion.nav
@@ -198,7 +224,6 @@ const Navbar = ({ navbarStyle }) => {
               </a>
             )}
           </div>
-          {/* w-[45vh] lg:w-[50vh] */}
           <div className="w-fit h-fit bg-secondaryColor border-borderShade hidden rounded-lg border border-opacity-50 gap-x-8 px-8 md:flex relative">
             {menuItems.map((item, index) => (
               <div key={index} className="group py-2.5">
@@ -217,7 +242,11 @@ const Navbar = ({ navbarStyle }) => {
                       fill="none"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m6 9 6 6 6-6"
+                      />
                     </svg>
                   )}
                 </div>
@@ -231,8 +260,12 @@ const Navbar = ({ navbarStyle }) => {
                           onClick={() => handleNavigation(sub.href)}
                           className="py-1 px-2 cursor-pointer hover:bg-accentColor/[0.1] rounded-md transition-all"
                         >
-                          <span className="navigation font-light">{sub.name}</span>
-                          <p className="sub-navigation text-fontPrimaryColor/70">{sub.details}</p>
+                          <span className="navigation font-light">
+                            {sub.name}
+                          </span>
+                          <p className="sub-navigation text-fontPrimaryColor/70">
+                            {sub.details}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -247,10 +280,7 @@ const Navbar = ({ navbarStyle }) => {
               <div className="text-fontPrimaryColor relative">
                 <div className="flex items-center justify-center gap-3">
                   <div className="relative space-y-3" ref={creditRef}>
-                    <Button
-                      type="outline"
-                      onClick={toggleCredit}
-                    >
+                    <Button type="outline" onClick={toggleCredit}>
                       <LuWallet size={24} />
                       <span>{credit}</span>
                       <span>DYA</span>
@@ -393,24 +423,25 @@ const Navbar = ({ navbarStyle }) => {
 
                             <div className="mt-2 flex justify-between items-center text-sm">
                               <Button
-                                variant="outline"
-                                size="icon"
+                                type="outline"
                                 onClick={() => {
                                   navigate("/terms");
                                 }}
-                                className="px-2 py-[6px] text-sm hover:bg-accentColor/[0.125]"
                               >
                                 <p className="text-sm">Terms of Services</p>
                               </Button>
 
                               <Button
-                                variant="outline"
-                                size="icon"
+                                type="outline"
                                 onClick={Logout}
-                                className="px-2 py-[6px] flex items-center text-sm hover:bg-red-500"
+                                centering
                               >
-                                <p className="text-sm">Log Out</p>
-                                <TbLogout size={20} />
+                                <div className="flex items-center justify-center text-center space-x-2">
+                                  <div className="w-6">
+                                    <TbLogout size={20} />
+                                  </div>
+                                  <span>Log Out</span>
+                                </div>
                               </Button>
                             </div>
                           </div>
@@ -421,11 +452,8 @@ const Navbar = ({ navbarStyle }) => {
                 </div>
               </div>
             ) : (
-
               <div className="relative space-y-3" ref={ConnectRef}>
-                <Button type="outline"
-                  onClick={toggleConnect}
-                >
+                <Button type="outline" onClick={toggleConnect}>
                   Connect
                 </Button>
               </div>
@@ -443,20 +471,33 @@ const Navbar = ({ navbarStyle }) => {
         className="border border-borderShade absolute w-full h-fit overflow-hidden md:hidden z-5 bg-secondaryColor items-start justify-start px-6 py-4 pb-10"
       >
         <div className="w-full flex items-center space-x-1 mb-4">
-          <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/logo/DyahAI-logo.svg" alt="" className="w-6 h-6" />
+          <img
+            src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/logo/DyahAI-logo.svg"
+            alt=""
+            className="w-6 h-6"
+          />
           <span className="mt-1.5 text-lg font-bold">DyahAI</span>
         </div>
         <ul className="text-fontPrimaryColor flex w-full flex-col space-y-4 text-base font-semibold">
           {menuItems.map((item, index) => (
-            <li key={index} className="w-full border-b border-borderShade body-1 font-normal space-y-4">
+            <li
+              key={index}
+              className="w-full border-b border-borderShade body-1 font-normal space-y-4"
+            >
               {item.submenu ? (
                 <details className="w-full group pb-2">
                   <summary className="flex justify-between items-center cursor-pointer text-fontPrimaryColor group-open:text-accentColor transition-all duration-300">
                     <span>{item.name}</span>
                     <svg
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                      className="w-5 h-5 stroke-fontPrimaryColor/70 group-open:rotate-180 group-open:stroke-accentColor transition-transform duration-300 fill-none stroke-[2px]">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 stroke-fontPrimaryColor/70 group-open:rotate-180 group-open:stroke-accentColor transition-transform duration-300 fill-none stroke-[2px]"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m6 9 6 6 6-6"
+                      />
                     </svg>
                   </summary>
                   <ul className="pl-4 mt-4 space-y-2">

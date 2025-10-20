@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
-import HeadSection from "../components/layout/HeadSection";
 import Footer from "../components/layout/Footer";
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
 
@@ -25,28 +24,19 @@ const BlockExplorerPage = () => {
     return allTransactions.slice(startIndex, startIndex + itemsPerPage);
   }, [currentPage, allTransactions]);
 
-  // INJECT USEEFFECT
-  // INJECT USEEFFECT
-  // INJECT USEEFFECT
-  // helper untuk generate random hex 64 panjang
   let hashCounter = 0;
   const randomHash = () => {
     hashCounter++;
     return hashCounter.toString(16).padStart(64, "0");
   };
-  // const randomHash = () =>
-  //   Array.from({ length: 64 }, () =>
-  //     Math.floor(Math.random() * 16).toString(16)
-  //   ).join("");
 
-  // helper untuk generate ICP-like address
+
   const randomAddress = () => {
     const charset = "abcdefghijklmnopqrstuvwxyz234567";
     let str = "";
     for (let i = 0; i < 55; i++) {
       str += charset[Math.floor(Math.random() * charset.length)];
     }
-    // sisipkan tanda "-" tiap 5–6 char biar mirip ICP
     return str.match(/.{1,5}/g).join("-");
   };
 
@@ -73,7 +63,7 @@ const BlockExplorerPage = () => {
               : `Minted reward token #${i}`,
         txTimestamp: new Date(
           Date.now() - i * 60000
-        ).toString(), // mundur 1 menit tiap block
+        ).toString(),
       });
     }
     setAllTransactions(dummyData);
@@ -85,11 +75,6 @@ const BlockExplorerPage = () => {
       console.log('allTransactions :>> ', allTransactions);
     }
   }, [allTransactions])
-  // INJECT USEEFFECT
-  // INJECT USEEFFECT
-  // INJECT USEEFFECT
-
-
 
   const timeAgo = (date) => {
     const now = new Date();
@@ -127,14 +112,12 @@ const BlockExplorerPage = () => {
         return;
       }
 
-      // kalau data dummy belum ada, generate dulu
       let currentData = allTransactions;
       if (currentData.length === 0) {
         console.error("allTransactions = 0");
-        currentData = await GenerateDummy(); // ⬅️ karena sekarang return array
+        currentData = await GenerateDummy(); 
       }
 
-      // cari transaksi sesuai hash
       const found = currentData.find(
         (tx) => String(tx.parentHash) === String(transactionHash)
       );
@@ -158,7 +141,6 @@ const BlockExplorerPage = () => {
     <div className="flex h-full w-full flex-col items-center justify-center">
       <Navbar navbarStyle="secondary" />
 
-      {/* Outlet for changing sub for BlockExplore and BlockDetail */}
 
       <Outlet context={{
         allTransactions,

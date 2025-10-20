@@ -35,7 +35,7 @@ export default function Coins3DScrollTrigger({
   const logoZ = frontZ + 6;
 
   return (
-    <section className="relative flex items-center justify-center">
+    <section className="relative flex w-full items-center justify-center">
       <motion.div
         className="absolute z-2 top-[5vh] flex items-center justify-center"
         style={{
@@ -51,11 +51,10 @@ export default function Coins3DScrollTrigger({
           className="absolute inset-0 w-full h-full flex"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* DYA Tokenomics (SVG) */}
-          <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/DYA-tokenomics.svg" alt="" />
+          <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/advantages/introduce-dya-tokenomics.svg" alt="" />
         </motion.div>
       </motion.div>
-      <div className="relative z-1 pointer-events-none select-none w-[28rem] -translate-y-8">
+      <div className="relative z-1 pointer-events-none select-none md:w-[28rem] -translate-y-8">
         <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/abstract-coins.webp" alt="" className="object-fill" />
       </div>
     </section >

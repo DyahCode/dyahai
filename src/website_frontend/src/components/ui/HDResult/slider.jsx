@@ -23,11 +23,10 @@ const BeforeAfterSlider = () => {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  // transform posisi x ke persen (0–100)
   const rangeValue = useTransform(x, [0, containerWidth], [0, 100]);
 
   useMotionValueEvent(rangeValue, "change", (latest) => {
-    setRange(Math.min(Math.max(latest, 0), 100)); // clamp 0–100
+    setRange(Math.min(Math.max(latest, 0), 100)); 
   });
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const BeforeAfterSlider = () => {
           />
         </motion.div>
 
-        {/* AFTER */}
         <motion.div
           className="absolute inset-0 select-none pointer-events-none"
           style={{
@@ -73,7 +71,6 @@ const BeforeAfterSlider = () => {
           />
         </motion.div>
 
-        {/* HANDLE / PEMBATAS */}
         <motion.div
           drag="x"
           dragConstraints={containerRef}
@@ -88,7 +85,6 @@ const BeforeAfterSlider = () => {
           style={{ x }}
           className="absolute top-0 z-10 h-full w-2 cursor-ew-resize justify-center px-1"
         >
-          {/* TOMBOL BULAT */}
           <div className="absolute z-1 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-n-1 shadow-md transition-opacity duration-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +104,6 @@ const BeforeAfterSlider = () => {
         </motion.div>
       </div>
 
-      {/* Label (optional visible) */}
       <motion.div
         animate={{ opacity: labelOpacity }}
         transition={{ duration: 0.3 }}

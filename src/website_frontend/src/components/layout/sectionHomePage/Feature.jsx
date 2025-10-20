@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Button from "../../ui/Button";
 import BeforeAfterSlider from "../../ui/HDResult/slider";
-import FTUImages from "../../ui/FreeToUse/FTUImages";
 import { useAuth } from "../../../provider/authProvider";
 import ContainerBox, { BackdropBox, Box, ClearBox, Container } from "../Container";
 import { usePopup } from "../../../provider/PopupProvider";
@@ -155,8 +153,8 @@ const Feature = () => {
         {/* section 3 benefits */}
         <Container className="flex flex-col justify-center space-y-10 md:space-y-10">
           {/* HD Image features */}
-          <div className="w-full h-fit flex my-10 px-10">
-            <div className="mt-16 pr-10 flex h-fit w-[40%] flex-col text-left">
+          <div className="w-full h-fit flex flex-col lg:flex-row my-10 px-10 gap-4 md:gap-0">
+            <div className="mt-16 max-lg:order-first lg:pr-10 flex h-fit lg:w-[40%] flex-col text-left">
               <h3 className="h3 font-medium text-n-1 mb-8">
                 HD Resolution Image
               </h3>
@@ -165,12 +163,12 @@ const Feature = () => {
               </p>
             </div>
 
-            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
-              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+            <div className="lg:w-[45em] w-full h-full items-center justify-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
                 <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
 
-              <div className="w-full flex pt-20 px-16">
+              <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">
 
                 <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
                   <BeforeAfterSlider />
@@ -180,19 +178,19 @@ const Feature = () => {
           </div>
 
           {/* Free To Use */}
-          <div className="w-full h-fit flex my-10 px-10">
-            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
-              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+          <div className="w-full h-fit flex flex-col lg:flex-row my-10 px-10 max-lg:gap-y-8">
+            <div className="lg:w-[45em] w-full h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
                 <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
-              <div className="relative w-full flex pt-20 px-16">
+              <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">
                 <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
-                  <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/generation-process-animation.gif" alt="AI Generation Process" className="object-fill" />
+                  <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/generation-process-animation.gif" alt="AI Generation Process" className="object-fill" />
                 </div>
               </div>
             </div>
 
-            <div className="mt-16 pl-10 flex h-fit w-[40%] flex-col text-left">
+            <div className="mt-16 max-lg:order-first lg:pl-10 flex h-fit lg:w-[40%] flex-col text-left">
               <h3 className="h3 font-medium text-n-1 mb-8">
                 Free-To-Use
               </h3>
@@ -203,8 +201,8 @@ const Feature = () => {
           </div>
 
           {/* Various Artworks Style */}
-          <div className="w-full h-fit flex my-10 px-10">
-            <div className="mt-16 pr-10 flex h-fit w-[40%] flex-col text-left">
+          <div className="w-full h-fit flex flex-col lg:flex-row my-10 px-10 gap-4 md:gap-0">
+            <div className="mt-16 max-lg:order-first lg:pr-10 flex h-fit lg:w-[40%] flex-col text-left">
               <h3 className="h3 font-medium text-n-1 mb-8">
                 Art Style Fusion
               </h3>
@@ -214,12 +212,12 @@ const Feature = () => {
               </p>
             </div>
 
-            <div className="w-[45em] h-fit items-center overflow-hidden border border-n-1/10 rounded-3xl relative">
-              <div className="absolute -bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
+            <div className="lg:w-[45em] w-full h-full items-center justify-center overflow-hidden border border-n-1/10 rounded-3xl relative">
+              <div className="absolute -bottom-[180px] lg:-bottom-[300px] z-0 w-full scale-[190%] pointer-events-none select-none">
                 <img src="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/background/gradient-bubble.webp" alt="" className="object-fill" />
               </div>
 
-              <div className="w-full flex pt-20 px-16">
+              <div className="w-full flex pt-10 px-8 lg:pt-20 lg:px-16">
                 <div className="relative z-1 w-full border-2 border-b-0 border-n-1/10 rounded-ss-xl rounded-se-xl overflow-hidden">
                   <ArtStylesSlider />
                 </div>

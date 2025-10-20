@@ -33,7 +33,6 @@ export const Box = ({ children, className = "", cursorHover = false, padding = f
     >
       {g && <div className={`z-0 absolute select-none pointer-events-none ${gStyle ? gStyle : "-bottom-[200px] w-full h-80"} bg-ambient-gradient blur-ambient opacity-100`} />}
 
-      {/* {g2 && <div className={`z-0 absolute ${g2Style} bg-ambient-gradient blur-ambient opacity-75`} />} */}
       <div className="relative z-1">
         {children}
       </div>
@@ -43,7 +42,6 @@ export const Box = ({ children, className = "", cursorHover = false, padding = f
 
 export const BackdropBox = ({ children, className = "", cursorHover = false, g1 = false, g1Style = '', g2 = false, g2Style = '' }) => {
   return (
-    // hidden absolute -left-[5.5rem] bottom-[7.5rem] px-1 py-1 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-2xl xl:flex ${padding ? "p-2" : "p-4 md:p-10 xl:p-16"}
     <div
       className={`${className} bg-[#0B1114]/75 rounded-2xl border border-t-2 border-t-n-1/10
       ${cursorHover ? "border-n-1/5 hover:border-n-1/10 " : "border-n-1/10 "} 

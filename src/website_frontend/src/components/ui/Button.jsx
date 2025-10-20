@@ -1,12 +1,19 @@
 import React from "react";
 
-const Button = ({ children, onClick, type = 'primary', withIcon = false, centering = false, className }) => {
+const Button = ({
+  children,
+  onClick,
+  type = "primary",
+  withIcon = false,
+  centering = false,
+  className = "",
+  disabled = false, 
+}) => {
   const glowRef = React.useRef(null);
   const [clicked, setClicked] = React.useState(false);
 
-
   const handleMouseMove = (e) => {
-    if (clicked) return;
+    if (clicked || disabled) return; 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -18,20 +25,21 @@ const Button = ({ children, onClick, type = 'primary', withIcon = false, centeri
   };
 
   const handleMouseEnter = () => {
-    if (clicked) return;
+    if (clicked || disabled) return;
     if (glowRef.current) {
       glowRef.current.style.transform = "translate(-50%, -50%) scale(1.15)";
     }
   };
 
   const handleMouseLeave = () => {
-    if (clicked) return;
+    if (clicked || disabled) return;
     if (glowRef.current) {
       glowRef.current.style.transform = "translate(-50%, -50%) scale(0)";
     }
   };
 
   const handleClick = (e) => {
+    if (disabled) return; 
     setClicked(true);
     onClick?.(e);
     setTimeout(() => {
@@ -50,39 +58,40 @@ const Button = ({ children, onClick, type = 'primary', withIcon = false, centeri
     secondary: "bg-borderShade py-[1.5px] px-[2px]",
     primary: "bg-linear-gradient py-[1.5px] px-[2px]",
     outline: "bg-borderShade py-[1px] px-[1px]",
-  }
+  };
 
   const innerPaddingVariantClassName = {
     primary: "px-6 py-2.5",
     secondary: "px-6 py-2.5",
-    outline: "px-4 py-2"
-  }
-
+    outline: "px-4 py-2",
+  };
 
   return (
     <button
+      disabled={disabled} 
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
       className={`
-        cursor-pointer relative inline-block rounded-lg outline-none overflow-hidden transition-all duration-300 group
+        relative inline-block rounded-lg outline-none overflow-hidden transition-all duration-300 group
         ${borderVariantClassName[type]}
-        `}
+        ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"} // ✨ styling saat disabled
+        ${className}
+      `}
     >
-      <div className={`h-fit text-n-1 group-hover:text-[#00ffc3] bg-secondaryColor rounded-lg
-      ${clicked ? "group-hover:text-n-1" : "group-hover:text-[#00ffc3]"}
-      ${innerPaddingVariantClassName[type]}
-      `}>
+      <div
+        className={`h-fit text-n-1 bg-secondaryColor rounded-lg
+        ${clicked ? "group-hover:text-n-1" : "group-hover:text-[#00ffc3]"}
+        ${innerPaddingVariantClassName[type]}
+      `}
+      >
         {/* content */}
-        {type === "outline" ? (
-          <div className={`w-full items-center relative z-5 button flex space-x-2
-          ${centering ? "justify-center" : ""}`}>
-            {children}
-          </div>
-        ) : withIcon ? (
-          <div className={`w-full items-center relative z-5 button flex space-x-2
-          ${centering ? "justify-center" : ""}`}>
+        {type === "outline" || withIcon ? (
+          <div
+            className={`w-full items-center relative z-5 button flex space-x-2
+            ${centering ? "justify-center" : ""}`}
+          >
             {children}
           </div>
         ) : (
@@ -101,20 +110,22 @@ const Button = ({ children, onClick, type = 'primary', withIcon = false, centeri
           }}
         />
 
-        {/* fill effect */}
+        {/* Fill effect */}
         <span
           className="z-1 absolute pointer-events-none rounded-full transition-all duration-500 ease-out"
           style={{
             width: clicked ? "500px" : "25px",
             height: clicked ? "500px" : "25px",
             background: clicked ? "#22A888" : "transparent",
-            transform: clicked ? "translate(-50%, -50%) scale(1)" : "translate(-50%, -50%) scale(0)",
+            transform: clicked
+              ? "translate(-50%, -50%) scale(1)"
+              : "translate(-50%, -50%) scale(0)",
             top: "50%",
             left: "50%",
           }}
         />
       </div>
-    </button >
+    </button>
   );
 };
 
