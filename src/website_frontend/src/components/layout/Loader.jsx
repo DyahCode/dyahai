@@ -50,7 +50,7 @@ const loaderVariants = {
 
 const Loader = () => {
   return (
-    <div className="flex w-full h-full justify-center items-center fixed inset-0 bg-black/20 z-[9999] backdrop-blur-sm text-white">
+    <div className="flex w-full h-full justify-center items-center fixed inset-0 bg-black/40 z-[9999] backdrop-blur-sm text-white">
       <div className="bg-primaryColor flex h-[25rem] w-[35rem] flex-col items-center justify-center rounded-lg border-2  border-borderShade">
         <div className="flex flex-row">
           <motion.div

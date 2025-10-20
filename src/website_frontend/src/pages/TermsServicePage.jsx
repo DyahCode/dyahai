@@ -1,8 +1,7 @@
 import React from "react";
-import { useAuth } from "../provider/authProvider";
 import Navbar from "../components/layout/Navbar.jsx";
 import GettingStarted from "../components/layout/sectionHomePage/GettingStarted";
-import ContainerBox, { Box, Container } from "../components/layout/Container";
+import { Box, Container } from "../components/layout/Container";
 import Footer from "../components/layout/Footer";
 
 const termsData = [
@@ -112,8 +111,6 @@ const termsData = [
 
 
 const TermsServicePage = () => {
-  const { credit, principalId, isLoggedIn, Login, Logout, tier } = useAuth();
-
   return (
     <div className="bg-primaryColor min-h-screen w-full flex flex-col justify-center">
       <Navbar
@@ -123,10 +120,8 @@ const TermsServicePage = () => {
         {/* Box */}
         <Container className="pt-40">
 
-          <Box className="flex flex-col text-fontPrimaryColor items-center justify-center">
-
-            {/* <div className=""> */}
-            <div className="w-full flex flex-col gap-2 text-center items-center lg:w-[70%]">
+          <Box className="flex flex-col text-fontPrimaryColor items-center justify-center pt-20">
+            <div className="flex flex-col gap-2 text-center items-center w-full max-w-[70%] mx-auto">
               <span className="text-4xl font-bold">
                 Terms of Service – Dyah AI
               </span>
@@ -141,7 +136,7 @@ const TermsServicePage = () => {
             </div>
 
             {termsData.map((section, idx) => (
-              <div key={idx} className="w-full flex flex-col md:w-[70%]">
+              <div key={idx} className="flex flex-col gap-2 w-full max-w-[70%] mx-auto">
                 <span className="text-xl font-semibold py-2">
                   {section.title}
                 </span>
@@ -158,10 +153,8 @@ const TermsServicePage = () => {
                 <div className="w-full h-0 border-[0.75px] border-borderShade/40 mt-4 mb-6"></div>
               </div>
             ))}
-            {/* </div> */}
           </Box>
 
-          {/* </div> */}
         </Container>
 
       </section>

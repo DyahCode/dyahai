@@ -1,5 +1,5 @@
 import React from "react";
-import ContainerBox, { Box, Container } from "../Container";
+import ContainerBox from "../Container";
 import HeadSection from "../HeadSection";
 import Button from "../../ui/Button";
 
@@ -223,7 +223,6 @@ const Collections = () => {
               </div>
             </div>
           </div>
-          {/* </div> */}
         </ContainerBox>
 
       </section>

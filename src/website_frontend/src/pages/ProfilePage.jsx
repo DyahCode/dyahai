@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../provider/authProvider";
 import { FiArrowRightCircle } from "react-icons/fi";
+import { TbLogout } from "react-icons/tb";
 
 const plans = [
   {
@@ -148,7 +149,7 @@ const ProfilePage = () => {
         <Navbar navbarStyle={"secondary"} />
         <section className="pt-[8dvh] w-full flex justify-end flex-row h-dvh">
           {/* right side */}
-          <section className="bg-secondaryColor border-borderShade text-fontPrimaryColor right-0 w-fit lg:min-w-[25rem] lg:w-[25rem] border-l-2 border-opacity-50 order-last flex flex-col justify-between p-2 lg:py-8 lg:px-10">
+          <section className="bg-secondaryColor border-borderShade text-fontPrimaryColor right-0 w-fit lg:min-w-[26rem] lg:w-[26rem] border-l-2 border-opacity-50 order-last flex flex-col justify-between p-2 lg:py-8 lg:px-10">
             <div className="">
               <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
 
@@ -157,16 +158,18 @@ const ProfilePage = () => {
                   <li
                     key={index}
                     onClick={() => setSelectedMenu(item.name)}
-                    className={`flex w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${selectedMenu === item.name
-                      ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
-                      : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
-                      }`}
+                    className={`flex max-lg:w-full justify-center rounded-md border border-opacity-50 p-2 lg:p-2.5 lg:items-center lg:justify-start border-borderShade text-sm cursor-pointer gap-x-2 ${
+                      selectedMenu === item.name
+                        ? "bg-gradient-to-r from-accentColor/[0.1] from-10% to-accentColor/[0.035] to-80% text-fontPrimaryColor"
+                        : "bg-primaryColor text-fontPrimaryColor/70 hover:bg-accentColor/[0.05]"
+                    }`}
                   >
                     <div
-                      className={`text-2xl items-center justify-center flex aspect-square ${selectedMenu === item.name
-                        ? "text-accentColor"
-                        : "text-fontPrimaryColor/70"
-                        }`}
+                      className={`text-2xl items-center justify-center flex aspect-square ${
+                        selectedMenu === item.name
+                          ? "text-accentColor"
+                          : "text-fontPrimaryColor/70"
+                      }`}
                     >
                       {item.icon}
                     </div>
@@ -224,45 +227,27 @@ const ProfilePage = () => {
 
               <div className="w-full h-0 border-[0.75px] border-white/10 my-4"></div>
 
-              <div className="mt-2 flex flex-col lg:flex-row justify-between items-center text-sm gap-2 lg:gap-0">
+              <div className="mt-2 flex max-lg:flex-col justify-between items-center text-sm gap-2">
                 <Button
-                  variant="outline"
-                  size="icon"
+                  type="outline"
+                  withIcon
                   onClick={() => {
                     navigate("/terms");
                   }}
-                  className="aspect-square lg:aspect-auto lg:px-2 lg:py-[6px] text-sm hover:bg-accentColor/[0.125]"
+                  className="w-full md:w-auto"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="size-6 fill-none stroke-white stroke-[2px]"
-                  >
-                    <g strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.5 15.8V8.2a1.91 1.91 0 0 0-.944-1.645l-6.612-3.8a1.88 1.88 0 0 0-1.888 0l-6.612 3.8A1.9 1.9 0 0 0 3.5 8.2v7.602a1.91 1.91 0 0 0 .944 1.644l6.612 3.8a1.88 1.88 0 0 0 1.888 0l6.612-3.8A1.9 1.9 0 0 0 20.5 15.8" />
-                      <path d="m8.667 12.633l1.505 1.721a1 1 0 0 0 1.564-.073L15.333 9.3" />
-                    </g>
-                  </svg>
-                  <p className="text-sm hidden lg:block">Terms of Services</p>
+                  <div className="h-6 flex items-center justify-center text-center space-x-2">
+                    <span >Terms of Services</span>
+                  </div>
                 </Button>
 
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={Logout}
-                  className="aspect-square lg:aspect-auto lg:px-2 lg:py-[6px] flex items-center text-sm hover:bg-red-500 group"
-                >
-                  <p className="hidden lg:block text-sm">Log Out</p>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="size-6 fill-red-500 stroke-[0.5px] stroke-red-500 group-hover:fill-white group-hover:stroke-white transition-colors duration-300"
-                  >
-                    <g>
-                      <path d="M6.5 3.75c-.526 0-1.25.63-1.25 1.821V18.43c0 1.192.724 1.821 1.25 1.821h6.996a.75.75 0 1 1 0 1.5H6.5c-1.683 0-2.75-1.673-2.75-3.321V5.57c0-1.648 1.067-3.321 2.75-3.321h7a.75.75 0 0 1 0 1.5z" />
-                      <path d="M16.53 7.97a.75.75 0 0 0-1.06 0v3.276H9.5a.75.75 0 0 0 0 1.5h5.97v3.284a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0 .22-.532v-.002a.75.75 0 0 0-.269-.575z" />
-                    </g>
-                  </svg>
+                <Button type="outline" onClick={Logout} withIcon className="w-full md:flex-1">
+                  <div className="h-6 flex items-center justify-center text-center space-x-2">
+                    <div className="w-6 h-fit">
+                      <TbLogout size={20} />
+                    </div>
+                    <span className="text-">Log Out</span>
+                  </div>
                 </Button>
               </div>
             </div>

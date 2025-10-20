@@ -1,6 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
-import ContainerBox, { BackdropBox, Box, Container } from "../Container";
+import ContainerBox, { BackdropBox, Container } from "../Container";
 import HeadSection from "../HeadSection";
 import Coins3D from "../../ui/Coin/Coins3D";
 
@@ -33,19 +32,19 @@ const Advantages = () => {
               <div className="relative w-full h-0 flex-col select-none">
                 <img src={IntroduceWeb3} width={1400} className="scale-[140%] py-16 top-0 opacity-90" alt="" />
               </div>
-              <div className="z-10 py-12 px-20 pb-20">
+              <div className="z-10 py-12 px-4 md:px-20 pb-20">
                 <span className="body-2 text-n-1/70">
                   welcome
                 </span>
-                <h2 className="h2 text-n-1 mt-[2.125em] mb-[4.675em] uppercase">
+                <h2 className="h2 text-n-1 md:mt-[2.125em] mt-[3.725em] mb-[4.675em] uppercase">
                   Web 3.0
                 </h2>
                 <span className="h5 text-n-3/90">
                   DyahAI runs on a resilient, serverless Web 3.0 backbone. Built for speed, security, and creative freedom. No limits, it just seamless image generation powered by decentralized technology.
                 </span>
               </div>
-              <div className="w-full flex gap-4 px-8 pb-10">
-                <BackdropBox cursorHover className="w-1/3 p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
+              <div className="w-full flex max-md:flex-col gap-4 px-8 pb-10">
+                <BackdropBox cursorHover className="md:w-1/3 w-full p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
                   <div className="w-full flex items-center space-x-2 mb-2">
                     <div className="size-14 p-0.5">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="size-full fill-none">
@@ -76,7 +75,7 @@ const Advantages = () => {
                   </div>
                 </BackdropBox>
 
-                <BackdropBox cursorHover className="w-1/3 p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
+                <BackdropBox cursorHover className="md:w-1/3 w-full p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
                   <div className="w-full flex items-center space-x-2 mb-2">
                     <div className="size-14 p-1">
                       <div className="bg-color-5 rounded-full">
@@ -114,7 +113,7 @@ const Advantages = () => {
                   </div>
                 </BackdropBox>
 
-                <BackdropBox cursorHover className="w-1/3 p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
+                <BackdropBox cursorHover className="md:w-1/3 w-full p-4" g1 g1Style="-bottom-[100px] h-10 w-full">
                   <div className="w-full flex items-center space-x-2 mb-2">
                     <div className="size-14 p-1">
                       <div className="bg-color-5 rounded-full p-2">
@@ -140,14 +139,14 @@ const Advantages = () => {
           <Container className="mt-[6rem]">
             <BackdropBox className="gap-y-10" g1 g2 g2Style="-bottom-[200px] -right-[100px] w-full h-60">
               <div ref={advantagesRef} className="w-full flex flex-col py-20 px-10 space-y-10 relative">
-                <div className="w-full flex">
-                  <div className="w-[60%] h-fit flex items-center justify-center ">
+                <div className="w-full flex max-md:flex-col">
+                  <div className="lg:flex-none lg:w-[60%] md:w-1/2 w-full h-fit flex items-center justify-center ">
                     <Coins3D
                       logo="https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/generation-process-animation.gif"
                       containerRef={advantagesRef}
                     />
                   </div>
-                  <div className="w-[40%] h-fit flex flex-col">
+                  <div className="w-full flex-1 h-fit flex flex-col">
                     <h3 className="text-left h3 text-n-3">
                       DYA Tokenomics
                     </h3>
@@ -198,31 +197,32 @@ const Advantages = () => {
                 </div>
 
                 {/* statistic */}
-                <div className="w-full flex space-x-4">
+                <div className="w-full flex flex-wrap gap-4">
                   {/* supply */}
-                  <div className="w-1/2 lg:w-1/4 bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
+                  <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5 lining-nums">{">"}100B</h5>
                     <span className="body-2 text-n-3">supply Distribution</span>
                   </div>
 
                   {/* Blocks */}
-                  <div className="w-1/2 lg:w-1/4 bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
+                  <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5 lining-nums">50+</h5>
                     <span className="body-2 text-n-3">Total Blocks</span>
                   </div>
 
                   {/* Burn Cycles */}
-                  <div className="w-1/2 lg:w-1/4 bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
+                  <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5">+70K</h5>
                     <span className="body-2 text-n-3">Burn Cycles</span>
                   </div>
 
                   {/* Burn Cycles */}
-                  <div className="w-1/2 lg:w-1/4 bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
+                  <div className="w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] bg-fontPrimaryColor/5 px-2 py-6 rounded-lg">
                     <h5 className="h5">null</h5>
                     <span className="body-2 text-n-3">null</span>
                   </div>
                 </div>
+
               </div>
             </BackdropBox>
           </Container>

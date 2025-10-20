@@ -26,7 +26,6 @@ const HeadSection = ({ children, type = "default", headerName = "" }) => {
         <motion.div
           ref={ref}
           animate={playAnimation ? { opacity: 1, scale: 1, y: 0, transition: { type: "spring", bounce: 0.25 } } : { opacity: 0, scale: 0.99, y: 45 }}
-          // viewport={{ once: true, amount: 0.8 }}
           className={`flex flex-col w-full space-y-10 justify-center items-center text-center`}
         >
           {headerName !== "" &&

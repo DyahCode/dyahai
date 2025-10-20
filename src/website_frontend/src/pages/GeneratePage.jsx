@@ -10,7 +10,6 @@ import Loader from "../components/layout/Loader";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
 import { IoMdDownload } from "react-icons/io";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 
@@ -20,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
-import { Principal } from "@dfinity/principal";
 import { BurnTokens } from "../hooks/wallet";
 import MintingSnap from "../components/ui/MintingSnap";
 
@@ -151,7 +149,6 @@ const GeneratePage = () => {
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [showInvoice, setShowInvoice] = useState(false);
 
-  const [urlGenerateResult, setUrlGenerateResult] = useState(null);
 
   const itemStyle = [
     {
@@ -661,8 +658,6 @@ const GeneratePage = () => {
 
       const storachaCid = await uploadBlobToStoracha(blob);
       const userImageUrl = `https://${storachaCid}.ipfs.w3s.link/`;
-      console.log("userImageUrl:", userImageUrl);
-      console.log("storachaCid:", storachaCid);
 
       await uploadImageToBackend(userImageUrl, storachaCid);
     } catch (error) {
@@ -677,7 +672,6 @@ const GeneratePage = () => {
   };
 
   const generate = async (source, target) => {
-
     const url = "https://dyahai-proxy.vercel.app/style/run";
     const headers = {
       "Content-Type": "application/json",
@@ -687,9 +681,10 @@ const GeneratePage = () => {
     const body = {
       input: {
         prompt: "a portrait of a human, looking directly at the camera",
-        negative_prompt: "(deformed, blurry, long neck, bad collar, cgi, bad anatomy, big body)",
-        face_image: source, 
-        style_image: target, 
+        negative_prompt:
+          "(deformed, blurry, long neck, bad collar, cgi, bad anatomy, big body)",
+        face_image: source,
+        style_image: target,
         num_inference_steps: 100,
         guidance_scale: 1.0,
         width: 512,
@@ -698,10 +693,9 @@ const GeneratePage = () => {
     };
 
     try {
-      console.log("Sending request to RunPod API...");
-    const response = await axios.post(url, body, { headers });
+      const response = await axios.post(url, body, { headers });
 
-    return response.data;
+      return response.data;
     } catch (error) {
       console.error("RunPod API Error:", error);
       if (error.response) {
@@ -714,15 +708,10 @@ const GeneratePage = () => {
     }
   };
 
-
   const uploadImageToBackend = async (imageUrl, cid) => {
     try {
       const { selectedStyle } = state;
 
-      console.log("imageUrl:", imageUrl);
-      console.log("styleUrl:", selectedStyle.image);
-      console.log("cid img:", cid);
-      console.log("actor from generate_page:", actor);
       console.log("function send http post request already to run >>>");
       const response = await generate(imageUrl, selectedStyle.image);
 
@@ -741,8 +730,7 @@ const GeneratePage = () => {
         });
         return;
       }
-      const base64Image =   response.output.image;
-
+      const base64Image = response.output.image;
 
       if (!base64Image) {
         showPopup({
@@ -773,8 +761,6 @@ const GeneratePage = () => {
         reader.readAsDataURL(blob);
       });
       const storachaResult = await uploadBlobToStoracha(blob);
-      console.log("ini result", storachaResult.toString())
-      console.log(`https://${storachaResult.toString()}.ipfs.w3s.link/`)
       const metadata = {
         id: storachaResult.toString(),
         name: `${selectedStyle.label} ${selectedStyle.genderCategory}`,
@@ -792,13 +778,10 @@ const GeneratePage = () => {
       setMinting(metadata);
       await actor.save_image_to_store(metadata);
 
-      const finalUrl = `https://${storachaResult.toString()}.ipfs.w3s.link/`;
       setState((prev) => ({ ...prev, imageUrl: dataUrl }));
-      setUrlGenerateResult(finalUrl);
 
       await removeContentFromStoracha(cid.toString());
     } catch (error) {
-      console.error("Error in uploadImageToBackend:", error);
       await removeContentFromStoracha(cid.toString());
       showPopup({
         title: "We couldn't generate your image.",
@@ -831,14 +814,13 @@ const GeneratePage = () => {
     }
     const link = document.createElement("a");
     link.href = state.imageUrl;
-    console.log(state.imageUrl);
     link.download = "generated-image.png";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
   const handleMintingButton = () => {
-    if (!urlGenerateResult) {
+    if (!minting.assets.url) {
       showPopup({
         title: "Image Not Found. We couldn't find the image.",
         message:
@@ -1044,25 +1026,23 @@ const GeneratePage = () => {
                   </div>
                 </div>
 
-                {/* Choose Style End*/}
               </div>
             </div>
 
             {/* Sticky button */}
             <div className="w-full h-fit flex border-t-2 border-borderShade border-opacity-20 py-4 justify-center items-center md:mb-0">
-              <Button
-                variant="primary"
-                size="md"
-                onClick={handleGenerate}
-                isMotion
-              >
-                <span>Generate</span>
-                <IoArrowForwardCircleOutline size={25} />
+              <Button type="primary" onClick={handleGenerate} withIcon>
+                <div className="h-6 flex items-center justify-center text-center space-x-2">
+                  <div className="w-6 h-fit">
+                    <IoArrowForwardCircleOutline size={20} />
+                  </div>
+                  <span>Generate</span>
+                </div>
               </Button>
             </div>
           </div>
 
-          <div className="h-full w-full md:w-2/3 block">
+          <div className="h-full w-full md:w-2/3 block overflow-y-auto">
             <div className="flex flex-col h-full items-center mt-10 m-4 md:mx-0">
               <p className="text-white font-semibold mb-10">Image</p>
 
@@ -1080,31 +1060,33 @@ const GeneratePage = () => {
                 </div>
               </div>
               <div className="w-fit h-fit flex my-10 gap-4">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={handleDownloadImage}
-                  className="text-fontPrimaryColor hover:bg-accentColor hover:text-primaryColor flex rounded-full w-40"
-                >
-                  <span>Download</span>
-                  <IoMdDownload size={30} />
-                </Button>
-                <button
-                  disabled={minting.is_minted}
-                  onClick={handleMintingButton}
-                  className="text-fontPrimaryColor bg:accentColor justify-center items-center text-bold text-lg hover:bg-accentColor hover:text-primaryColor flex rounded-full w-40 disabled:bg-fontPrimaryColor/10 disabled:text-fontPrimaryColor/60 disabled:cursor-not-allowed gap-2"
-                >
-                  <span>Minting</span>
-                  <div className="h-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="size-full fill-current p-0.5"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M512 169.943c-50.296 12.033-91.653 12.632-127.443 7.49c-22.895 27.979-36.901 56.091-48.568 83.737c48.693-13.64 96.583-31.712 136.124-55.34c-42.697 31.493-92.067 53.554-141.817 69.276c-20.269 54.594-39.842 100.591-77.074 129.566c58.39-20.34 160.245-75.81 258.778-234.729m-263.637 219.67c80.103-69.55 48.78-188.267 203.384-290.824c-255.72-50.577-368.809 40.644-388.144 54.746c-103.994 75.841-56.637 198.26-24.04 169.647c53.276-46.09 133.296-158.44 286.56-198.737C186.999 162.294 88.86 295.126 63.094 328.528c-45.598 69.997 89.654 148.643 185.27 61.084" />
-                    </svg>
+                <Button type="secondary" onClick={handleDownloadImage} withIcon>
+                  <div className="h-6 flex items-center justify-center text-center space-x-2">
+                    <div className="w-6 h-fit">
+                      <IoMdDownload size={20} />
+                    </div>
+                    <span>Download</span>
                   </div>
-                </button>
+                </Button>
+                <Button
+                  disabled={minting.is_minted}
+                  type="secondary"
+                  onClick={handleMintingButton}
+                  withIcon
+                >
+                  <div className="h-6 flex items-center justify-center text-center space-x-2">
+                    <div className="w-6 h-fit">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="size-full fill-current p-0.5"
+                        viewBox="0 0 512 512"
+                      >
+                        <path d="M512 169.943c-50.296 12.033-91.653 12.632-127.443 7.49c-22.895 27.979-36.901 56.091-48.568 83.737c48.693-13.64 96.583-31.712 136.124-55.34c-42.697 31.493-92.067 53.554-141.817 69.276c-20.269 54.594-39.842 100.591-77.074 129.566c58.39-20.34 160.245-75.81 258.778-234.729m-263.637 219.67c80.103-69.55 48.78-188.267 203.384-290.824c-255.72-50.577-368.809 40.644-388.144 54.746c-103.994 75.841-56.637 198.26-24.04 169.647c53.276-46.09 133.296-158.44 286.56-198.737C186.999 162.294 88.86 295.126 63.094 328.528c-45.598 69.997 89.654 148.643 185.27 61.084" />
+                      </svg>
+                    </div>
+                    <span>Minting</span>
+                  </div>
+                </Button>
               </div>
             </div>
           </div>
@@ -1123,9 +1105,9 @@ const GeneratePage = () => {
           principalId={principalId}
           minting={minting}
           setMinting={setMinting}
-          setImages={urlGenerateResult}
-          selectedIndex={urlGenerateResult}
-          images={urlGenerateResult}
+          setImages={minting.assets.url}
+          selectedIndex={minting.assets.url}
+          images={minting.assets.url}
           authClient={authClient}
           actorLedger={actorLedger}
           credit={credit}
@@ -1137,38 +1119,3 @@ const GeneratePage = () => {
 };
 
 export default GeneratePage;
-
-// async function handleMintingNft(metadata) {
-//   console.log("Metadata received for minting:", metadata);
-//   const result = await MintNft(actor, principalId, {
-//     id: metadata.id,
-//     name: metadata.itemName,
-//     description: metadata.itemDescription,
-//     url: metadata.url,
-//     mime: metadata.mime,
-//   });
-//   console.log("Mint Result", result);
-//   if (result.Ok) {
-//     showPopup({
-//       title: "NFT Minted",
-//       message: `The NFT has been minted successfully.<br>Nft ID:${Number(result.Ok[0].Ok)}`,
-//       type: "success",
-//       leftLabel: "Done",
-//       onLeft: async () => {
-//         hidePopup();
-//       },
-//     });
-//   }
-// }
-
-// const convertImageToBase64 = async (imageUrl) => {
-//   const response = await fetch(imageUrl);
-//   const blob = await response.blob();
-
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.onloadend = () => resolve(reader.result);
-//     reader.onerror = reject;
-//     reader.readAsDataURL(blob);
-//   });
-// };

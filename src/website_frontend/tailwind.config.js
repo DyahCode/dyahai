@@ -24,7 +24,6 @@ module.exports = {
       },
     },
     extend: {
-      // NEW ADD
       borderImage: {
         "gradient-conic":
           "conic-gradient(from 225deg, #FFC876, #79FFF7, #9F53FF, #FF98E2, #FFC876) 1",
@@ -40,7 +39,6 @@ module.exports = {
       borderWidth: {
         DEFAULT: "0.0525rem",
       },
-      // NEW ADD
 
       blur: {
         "ambient": '175px',
@@ -50,33 +48,32 @@ module.exports = {
       colors: {
         // NEW ADD
         color: {
-          1: "#FF004D", // Neon Red - pencahayaan belakang hero
-          2: "#00FFD1", // Teal Glow - highlight wajah dan elemen UI
-          3: "#00FF85", // Electric Green - tombol dan teks utama
-          4: "#FF98E2", // Soft Pink - aksen feminin dan modern
-          5: "#858DFF", // Muted Purple - hover, badge, atau link
-          6: "#FFC876", // Warm Yellow - alternatif highlight atau notifikasi
+          1: "#FF004D", 
+          2: "#00FFD1", 
+          3: "#00FF85", 
+          4: "#FF98E2", 
+          5: "#858DFF", 
+          6: "#FFC876", 
         },
         stroke: {
           1: "#26242C",
         },
         n: {
-          1: "#FBF6EE", // Teks utama
-          2: "#D0E2DE", // Teks kedua
-          3: "#C3E2D7", // Placeholder atau teks pasif
-          4: "#757185", // Label atau teks navigasi
-          5: "#3F3A52", // Border atau elemen UI
-          6: "#0C1316", // Background section
-          7: "#15131D", // Background utama
-          8: "#0A0A0A", // Base background (gelap pekat)
-          9: "#474060", // Card atau container
-          10: "#43435C", // Sidebar atau navigasi
-          11: "#1B1B2E", // Footer atau elemen bawah
-          12: "#2E2A41", // Panel atau modal
-          13: "#6C7275", // Teks deskriptif atau caption
+          1: "#FBF6EE", 
+          2: "#D0E2DE", 
+          3: "#C3E2D7", 
+          4: "#757185", 
+          5: "#3F3A52", 
+          6: "#0C1316", 
+          7: "#15131D", 
+          8: "#0A0A0A", 
+          9: "#474060", 
+          10: "#43435C", 
+          11: "#1B1B2E", 
+          12: "#2E2A41", 
+          13: "#6C7275", 
         },
 
-        // NEW ADD
         primaryColor: "#0B1014",
         secondaryColor: "#10171A",
         altprimaryColor: "#10171A",
@@ -133,10 +130,6 @@ module.exports = {
     plugin(function ({ addBase, addComponents, addUtilities }) {
       addBase({});
       addComponents({
-        // ".container": {
-        //   "@apply max-w-[77.5rem] mx-auto px-5 md:px-10 lg:px-15 xl:max-w-[87.5rem]":
-        //     {},
-        // },
         ".h1": {
           "@apply font-semibold text-[2.0rem] leading-[3.0rem] md:text-[2.75rem] md:leading-[3.75rem] lg:text-[3.25rem] lg:leading-[4.0625rem] xl:text-[3.75rem] xl:leading-[4.5rem]":
             {},
@@ -160,13 +153,6 @@ module.exports = {
         ".header-1": {
           "@apply font-thin text-[0.875rem] leading-7 md:text-[1.05rem] tracking-wide": {},
         },
-        // ".body-1": {
-        //   "@apply text-[0.875rem] leading-[1.5rem] md:text-[1rem] md:leading-[1.75rem] lg:text-[1.25rem] lg:leading-8":
-        //     {},
-        // },
-        // ".body-2": {
-        //   "@apply font-light text-[0.875rem] leading-6 md:text-[1.05rem] tracking-wide": {},
-        // },
 
         ".body-1": {
           "@apply text-[0.925rem] leading-[1.5rem] md:text-[1.05rem] md:leading-[1.75rem] lg:text-[1.25rem] lg:leading-8":
@@ -199,9 +185,6 @@ module.exports = {
         ".button": {
           "@apply z-10 text-[0.625rem] md:text-[0.725rem] lg:text-[0.775rem] font-semibold uppercase tracking-[0.075em]": {},
         },
-        // ".button": {
-        //   "@apply z-10 text-xs font-semibold uppercase tracking-[0.075em]": {},
-        // },
       });
       addUtilities({
         ".tap-highlight-color": {

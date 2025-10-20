@@ -28,10 +28,6 @@ const BlockExplore = () => {
 
   const TotalTransaction = allTransactions.length;
 
-  // const handleNavigateDetail = (hash) => {
-  //   navigate(`/block-explorer/${hash}`);
-  // };
-
   return (
     <>
       <HeadSection>

@@ -3,11 +3,19 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../provider/authProvider";
 import { fetchTransaction } from "../../../hooks/wallet";
 import { Principal } from "@dfinity/principal";
-
+const OfficialDYACoins =
+  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/coins/DYA-coins-gold.svg";
+import Pagination from "../../ui/Pagination";
 
 const TransactionHistory = () => {
   const { isLoggedIn, principalId, loading, authClient } = useAuth();
   const [trx, setTrx] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(trx.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTransactions = trx.slice(startIndex, endIndex);
 
   async function loadTrx() {
     try {
@@ -16,7 +24,7 @@ const TransactionHistory = () => {
       const fetchedTrx = result.Ok.transactions;
       console.log("Transaction: ", fetchedTrx);
       setTrx(fetchedTrx);
-    } catch (error) { }
+    } catch (error) {}
   }
 
   const transactionInfo = (trx) => {
@@ -95,18 +103,19 @@ const TransactionHistory = () => {
 
   const getMessageIcon = (message) => {
     if (message.includes("Added") || message.includes("Minted")) {
-      return (
-        // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-full fill-yellow-600">
-        //   <path d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0m2.75 17.61v1.89a.75.75 0 0 1-1.5 0v-1.38a5.7 5.7 0 0 1-1.25.13h-.25v1.25a.75.75 0 0 1-1.5 0v-1.25H8.5a.75.75 0 0 1-.59-.25a.73.73 0 0 1-.13-.65l2-7.5a.74.74 0 0 1 1.44.38l-1.74 6.52H12a4.75 4.75 0 0 0 0-9.5H6.5a.75.75 0 0 1 0-1.5h3.75V4.5a.75.75 0 0 1 1.5 0v1.25H12a5.7 5.7 0 0 1 1.25.13V4.5a.75.75 0 0 1 1.5 0v1.89a6.25 6.25 0 0 1 0 11.22" />
-        // </svg>
-        <img src={OfficialDYACoins} alt="" />
-      );
+      return <img className="size-8 p-0.5" src={OfficialDYACoins} alt="" />;
     }
 
     if (message.includes("Burned")) {
-      return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-8 fill-color-1">
-        <path d="M143.38 17.85a8 8 0 0 0-12.63 3.41l-22 60.41l-24.16-23.41a8 8 0 0 0-11.93.89C51 87.53 40 116.08 40 144a88 88 0 0 0 176 0c0-59.45-50.79-108-72.62-126.15m40.51 135.49a57.6 57.6 0 0 1-46.56 46.55a7.7 7.7 0 0 1-1.33.11a8 8 0 0 1-1.32-15.89c16.57-2.79 30.63-16.85 33.44-33.45a8 8 0 0 1 15.78 2.68Z" />
-      </svg>;
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 256"
+          className="size-8 fill-color-1"
+        >
+          <path d="M143.38 17.85a8 8 0 0 0-12.63 3.41l-22 60.41l-24.16-23.41a8 8 0 0 0-11.93.89C51 87.53 40 116.08 40 144a88 88 0 0 0 176 0c0-59.45-50.79-108-72.62-126.15m40.51 135.49a57.6 57.6 0 0 1-46.56 46.55a7.7 7.7 0 0 1-1.33.11a8 8 0 0 1-1.32-15.89c16.57-2.79 30.63-16.85 33.44-33.45a8 8 0 0 1 15.78 2.68Z" />
+        </svg>
+      );
     }
     if (message.includes("Upgraded")) {
       return (
@@ -134,14 +143,14 @@ const TransactionHistory = () => {
   }, [isLoggedIn, principalId]);
 
   return (
-    <div className="max-h-[100%]">
+    <div className="max-h-[100%] overflow-y-auto">
       <div className="flex flex-col border border-borderShade border-opacity-40 rounded-xl bg-secondaryColor min-w-fit px-6 py-8 gap-4">
         <p className="pb-2 pl-1 md:text-lg md:font-semibold text-neutral-300">
           Transaction History
         </p>
         <div className="w-full bg-primaryColor p-4 rounded-md border border-borderShade">
           {/* section header */}
-          <div className="overflow-y-auto max-h-[480px] pr-2">
+          <div className="pr-2">
             {loading ? (
               <div className="flex h-full w-full flex-col items-start justify-between rounded-lg border border-borderShade/40 overflow-hidden animate-pulse">
                 {/* Image */}
@@ -181,7 +190,7 @@ const TransactionHistory = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                {trx.map((trx, idx) => (
+                {currentTransactions.map((trx, idx) => (
                   <div
                     key={idx}
                     className="flex flex-row gap-2 rounded-md items-start md:items-center transition duration-200 border border-t-2 border-neutral-500/25 bg-white/[0.025] p-2 group text-fontPrimaryColor relative overflow-hidden"
@@ -214,7 +223,11 @@ const TransactionHistory = () => {
                             </span>
                             <span className="w-fit flex flex-row items-center border border-borderShade border-opacity-20 rounded-md px-1 bg-white/[0.025] text-accentColor/70 font-bold">
                               {transactionInfo(trx).amount}
-                              <img className="size-6 ml-1" src={OfficialDYACoins} alt="" />
+                              <img
+                                className="size-6 ml-1"
+                                src={OfficialDYACoins}
+                                alt=""
+                              />
                             </span>
                           </div>
                         </div>
@@ -234,6 +247,13 @@ const TransactionHistory = () => {
               </div>
             )}
           </div>
+        </div>
+        <div className="w-full flex justify-center items-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </div>
     </div>

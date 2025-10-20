@@ -138,13 +138,6 @@ export const MintNft = async (Actor, principal, metadata) => {
 
   const result = await Actor.mint_nft(metadata.id, mintArgs);
   return result;
-  // contoh response result = {
-  //     Ok: [
-  //         {
-  //             Ok: 1n //dalam BigInt
-  //         }
-  //     ]
-  // }
 };
 
 export const TransferNft = async (actorNft, receiver, tokenId) => {
@@ -162,13 +155,6 @@ export const TransferNft = async (actorNft, receiver, tokenId) => {
   ]);
 
   return transfer;
-  // contoh response transfer = [
-  //     [
-  //         {
-  //             Ok: 1n //dalam BigInt
-  //         }
-  //     ]
-  // ]
 };
 export const BurnNft = async (actorNft, tokenId) => {
   const message = "Burn NFT ID:" + tokenId;
@@ -181,17 +167,6 @@ export const BurnNft = async (actorNft, tokenId) => {
   });
 
   return burn;
-  // contoh response burn =
-  // {
-  //     Ok: [
-  //         {
-  //             result: {
-  //                 Ok: 2n //dalam BigInt
-  //             },
-  //             token_id: 1n //dalam BigInt
-  //         }
-  //     ]
-  // }
 };
 
 export const fetchTrxCollections = async () => {
@@ -211,118 +186,7 @@ export const fetchTrxCollections = async () => {
     status: true,
     data: trx,
   };
-  // contoh response = {
-  //     status: true,
-  //     data: [
-  //         {
-  //             "id": "1",
-  //             "block": {
-  //                 "Map": [
-  //                     [
-  //                         "phash",
-  //                         {
-  //                             "Blob": {
-  //                                 "0": 155,
-  //                                 "1": 245,
-  //                                 "2": 23,
-  //                                 etc...
-  //         }
-  //                         }
-  //                     ],
-  //                     [
-  //                         "tx",
-  //                         {
-  //                             "Map": [
-  //                                 [
-  //                                     "ts",
-  //                                     {
-  //                                         "Nat": "1759756294192000000"
-  //                                     }
-  //                                 ],
-  //                                 [
-  //                                     "tid",
-  //                                     {
-  //                                         "Nat": "1"
-  //                                     }
-  //                                 ],
-  //                                 [
-  //                                     "op",
-  //                                     {
-  //                                         "Text": "mint"
-  //                                     }
-  //                                 ],
-  //                                 [
-  //                                     "meta",
-  //                                     {
-  //     "Map": [
-  //         [
-  //             "icrc7:token_metadata",
-  //             {
-  //                 "Map": [
-  //                     [
-  //                         "icrc7:metadata:uri:image",
-  //                         {
-  //                             "Text": "https://bafkreihaldufzmsv4723xawqqwv6cjjyw3i56ssvlthmaqv4quomsk2owm.ipfs.w3s.link/"
-  //                         }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:name",
-  //                         {
-  //                             "Text": "Backpacker man"
-  //                         }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:description",
-  //                         {
-  //                             "Text": "No description"
-  //                         }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:mime",
-  //                         {
-  //                             "Text": "image/png"
-  //                         }
-  //                     ]
-  //                 ]
-  //             }
-  //         ]
-  //     ]
-  // }
-  //                                 ],
-  //                                 [
-  //                                     "to",
-  //                                     {
-  //                                         "Array": [
-  //                                             {
-  //                                                 "Blob": {
-  //                                                     "0": 17,
-  //                                                     "1": 23,
-  //                                                     etc..
-  //                   }
-  //                                             }
-  //                                         ]
-  //                                     }
-  //                                 ]
-  //                             ]
-  //                         }
-  //                     ],
-  //                     [
-  //                         "ts",
-  //                         {
-  //                             "Nat": "1759756294396241285"
-  //                         }
-  //                     ],
-  //                     [
-  //                         "btype",
-  //                         {
-  //                             "Text": "7mint"
-  //                         }
-  //                     ]
-  //                 ]
-  //             }
-  //         }
-  //     ]
-  // }
+  
 };
 
 export const fetchAllCollections = async () => {
@@ -348,33 +212,6 @@ export const fetchAllCollections = async () => {
     status: true,
     metadata: metadataList,
   };
-  // contoh response = {
-  //     status: true,
-  //     metadata: [
-  //         [
-  //             [
-  //                 [
-  //                     [
-  //                         "icrc7:metadata:uri:image",
-  //                         { "Text": "https://bafkreihaldufzmsv4723xawqqwv6cjjyw3i56ssvlthmaqv4quomsk2owm.ipfs.w3s.link/" }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:name",
-  //                         { "Text": "Backpacker man" }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:description",
-  //                         { "Text": "No description" }
-  //                     ],
-  //                     [
-  //                         "icrc7:metadata:uri:mime",
-  //                         { "Text": "image/png" }
-  //                     ]
-  //                 ]
-  //             ]
-  //         ]
-  //     ]
-  // }
 };
 export const fetchUserCollections = async (authclient) => {
   const nfts = await nft.icrc7_tokens_of(
@@ -404,63 +241,4 @@ export const fetchUserCollections = async (authclient) => {
     status: true,
     metadata: metadataList,
   };
-  // contoh response = {
-  //     status: true,
-  //     metadata: [
-  //         [
-  //             [
-  //                 [
-  //                     [
-  //                         "icrc97:metadata",
-  //                         {
-  //                             "Map": [
-  //                                 [
-  //                                     "name",
-  //                                     {
-  //                                         "Text": "Dreamworks man"
-  //                                     }
-  //                                 ],
-  //                                 [
-  //                                     "description",
-  //                                     {
-  //                                         "Text": "No description"
-  //                                     }
-  //                                 ],
-  //                                 [
-  //                                     "assets",
-  //                                     {
-  //                                         "Array": [
-  //                                             {
-  //                                                 "Map": [
-  //                                                     [
-  //                                                         "url",
-  //                                                         {
-  //                                                             "Text": "https://bafkreibie7rcqgv6xts3hcjkrqlxt3fwhg4jkha5lrcmh2mzxnmskrmm2q.ipfs.w3s.link/"
-  //                                                         }
-  //                                                     ],
-  //                                                     [
-  //                                                         "mime",
-  //                                                         {
-  //                                                             "Text": "image/png"
-  //                                                         }
-  //                                                     ],
-  //                                                     [
-  //                                                         "purpose",
-  //                                                         {
-  //                                                             "Text": "icrc97:image"
-  //                                                         }
-  //                                                     ]
-  //                                                 ]
-  //                                             }
-  //                                         ]
-  //                                     }
-  //                                 ]
-  //                             ]
-  //                         }
-  //                     ]
-  //                 ]
-  //             ]
-  //         ]
-  //     ]
-  // }
 };

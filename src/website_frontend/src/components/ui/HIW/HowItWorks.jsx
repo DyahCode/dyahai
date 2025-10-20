@@ -7,9 +7,9 @@ const HowItWorks = () => {
   const [stepWidth, setStepWidth] = React.useState(getStepWidth());
 
   function getStepWidth() {
-    if (window.innerWidth >= 1024) return 22 * 16; // lg: 22rem
-    if (window.innerWidth >= 768) return 20 * 16; // md: 20rem
-    return 18 * 16; // sm: 18rem
+    if (window.innerWidth >= 1024) return 22 * 16; 
+    if (window.innerWidth >= 768) return 20 * 16; 
+    return 18 * 16; 
   }
 
   React.useEffect(() => {
@@ -39,7 +39,6 @@ const HowItWorks = () => {
 
   return (
     <>
-      {/* section scrollable */}
       <div
         ref={scrollRef}
         className="w-full px-16 flex flex-row overflow-x-hidden "
