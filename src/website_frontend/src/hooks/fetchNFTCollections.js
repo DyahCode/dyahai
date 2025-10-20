@@ -1,4 +1,6 @@
 import { fetchAllCollections, fetchUserCollections } from "./wallet";
+import { HttpAgent, Actor } from "@dfinity/agent";
+import { idlFactory, canisterId } from "../../../declarations/nft";
 
 const parseNFTMetadata = (nftMeta) => {
   const obj = {};
@@ -15,13 +17,32 @@ const parseNFTMetadata = (nftMeta) => {
   return obj;
 };
 
+
+async function CreateAnonAgent(host) {
+  const agent = HttpAgent.create({
+    host: host,
+    shouldFetchRootKey: process.env.DFX_NETWORK !== "ic",
+
+  });
+  return agent;
+}
 /**
  * Fetch NFT 
  * @returns {Promise<Array>} 
  */
 export const fetchAllNFT = async () => {
+  const host =
+    process.env.DFX_NETWORK === "ic"
+      ? "https://icp0.io"
+      : "http://localhost:5000";
+
+  const anonimAgent = await CreateAnonAgent(host);
+  const actor = Actor.createActor(idlFactory, {
+    agent: anonimAgent,
+    canisterId: canisterId
+  });
   try {
-    const allResponse = await fetchAllCollections();
+    const allResponse = await fetchAllCollections(actor);
 
     if (allResponse?.status && Array.isArray(allResponse?.metadata)) {
       return allResponse.metadata.map(parseNFTMetadata).reverse();

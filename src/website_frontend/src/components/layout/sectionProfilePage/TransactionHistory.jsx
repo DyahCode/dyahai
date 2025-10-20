@@ -4,7 +4,7 @@ import { useAuth } from "../../../provider/authProvider";
 import { fetchTransaction } from "../../../hooks/wallet";
 import { Principal } from "@dfinity/principal";
 const OfficialDYACoins =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/coins/DYA-coins-gold.svg";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/coins/DYA-coins-gold.svg";
 import Pagination from "../../ui/Pagination";
 
 const TransactionHistory = () => {
@@ -106,16 +106,17 @@ const TransactionHistory = () => {
       return <img className="size-8 p-0.5" src={OfficialDYACoins} alt="" />;
     }
 
+
+
+    if (message.includes("Transferred")) {
+      return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="size-full fill-none stroke-sky-600 stroke-[4px] ">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M24 13.343v-2.325c0-2.391 2.588-3.886 4.659-2.69L41.947 16c2.07 1.195 2.07 4.184 0 5.38L28.66 29.052c-2.07 1.195-4.659-.3-4.659-2.69v-4.724c0-2.39-2.588-3.885-4.659-2.69L6.053 26.622c-2.07 1.195-2.07 4.184 0 5.38l13.288 7.671c2.07 1.196 4.659-.299 4.659-2.69v-2.325" />
+      </svg>;
+    }
     if (message.includes("Burned")) {
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 256 256"
-          className="size-8 fill-color-1"
-        >
-          <path d="M143.38 17.85a8 8 0 0 0-12.63 3.41l-22 60.41l-24.16-23.41a8 8 0 0 0-11.93.89C51 87.53 40 116.08 40 144a88 88 0 0 0 176 0c0-59.45-50.79-108-72.62-126.15m40.51 135.49a57.6 57.6 0 0 1-46.56 46.55a7.7 7.7 0 0 1-1.33.11a8 8 0 0 1-1.32-15.89c16.57-2.79 30.63-16.85 33.44-33.45a8 8 0 0 1 15.78 2.68Z" />
-        </svg>
-      );
+      return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="size-full fill-color-1">
+        <path d="M143.38 17.85a8 8 0 0 0-12.63 3.41l-22 60.41l-24.16-23.41a8 8 0 0 0-11.93.89C51 87.53 40 116.08 40 144a88 88 0 0 0 176 0c0-59.45-50.79-108-72.62-126.15m40.51 135.49a57.6 57.6 0 0 1-46.56 46.55a7.7 7.7 0 0 1-1.33.11a8 8 0 0 1-1.32-15.89c16.57-2.79 30.63-16.85 33.44-33.45a8 8 0 0 1 15.78 2.68Z" />
+      </svg>;
     }
     if (message.includes("Upgraded")) {
       return (

@@ -9,7 +9,7 @@ const teams = [
     status: "Undergraduated",
     statusBase: "Universitas Teknologi Yogyakarta",
     githubUsername: "yubayu0",
-    image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/profile/yubayu0.webp",
+    image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/profile/yubayu0.webp",
   },
   {
     name: "Thoriq",
@@ -18,7 +18,7 @@ const teams = [
     status: "Undergraduated",
     statusBase: "Universitas Teknologi Yogyakarta",
     githubUsername: "thoriqtau",
-    image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/profile/thoriqtau.webp",
+    image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/profile/thoriqtau.webp",
   },
   {
     name: "Wahyu",
@@ -27,7 +27,7 @@ const teams = [
     status: "Undergraduated",
     statusBase: "Universitas Teknologi Yogyakarta",
     githubUsername: "WAW1311",
-    image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/profile/WAW1311.webp",
+    image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/profile/WAW1311.webp",
   },
   {
     name: "Lutfi",
@@ -36,7 +36,7 @@ const teams = [
     status: "Undergraduated",
     statusBase: "Universitas Teknologi Yogyakarta",
     githubUsername: "lutfimizaki",
-    image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/profile/lutfimizaki.webp",
+    image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/profile/lutfimizaki.webp",
   },
   {
     name: "Hasby",
@@ -45,7 +45,7 @@ const teams = [
     status: "Undergraduated",
     statusBase: "Universitas Teknologi Yogyakarta",
     githubUsername: "iAnoeloeby",
-    image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/profile/iAnoeloeby.webp",
+    image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/profile/iAnoeloeby.webp",
   },
 ];
 

@@ -23,76 +23,76 @@ import { BurnTokens } from "../hooks/wallet";
 import MintingSnap from "../components/ui/MintingSnap";
 
 const imageAstronout =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Astronout.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Astronout.webp";
 const imageBackpacker =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Backpacker.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Backpacker.webp";
 const imageCyberpunk =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Cyberpunk.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Cyberpunk.webp";
 const imageDreamworks =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Dreamworks.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Dreamworks.webp";
 const imageRenaissance =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Renaissance.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Renaissance.webp";
 const imageSteampunk =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Steampunk.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Steampunk.webp";
 const imageStreetwear =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Streetwear.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Streetwear.webp";
 const imageWasteland =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Wasteland.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Wasteland.webp";
 const imageComic =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Comic.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Comic.webp";
 const imageAsian =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Asian.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Asian.webp";
 const imagePixel =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Pixel.webp ";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Pixel.webp ";
 const imageCartoon =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Cartoon.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Cartoon.webp";
 const imageRenaissance2 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Renaissance2.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Renaissance2.webp";
 const imageManga =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Manga.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Manga.webp";
 const imagePhoto =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Photo.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Photo.webp";
 const imageDenim =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Denim.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Denim.webp";
 const imageTshirt =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/T-Shirt.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/T-Shirt.webp";
 const imageWhitedress =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/White Dress.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/White Dress.webp";
 const imageHoodie =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/man/Hoodie.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/man/Hoodie.webp";
 
 const imageArtisticW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Artistic.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Artistic.webp";
 const imageCyberpunkW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Cyberpunk.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Cyberpunk.webp";
 const imageDreamy =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Dreamy.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Dreamy.webp";
 const imageFashion =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Fashion.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Fashion.webp";
 const imageKorean =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Korean.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Korean.webp";
 const imageNature =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Nature.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Nature.webp";
 const imageRenaissanceW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Renaissance.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Renaissance.webp";
 const imageRetroW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Retro.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Retro.webp";
 const imageSchool =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/School.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/School.webp";
 const imageSunset =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Sunset.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Sunset.webp";
 const imagePixelW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Pixel.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Pixel.webp";
 const imageAsianW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Asian.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Asian.webp";
 const imageCartoonW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Cartoon.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Cartoon.webp";
 const imageMangaW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Manga.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Manga.webp";
 const imageRenaissanceW2 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Renaissance2.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Renaissance2.webp";
 const imagePhotoW =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/art-styles-models/women/Photo.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/art-styles-models/women/Photo.webp";
 
 const GeneratePage = () => {
   const {
@@ -596,24 +596,23 @@ const GeneratePage = () => {
       setShowInvoice(true);
       setPaymentStatus("processing");
 
+      const message = "Burned 1 DYA to generate image";
       if (authClient.provider !== "Plug") {
-        const message = "Burned 1 DYA to generate image";
+        console.log("dah jalan bang burning");
 
         return new Promise((resolve, reject) => {
+          console.log("masuk promise burn");
           showPopup({
             title: "Confirm Transaction",
-            message: `Type : Burn Token
-            Amount : 1 DYA
-            To : ${process.env.MINTER_PRINCIPAL_ID}
-            Memo : ${message}`,
-            extends: "message",
-            extendMessage: [
+            message: 'are you sure you want to pay this generate?',
+            extend: "message",
+            extendMessage: 
               {
+                Type : 'Burn Token',
                 Amount: "1 DYA",
                 To: `${process.env.MINTER_PRINCIPAL_ID}`,
                 Memo: `${message}`,
               },
-            ],
             type: "default",
             leftLabel: "REJECT",
             onLeft: async () => {
@@ -625,7 +624,7 @@ const GeneratePage = () => {
             onRight: async () => {
               hidePopup();
               try {
-                const burn = await BurnTokens(actorLedger);
+                const burn = await BurnTokens(actorLedger, message);
                 resolve(burn);
               } catch (err) {
                 reject(err);
@@ -639,7 +638,7 @@ const GeneratePage = () => {
           });
         });
       } else {
-        const burn = await BurnTokens(actorLedger);
+        const burn = await BurnTokens(actorLedger, message);
         return burn;
       }
     };

@@ -58,24 +58,22 @@ const MintingSnap = ({
     setShowInvoice(true);
     setPaymentStatus("processing");
 
+    const message = "Burned 1 DYA to Minting NFT";
     if (authClient.provider !== "Plug") {
-      const message = "Burned 1 DYA to generate image";
 
       return new Promise((resolve, reject) => {
         showPopup({
           title: "Confirm Transaction",
-          message: `Type : Burn Token
-              Amount : 1 DYA
-              To : ${process.env.MINTER_PRINCIPAL_ID}
-              Memo : ${message}`,
-          extends: "message",
-          extendMessage: [
+          message: 'Are you sure you want to burn 1 DYA to mint this NFT?',
+          extend: "message",
+          extendMessage: 
             {
+              Type : 'Burn Token',
               Amount: "1 DYA",
               To: `${process.env.MINTER_PRINCIPAL_ID}`,
               Memo: `${message}`,
             },
-          ],
+          
           type: "default",
           leftLabel: "REJECT",
           onLeft: async () => {
@@ -87,7 +85,7 @@ const MintingSnap = ({
           onRight: async () => {
             hidePopup();
             try {
-              const burn = await BurnTokens(actorLedger);
+              const burn = await BurnTokens(actorLedger, message);
               resolve(burn);
             } catch (err) {
               reject(err);
@@ -101,7 +99,7 @@ const MintingSnap = ({
         });
       });
     } else {
-      const burn = await BurnTokens(actorLedger);
+      const burn = await BurnTokens(actorLedger,message);
       return burn;
     }
   };
@@ -113,9 +111,9 @@ const MintingSnap = ({
 
     if (!burn || !burn.Ok) {
       setPaymentStatus("failed");
-      return; 
+      return;
     }
-
+    
     setPaymentStatus("success");
     
     const result = await MintNft(actor, principalId, {
@@ -135,17 +133,16 @@ const MintingSnap = ({
         description: data.itemDescription,
       }));
 
-
+      
       showPopup({
         title: "NFT Minted",
-        message: `The NFT has been minted successfully.<br>Nft ID: ${Number(result.Ok[0].Ok)}`,
+        message: `The NFT has been minted successfully.<br>Nft ID: ${Number(result.id)}`,
         type: "success",
         leftLabel: "Done",
         onLeft: () => hidePopup(),
       });
-      await refreshCredit()
+      await refreshCredit(actor,authClient);
     }
-    
   };
 
   return (

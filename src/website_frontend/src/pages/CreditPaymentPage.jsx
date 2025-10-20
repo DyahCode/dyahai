@@ -3,7 +3,7 @@ import Navbar from "../components/layout/Navbar";
 import { useAuth } from "../provider/authProvider";
 import { usePopup } from "../provider/PopupProvider";
 import PaymentSnap from "../components/ui/PaymentSnap";
-const OfficialDYACoins = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/coins/DYA-coins-gold.svg"
+const OfficialDYACoins = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/coins/DYA-coins-gold.svg"
 
 
 const CreditPaymentPage = () => {

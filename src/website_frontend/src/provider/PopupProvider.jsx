@@ -3,7 +3,7 @@ import Button from '../components/ui/Button';
 import { v4 as uuidv4 } from 'uuid';
 import { buttonAccent, gradientBackground, typeIcons } from '../components/ui/Popup/PopupVariants';
 
-const PlugWalletLogo = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icon/plug-wallet-logo.webp";
+const PlugWalletLogo = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/icons/plug-wallet.webp";
 
 const PopupContext = React.createContext();
 export const usePopup = () => React.useContext(PopupContext);
@@ -117,10 +117,8 @@ export const PopupProvider = ({ children }) => {
 
 // Connect content
 const ConnectButton = ({ id, hidePopup, props }) => {
-  const PlugWalletLogo =
-    "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icons/plug-wallet.webp";
   const IdentityLogo =
-    "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icons/icp-icons.webp";
+    "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/icons/icp-icons.webp";
 
   const { onConnect } = props || {};
 
@@ -149,7 +147,7 @@ const ConnectButton = ({ id, hidePopup, props }) => {
 
       <div className="w-full flex flex-col gap-y-4 mb-10">
         <Button type='outline' centering
-          onClick={() => handleConnect("InternetIdentity")}
+          onClick={() => handleConnect("Internet Identity")}
         >
           <div className='h-[2.5rem] flex items-center justify-center text-center space-x-2'>
             <div className='w-6'>
@@ -210,8 +208,6 @@ const ConnectButton = ({ id, hidePopup, props }) => {
 };
 // Notification content
 const Notification = ({ popupData, hidePopup }) => {
-  const PlugWalletLogo =
-    "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/icons/plug-wallet.webp";
   return (
     <div  className='w-full h-full flex flex-col relative p-8' >
       <div className="w-full text-left flex flex-col sm:flex-row sm:items-end sm:text-left">
@@ -226,7 +222,7 @@ const Notification = ({ popupData, hidePopup }) => {
           <span className="text-left text-n-1 h5 tracking-[0.035em] mt-2.5 mb-4 ">
             {popupData.title}
           </span>
-          <p className="text-left text-[#cccccc] body-2 tracking-[0.031rem]" dangerouslySetInnerHTML={{ __html: popupData.message }} />
+          <p className="text-left text-[#cccccc] body-2 tracking-[0.031rem]">{popupData.message}</p>
 
           {/* extend content */}
           {/* plug wallet required */}

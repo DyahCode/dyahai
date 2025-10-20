@@ -5,11 +5,11 @@ import { Container } from "../Container";
 import HeadSection from "../HeadSection";
 
 const avatar1 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-1.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/about/image-gallery-1.webp";
 const avatar2 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-2.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/about/image-gallery-2.webp";
 const avatar3 =
-  "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/about/image-gallery-3.webp";
+  "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/about/image-gallery-3.webp";
 const ReviewCarousel = ({ items }) => {
   const containerRef = useRef(null);
   const x = useMotionValue(0);

@@ -2,18 +2,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
 const artStyles = [
-  { name: "Artistic", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/artistic.webp" },
-  { name: "Astronaut", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/astronout.webp" },
-  { name: "Baroque", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/baroque.webp" },
-  { name: "Cyberpunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/cyberpunk.webp" },
-  { name: "Detective", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/detective.webp" },
-  { name: "Dreamy", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/dreamy.webp" },
-  { name: "Indigenous", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/indigenous.webp" },
-  { name: "Renaissance", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/renaissance.webp" },
-  { name: "School", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/school.webp" },
-  { name: "Soldier", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/soldier.webp" },
-  { name: "Steampunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/steampunk.webp" },
-  { name: "Wasteland", image: "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/art-styles/wasteland.webp" },
+  { name: "Artistic", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/artistic.webp" },
+  { name: "Astronaut", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/astronout.webp" },
+  { name: "Baroque", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/baroque.webp" },
+  { name: "Cyberpunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/cyberpunk.webp" },
+  { name: "Detective", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/detective.webp" },
+  { name: "Dreamy", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/dreamy.webp" },
+  { name: "Indigenous", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/indigenous.webp" },
+  { name: "Renaissance", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/renaissance.webp" },
+  { name: "School", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/school.webp" },
+  { name: "Soldier", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/soldier.webp" },
+  { name: "Steampunk", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/steampunk.webp" },
+  { name: "Wasteland", image: "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/art-styles/wasteland.webp" },
 ];
 
 const ArtStylesSlider = () => {

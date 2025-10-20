@@ -2,30 +2,32 @@ import React from "react";
 import ContainerBox from "../Container";
 import HeadSection from "../HeadSection";
 import Button from "../../ui/Button";
+import { useNavigate } from "react-router-dom";
 
-const imageSquare1 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/1.webp"
-const imageSquare2 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/2.webp"
-const imageSquare3 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/3.webp"
-const imageSquare4 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/4.webp"
-const imageSquare5 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/5.webp"
-const imageSquare6 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/6.webp"
-const imageSquare7 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/7.webp"
-const imageSquare8 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/8.webp"
-const imageSquare9 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/9.webp"
-const imageSquare10 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/square-image/10.webp"
+const imageSquare1 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/1.webp"
+const imageSquare2 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/2.webp"
+const imageSquare3 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/3.webp"
+const imageSquare4 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/4.webp"
+const imageSquare5 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/5.webp"
+const imageSquare6 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/6.webp"
+const imageSquare7 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/7.webp"
+const imageSquare8 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/8.webp"
+const imageSquare9 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/9.webp"
+const imageSquare10 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/square-image/10.webp"
 
-const imagePortrait1 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/1.webp"
-const imagePortrait2 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/2.webp"
-const imagePortrait3 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/3.webp"
-const imagePortrait4 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/4.webp"
-const imagePortrait5 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/5.webp"
-const imagePortrait6 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/6.webp"
-const imagePortrait7 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/7.webp"
-const imagePortrait8 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/8.webp"
-const imagePortrait9 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/9.webp"
-const imagePortrait10 = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/gallery/portrait-image/10.webp"
+const imagePortrait1 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/1.webp"
+const imagePortrait2 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/2.webp"
+const imagePortrait3 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/3.webp"
+const imagePortrait4 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/4.webp"
+const imagePortrait5 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/5.webp"
+const imagePortrait6 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/6.webp"
+const imagePortrait7 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/7.webp"
+const imagePortrait8 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/8.webp"
+const imagePortrait9 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/9.webp"
+const imagePortrait10 = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/collections/portrait-image/10.webp"
 
 const Collections = () => {
+  const Navigate = useNavigate();
   return (
     <>
       {/* head section */}
@@ -42,7 +44,7 @@ const Collections = () => {
           From hyper-realistic portraits to surreal digital art, every piece reflects the limitless creativity of DyahAI.
           Dive into the gallery and see how imagination meets innovation.
         </span>
-        <Button>
+        <Button onClick={() => Navigate('/nft-collection')}>
           Explore NFTs Collection
         </Button>
       </HeadSection>

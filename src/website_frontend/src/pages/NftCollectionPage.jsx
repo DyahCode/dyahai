@@ -25,7 +25,7 @@ const NftCollection = () => {
     };
 
     loadNFTData();
-  }, [authClient]);
+  }, []);
 
   return (
     <div className="flex flex-col border border-borderShade border-opacity-40 rounded-xl bg-secondaryColor min-w-fit py-8">

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
 
-const BeforeFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/free-to-use/before.webp"
-const AfterFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/testing-assets@main/features/free-to-use/after.webp"
+const BeforeFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/free-to-use/before.webp"
+const AfterFreeToUse = "https://cdn.jsdelivr.net/gh/DyahCode/dyahai-assets@main/features/free-to-use/after.webp"
 
 const animationVariantOne = {
   hidden: { scale: 1, opacity: 0, y: 0 },

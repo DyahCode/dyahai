@@ -17,10 +17,9 @@ import { AccountIdentifier } from "@dfinity/ledger-icp";
 import { Principal } from "@dfinity/principal";
 import { usePopup } from "./PopupProvider";
 import { fetchBalance } from "../hooks/wallet";
-import { PlugLogin, CreateActor } from "ic-auth";
 import { IdbStorage, AuthClient } from "@dfinity/auth-client";
 import { LedgerCanister } from "@dfinity/ledger-icp";
-import { HttpAgent } from "@dfinity/agent";
+import { HttpAgent , Actor } from "@dfinity/agent";
 
 const AuthContext = createContext(null);
 
@@ -35,10 +34,10 @@ export const AuthProvider = ({ children }) => {
   const [actor, setActor] = useState(null);
   const [actorIndex, setActorIndex] = useState(null);
   const [actorLedger, setActorLedger] = useState(null);
+  const [actorNft, setActorNft] = useState(null);
   const [accountId, setAccountId] = useState(null);
   const [clientId, setClientId] = useState(null);
   const [tier, setTier] = useState(null);
-  const [actorNft, setActorNft] = useState(null);
   const whitelist = [
     process.env.CANISTER_ID_WEBSITE_BACKEND,
     process.env.CANISTER_ID_DYAHAI_TOKEN,
@@ -65,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       await checkConnection(method);
     })();
   }, []);
-  
+
   const checkConnection = async (method) => {
     let isConnected;
     if (method === "Plug") {
@@ -86,6 +85,29 @@ export const AuthProvider = ({ children }) => {
     Logout();
     return;
   };
+
+  const PlugLogin = async (whitelist, host) => {
+    const isConnected = await window.ic?.plug?.isConnected();
+    if (isConnected) {
+      const principalId = await window.ic.plug.agent.getPrincipal();
+      await window.ic.plug.createAgent({ whitelist, host });
+      return {
+        principal: principalId.toText(),
+        agent: await window.ic.plug.agent,
+        provider: "Plug",
+      };
+    }
+    await window.ic.plug.requestConnect({
+      whitelist: whitelist,
+      host: host,
+    });
+    const principalId = await window.ic.plug.agent.getPrincipal();
+    return {
+      principal: principalId.toText(),
+      agent: await window.ic.plug.agent,
+      provider: "Plug",
+    };
+  }
 
   const initLogin = async (method) => {
     let authclient;
@@ -147,7 +169,7 @@ export const AuthProvider = ({ children }) => {
       client.login({
         identityProvider:
           process.env.DFX_NETWORK === "ic"
-            ? "https://identity.ic0.app"
+            ? "https://id.ai"
             : `http://${process.env.CANISTER_ID_INTERNET_IDENTITY}.localhost:5000`,
         onSuccess: async () => {
           try {
@@ -175,29 +197,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const buildActor = async (authclient = authClient) => {
-    const newActor = await CreateActor(
-      authclient.agent,
-      website_backend_idl,
-      process.env.CANISTER_ID_WEBSITE_BACKEND
-    );
+    const newActor = Actor.createActor(website_backend_idl, { agent: authclient.agent, canisterId: process.env.CANISTER_ID_WEBSITE_BACKEND });
 
-    const newActorLedger = await CreateActor(
-      authclient.agent,
-      ledger_idl,
-      process.env.CANISTER_ID_DYAHAI_TOKEN
-    );
+    const newActorLedger = Actor.createActor(ledger_idl, { agent: authclient.agent, canisterId: process.env.CANISTER_ID_DYAHAI_TOKEN });
 
-    const newActorIndex = await CreateActor(
-      authclient.agent,
-      ledgerIndex_idl,
-      process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX
-    );
-
-    const newActorNft = await CreateActor(
-      authclient.agent,
-      nft_idl,
-      process.env.CANISTER_ID_NFT
-    );
+    const newActorIndex = Actor.createActor(ledgerIndex_idl, { agent: authclient.agent, canisterId: process.env.CANISTER_ID_DYAHAI_TOKEN_INDEX });
+    const newActorNft = Actor.createActor(nft_idl, { agent: authclient.agent, canisterId: process.env.CANISTER_ID_NFT });
     setActorNft(newActorNft);
 
     setActor(newActor);
@@ -228,13 +233,9 @@ export const AuthProvider = ({ children }) => {
   ) => {
     try {
       if (!customActor) return;
-      const isNewUser = await customActor.initialize_credit();
-      if (isNewUser) {
-        setCredit(10);
-      } else {
-        const balance = await fetchBalance(authclient);
-        setCredit(Number(balance));
-      }
+      await customActor.initialize_credit();
+      const balance = await fetchBalance(authclient);
+      setCredit(Number(balance));
       const getTier = await website_backend.get_tier(authclient.principal);
       setTier(getTier);
     } catch (error) {
