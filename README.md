@@ -155,17 +155,17 @@ https://chromewebstore.google.com/detail/cfbfdhimifdmdehjmkdobpcjfefblkjm?utm_so
 ---
 
 ## 🎥 Video Demonstration  </br>
-[Video demonstration](https://youtu.be/zvcZufyHNoc?si=mux5XDI6TI78YeeU)
+[Video demonstration](https://youtu.be/P_ehg-qeEMU)
 
 ---
 
 ## 🎥 Pitch Deck  </br>
-[Pitch Deck](https://drive.google.com/file/d/1DV04JlF6NE5jtphdk5nDT44hM4onbm1l/view?usp=sharing)
+[Pitch Deck](https://drive.google.com/file/d/1JMvIH_5WCNzwIJyznwp8FlTizzYoi30k/view?usp=sharing)
 
 ---
 
 ## 🎥 Pitch Video </br>
-[Pitch Video](https://youtu.be/zvmsngTkHn4)
+[Pitch Video](https://youtu.be/pYepnFan3wo)
 
 ---
 
